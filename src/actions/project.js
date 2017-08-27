@@ -10,7 +10,7 @@ export const fetchProjects = () => (dispatch, getState) => {
     .once('value', snap =>
       dispatch({
         type: types.FETCH_PROJECTS,
-        projects: snap.val()
+        projects: snap.val() || {}
       })
     )
     .catch(error =>
@@ -32,8 +32,11 @@ export const createProject = project => (dispatch, getState) => {
   })
 
   database
-    .ref(`/projects/${user.uid}/${key}`)
-    .set(project)
+    .ref(`/projects/${user.uid}`)
+    .update({
+      [`/list/${key}`]: project,
+      [`/order`]: getState().projects.order
+    })
     .then(() =>
       dispatch({
         type: types.UPDATE_PROJECT,
