@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import * as authActions from '../actions/auth'
+import Nav from './Nav'
 import Signin from './Signin'
 import Signout from './Signout'
 
@@ -20,10 +21,16 @@ class App extends Component {
   render() {
     return this.props.app.render
       ? <Router>
-          <main>
-            <Route exact path="/signin" component={Signin} />
-            <Route exact path="/signout" component={Signout} />
-          </main>
+          <div>
+            <aside>
+              <Nav />
+            </aside>
+
+            <main>
+              <Route exact path="/signin" component={Signin} />
+              <Route exact path="/signout" component={Signout} />
+            </main>
+          </div>
         </Router>
       : null
   }
