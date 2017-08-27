@@ -35,9 +35,9 @@ class Nav extends Component {
     return (
       <nav>
         {projects.order.map(key =>
-          <div key={key}>
+          <Link to={'/anonymous/' + projects.list[key].slug} key={key}>
             {projects.list[key].title}
-          </div>
+          </Link>
         )}
 
         <button onClick={this.createProject}>+ New project</button>
