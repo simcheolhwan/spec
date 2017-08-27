@@ -4,7 +4,7 @@ import { auth } from '../constants/firebase'
 export const checkAuth = () => dispatch => {
   auth.onAuthStateChanged(user => {
     user && dispatch({ type: types.SIGN_IN, user })
-    dispatch({ type: types.RENDER_APP, render: true })
+    dispatch({ type: types.APP_RENDER, render: true })
   })
 }
 
