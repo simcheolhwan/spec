@@ -16,6 +16,12 @@ body {
   margin: 0;
 }
 
+p,
+ul,
+ol {
+  margin: 0;
+}
+
 small {
   font-size: 80%;
 }
@@ -26,4 +32,5 @@ input {
   font-size: inherit;
   line-height: inherit;
   margin: 0;
+  outline: 0;
 }
