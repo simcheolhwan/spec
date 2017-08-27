@@ -1,10 +1,16 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import * as authActions from '../actions/auth'
 import Signin from './Signin'
 import Signout from './Signout'
+
+const propTypes = {
+  app: PropTypes.object.isRequired,
+  checkAuth: PropTypes.func.isRequired
+}
 
 class App extends Component {
   componentWillMount() {
@@ -22,6 +28,8 @@ class App extends Component {
       : null
   }
 }
+
+App.propTypes = propTypes
 
 const mapStateToProps = ({ app }) => ({ app })
 const mapDispatchToProps = dispatch => bindActionCreators(authActions, dispatch)
