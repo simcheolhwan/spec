@@ -7,6 +7,7 @@ import * as authActions from '../actions/auth'
 import Nav from './Nav'
 import Signin from './Signin'
 import Signout from './Signout'
+import Settings from './Settings'
 import Project from './Project'
 
 const propTypes = {
@@ -30,6 +31,7 @@ class App extends Component {
             <main>
               <Route exact path="/signin" component={Signin} />
               <Route exact path="/signout" component={Signout} />
+              <Route exact path="/settings" component={Settings} />
               <Route exact path="/:user/:project" component={Project} />
             </main>
           </div>
