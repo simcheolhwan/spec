@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import { slugify } from '../helpers/utils'
-import { auth } from '../constants/firebase'
+import { database } from '../constants/firebase'
 import Field from '../components/Field'
 
 const propTypes = {
@@ -14,52 +14,68 @@ const propTypes = {
 class Settings extends Component {
   constructor(props) {
     super(props)
-    const name = props.user.displayName || ''
-    this.state = { name, displayName: slugify(name), status: '', error: {} }
+    this.state = { value: '', slug: '', status: '', error: {} }
     this.handleInputChange = this.handleInputChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
-  handleInputChange(name) {
-    const displayName = slugify(name)
-    this.setState({ name, displayName })
+  componentWillMount() {
+    const { user } = this.props
+
+    database
+      .ref(`/users/${user.uid}/slug`)
+      .once('value', snap =>
+        this.setState({
+          value: snap.val(),
+          slug: snap.val(),
+          status: 'fetched'
+        })
+      )
+      .catch(error => this.setState({ status: 'error', error }))
+  }
+
+  handleInputChange(value) {
+    const slug = slugify(value)
+    this.setState({ value, slug })
   }
 
   handleSubmit(event) {
-    const { displayName } = this.state
+    const { slug } = this.state
+    const { user } = this.props
 
     event.preventDefault()
-    displayName &&
-      auth.currentUser
-        .updateProfile({ displayName })
-        .then(
-          () => this.setState({ status: 'done' }),
-          error => this.setState({ error, status: 'error' })
-        )
+    slug &&
+      database
+        .ref(`/users/${user.uid}/slug`)
+        .set(slug)
+        .then(() => this.setState({ status: 'done' }))
+        .catch(error => this.setState({ error, status: 'error' }))
   }
 
   render() {
-    const { name, displayName, status, error } = this.state
+    const { value, slug, status, error } = this.state
 
     return this.props.authenticated
-      ? <form onSubmit={this.handleSubmit}>
-          <Field
-            name="name"
-            label="name"
-            type="text"
-            value={name}
-            onChange={event => this.handleInputChange(event.target.value)}
-            autoFocus
-          />
+      ? status
+        ? <form onSubmit={this.handleSubmit}>
+            <Field
+              name="slug"
+              label="Slug"
+              type="text"
+              value={value}
+              onChange={event => this.handleInputChange(event.target.value)}
+              autoFocus
+            />
 
-          <code>
-            {displayName}
-          </code>
+            <code>
+              {slug}
+            </code>
 
-          <button type="submit">Submit</button>
+            <button type="submit">Submit</button>
 
-          {error.message || (status === 'done' && '✔︎')}
-        </form>
+            {error.message || (status === 'done' && '✔︎')}
+          </form>
+        : null
       : <Redirect to="/signin" />
   }
 }
