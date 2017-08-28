@@ -2,13 +2,10 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { BrowserRouter as Router, Route } from 'react-router-dom'
+import { BrowserRouter as Router } from 'react-router-dom'
 import * as authActions from '../actions/auth'
+import routes from '../routes'
 import Nav from './Nav'
-import Signin from './Signin'
-import Signout from './Signout'
-import Settings from './Settings'
-import Project from './Project'
 
 const propTypes = {
   app: PropTypes.object.isRequired,
@@ -29,10 +26,7 @@ class App extends Component {
             </aside>
 
             <main>
-              <Route exact path="/signin" component={Signin} />
-              <Route exact path="/signout" component={Signout} />
-              <Route exact path="/settings" component={Settings} />
-              <Route exact path="/:user/:project" component={Project} />
+              {routes}
             </main>
           </div>
         </Router>
