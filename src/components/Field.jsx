@@ -8,11 +8,12 @@ const propTypes = {
   value: PropTypes.string.isRequired,
   autoFocus: PropTypes.bool,
   onChange: PropTypes.func.isRequired,
-  onKeyPress: PropTypes.func.isRequired
+  onKeyPress: PropTypes.func
 }
 
 const defaultProps = {
-  autoFocus: false
+  autoFocus: false,
+  onKeyPress: () => null
 }
 
 const Field = ({ name, label, ...rest }) =>
