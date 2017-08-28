@@ -25,8 +25,9 @@ class Signin extends Component {
     this.setState({ [name]: value })
   }
 
-  handleSubmit() {
+  handleSubmit(event) {
     const { email, password } = this.state
+    event.preventDefault()
     email && password && this.props.signin({ email, password })
   }
 
@@ -40,17 +41,18 @@ class Signin extends Component {
 
     return authenticated
       ? <Redirect to="/" />
-      : <form>
+      : <form onSubmit={this.handleSubmit}>
           {Object.keys(fields).map(key =>
             <Field
               {...fields[key]}
               label={key}
               name={key.toLowerCase()}
               onChange={this.handleInputChange}
-              onKeyPress={event => event.key === 'Enter' && this.handleSubmit()}
               key={key}
             />
           )}
+
+          <button type="submit">Submit</button>
 
           {error.message &&
             <p>
