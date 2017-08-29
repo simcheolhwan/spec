@@ -18,7 +18,9 @@ const defaultProps = {
 
 const Field = ({ name, label, ...rest }) => (
   <div>
-    <label htmlFor={name}>{label}</label>
+    <label htmlFor={name} style={{ display: 'block' }}>
+      {label}
+    </label>
     <input name={name} id={name} {...rest} />
   </div>
 )
