@@ -14,7 +14,7 @@ const propTypes = {
 class Settings extends Component {
   constructor(props) {
     super(props)
-    this.state = { value: '', slug: '', status: '', error: {} }
+    this.state = { name: '', slug: '', slugified: '', status: '', error: {} }
     this.handleInputChange = this.handleInputChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
   }
@@ -23,50 +23,62 @@ class Settings extends Component {
     const { user } = this.props
 
     database
-      .ref(`/users/${user.uid}/slug`)
+      .ref(`/users/${user.uid}`)
       .once('value', snap =>
         this.setState({
-          value: snap.val(),
-          slug: snap.val(),
+          ...snap.val(),
+          slugified: snap.val().slug,
           status: 'fetched'
         })
       )
       .catch(error => this.setState({ status: 'error', error }))
   }
 
-  handleInputChange(value) {
-    const slug = slugify(value)
-    this.setState({ value, slug })
+  handleInputChange(event) {
+    const { name, value } = event.target
+
+    if (name === 'slug') {
+      const slugified = slugify(value)
+      this.setState({ slugified })
+    }
+
+    this.setState({ [name]: value })
   }
 
   handleSubmit(event) {
-    const { slug } = this.state
     const { user } = this.props
+    const { name, slugified } = this.state
 
     event.preventDefault()
-    slug &&
+    slugified &&
       database
-        .ref(`/users/${user.uid}/slug`)
-        .set(slug)
+        .ref(`/users/${user.uid}`)
+        .set({ name, slug: slugified })
         .then(() => this.setState({ status: 'done' }))
         .catch(error => this.setState({ error, status: 'error' }))
   }
 
   render() {
-    const { value, slug, status, error } = this.state
+    const { name, slug, slugified, status, error } = this.state
+    const fields = {
+      Name: { value: name, autoFocus: true },
+      Slug: { value: slug }
+    }
 
     return this.props.authenticated ? status ? (
       <form onSubmit={this.handleSubmit}>
-        <Field
-          name="slug"
-          label="Slug"
-          type="text"
-          value={value}
-          onChange={event => this.handleInputChange(event.target.value)}
-          autoFocus
-        />
+        {Object.keys(fields).map(key => (
+          <Field
+            {...fields[key]}
+            label={key}
+            type="text"
+            name={key.toLowerCase()}
+            onChange={this.handleInputChange}
+            key={key}
+          />
+        ))}
 
-        <code>{slug}</code>
+        <code>{slugified}</code>
 
         <button type="submit">Submit</button>
 
