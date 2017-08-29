@@ -34,11 +34,11 @@ class Nav extends Component {
 
     return (
       <nav>
-        {projects.order.map(key =>
+        {projects.order.map(key => (
           <Link to={'/anonymous/' + projects.list[key].slug} key={key}>
             {projects.list[key].title}
           </Link>
-        )}
+        ))}
 
         <button onClick={this.createProject}>+ New project</button>
 

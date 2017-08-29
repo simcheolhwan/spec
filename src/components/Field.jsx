@@ -16,13 +16,12 @@ const defaultProps = {
   onKeyPress: () => null
 }
 
-const Field = ({ name, label, ...rest }) =>
+const Field = ({ name, label, ...rest }) => (
   <div>
-    <label htmlFor={name}>
-      {label}
-    </label>
+    <label htmlFor={name}>{label}</label>
     <input name={name} id={name} {...rest} />
   </div>
+)
 
 Field.propTypes = propTypes
 Field.defaultProps = defaultProps

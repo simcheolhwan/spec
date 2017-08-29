@@ -55,28 +55,26 @@ class Settings extends Component {
   render() {
     const { value, slug, status, error } = this.state
 
-    return this.props.authenticated
-      ? status
-        ? <form onSubmit={this.handleSubmit}>
-            <Field
-              name="slug"
-              label="Slug"
-              type="text"
-              value={value}
-              onChange={event => this.handleInputChange(event.target.value)}
-              autoFocus
-            />
+    return this.props.authenticated ? status ? (
+      <form onSubmit={this.handleSubmit}>
+        <Field
+          name="slug"
+          label="Slug"
+          type="text"
+          value={value}
+          onChange={event => this.handleInputChange(event.target.value)}
+          autoFocus
+        />
 
-            <code>
-              {slug}
-            </code>
+        <code>{slug}</code>
 
-            <button type="submit">Submit</button>
+        <button type="submit">Submit</button>
 
-            {error.message || (status === 'done' && '✔︎')}
-          </form>
-        : null
-      : <Redirect to="/signin" />
+        {error.message || (status === 'done' && '✔︎')}
+      </form>
+    ) : null : (
+      <Redirect to="/signin" />
+    )
   }
 }
 

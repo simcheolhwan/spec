@@ -14,13 +14,13 @@ const defaultProps = {
 }
 
 const Project = ({ project }) =>
-  _.isEmpty(project)
-    ? <article>Not found</article>
-    : <article>
-        <h1>
-          {project.title}
-        </h1>
-      </article>
+  _.isEmpty(project) ? (
+    <article>Not found</article>
+  ) : (
+    <article>
+      <h1>{project.title}</h1>
+    </article>
+  )
 
 Project.propTypes = propTypes
 Project.defaultProps = defaultProps

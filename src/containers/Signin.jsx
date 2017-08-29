@@ -39,26 +39,25 @@ class Signin extends Component {
       Password: { type: 'password', value: password }
     }
 
-    return authenticated
-      ? <Redirect to="/" />
-      : <form onSubmit={this.handleSubmit}>
-          {Object.keys(fields).map(key =>
-            <Field
-              {...fields[key]}
-              label={key}
-              name={key.toLowerCase()}
-              onChange={this.handleInputChange}
-              key={key}
-            />
-          )}
+    return authenticated ? (
+      <Redirect to="/" />
+    ) : (
+      <form onSubmit={this.handleSubmit}>
+        {Object.keys(fields).map(key => (
+          <Field
+            {...fields[key]}
+            label={key}
+            name={key.toLowerCase()}
+            onChange={this.handleInputChange}
+            key={key}
+          />
+        ))}
 
-          <button type="submit">Submit</button>
+        <button type="submit">Submit</button>
 
-          {error.message &&
-            <p>
-              {error.message}
-            </p>}
-        </form>
+        {error.message && <p>{error.message}</p>}
+      </form>
+    )
   }
 }
 

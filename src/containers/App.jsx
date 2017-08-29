@@ -18,19 +18,17 @@ class App extends Component {
   }
 
   render() {
-    return this.props.app.render
-      ? <Router>
-          <div>
-            <aside>
-              <Nav />
-            </aside>
+    return this.props.app.render ? (
+      <Router>
+        <div>
+          <aside>
+            <Nav />
+          </aside>
 
-            <main>
-              {routes}
-            </main>
-          </div>
-        </Router>
-      : null
+          <main>{routes}</main>
+        </div>
+      </Router>
+    ) : null
   }
 }
 
