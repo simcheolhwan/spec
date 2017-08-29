@@ -11,7 +11,7 @@ class User extends Component {
 
   componentWillMount() {
     const slug = this.props.match.params.user
-    this.getUser(slug)
+    this.setState({ status: 'fetching' }, () => this.getUser(slug))
   }
 
   getUser(slug) {
@@ -42,7 +42,7 @@ class User extends Component {
   renderProjects() {
     const { user, projects } = this.state
 
-    return (
+    return projects.order ? (
       <ul>
         {projects.order.map(key => (
           <li key={key}>
@@ -52,25 +52,26 @@ class User extends Component {
           </li>
         ))}
       </ul>
+    ) : (
+      <p>No Projects</p>
     )
   }
 
   render() {
-    const { user, projects, status, error } = this.state
+    const { user, status, error } = this.state
 
-    return status
-      ? error.message ||
-        (user.uid ? (
-          <article>
-            <h1>{user.name}</h1>
-            {projects.order ? this.renderProjects() : <p>No Projects</p>}
-          </article>
-        ) : (
-          <article>
-            <h1>Not Found</h1>
-          </article>
-        ))
-      : null
+    return error.message || status === 'fetching' ? (
+      <article>Fetching...</article>
+    ) : status === 'done' ? user.uid ? (
+      <article>
+        <h1>{user.name}</h1>
+        {this.renderProjects()}
+      </article>
+    ) : (
+      <article>
+        <h1>Not Found</h1>
+      </article>
+    ) : null
   }
 }
 
