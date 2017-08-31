@@ -42,7 +42,11 @@ class Nav extends Component {
 
         <button onClick={this.createProject}>+ New project</button>
 
-        {auth.authenticated && <Link to="/signout">Sign out</Link>}
+        {auth.authenticated ? (
+          <Link to="/signout">Sign out</Link>
+        ) : (
+          <Link to="/signin">Sign in</Link>
+        )}
       </nav>
     )
   }
