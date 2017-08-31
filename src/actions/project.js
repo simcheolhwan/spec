@@ -5,20 +5,21 @@ import { database } from '../constants/firebase'
 export const fetchProjects = () => (dispatch, getState) => {
   const { user } = getState().auth
 
-  database
-    .ref(`/projects/${user.uid}`)
-    .once('value', snap =>
-      dispatch({
-        type: types.FETCH_PROJECTS,
-        projects: snap.val() || {}
-      })
-    )
-    .catch(error =>
-      dispatch({
-        type: types.APP_ERROR,
-        error
-      })
-    )
+  user.uid &&
+    database
+      .ref(`/projects/${user.uid}`)
+      .once('value', snap =>
+        dispatch({
+          type: types.FETCH_PROJECTS,
+          projects: snap.val() || {}
+        })
+      )
+      .catch(error =>
+        dispatch({
+          type: types.APP_ERROR,
+          error
+        })
+      )
 }
 
 export const createProject = project => (dispatch, getState) => {

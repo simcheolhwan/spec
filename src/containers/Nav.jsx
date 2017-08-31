@@ -30,19 +30,19 @@ class Nav extends Component {
   }
 
   render() {
-    const { auth, projects } = this.props
-
     return (
       <nav>
-        {projects.order.map(key => (
-          <Link to={'/anonymous/' + projects.list[key].slug} key={key}>
-            {projects.list[key].title}
-          </Link>
-        ))}
-
-        <button onClick={this.createProject}>+ New project</button>
-
-        {auth.authenticated && <Link to="/signout">Sign out</Link>}
+        {this.props.auth.authenticated ? (
+          <section>
+            <button onClick={this.createProject}>+ New project</button>
+            <Link to="/settings">Settings</Link>
+            <Link to="/signout">Sign out</Link>
+          </section>
+        ) : (
+          <section>
+            <Link to="/signin">Sign in</Link>
+          </section>
+        )}
       </nav>
     )
   }
