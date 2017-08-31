@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Switch, Route } from 'react-router-dom'
 import * as userActions from '../actions/user'
+import Profile from './Profile'
 import Projects from './Projects'
 import Project from './Project'
 
@@ -27,6 +28,7 @@ class User extends Component {
       <article>Fetching...</article>
     ) : status === 'done' ? user.uid ? (
       <article>
+        <Route path={path} exact component={Profile} />
         <Switch>
           <Route path={path} exact component={Projects} />
           <Route path={path + '/:project'} component={Project} />
