@@ -24,7 +24,9 @@ class User extends Component {
     const { user, status, error } = this.props
     const { path } = this.props.match
 
-    return error.message || status === 'fetching' ? (
+    return error.code ? (
+      <article>{error.code}</article>
+    ) : status === 'fetching' ? (
       <article>Fetching...</article>
     ) : status === 'done' ? user.uid ? (
       <article>
