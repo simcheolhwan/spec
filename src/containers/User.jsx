@@ -1,71 +1,36 @@
-import _ from 'lodash'
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
-import { database } from '../constants/firebase'
+import PropTypes from 'prop-types'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import { Switch, Route } from 'react-router-dom'
+import * as userActions from '../actions/user'
+import Projects from './Projects'
+import Project from './Project'
+
+const propTypes = {
+  user: PropTypes.object.isRequired,
+  status: PropTypes.string.isRequired,
+  error: PropTypes.object.isRequired,
+  fetchUser: PropTypes.func.isRequired
+}
 
 class User extends Component {
-  constructor(props) {
-    super(props)
-    this.state = { user: {}, projects: {}, status: '', error: {} }
-  }
-
   componentWillMount() {
-    const slug = this.props.match.params.user
-    this.setState({ status: 'fetching' }, () => this.getUser(slug))
-  }
-
-  getUser(slug) {
-    database
-      .ref('/users')
-      .once('value', snap => {
-        const users = snap.val()
-        const uid = _.findKey(users, ['slug', slug])
-        const user = { ...users[uid], uid }
-
-        uid
-          ? this.setState({ user }, () => this.getProjects())
-          : this.setState({ status: 'done' })
-      })
-      .catch(error => this.setState({ error, status: 'error' }))
-  }
-
-  getProjects() {
-    const { user } = this.state
-    database
-      .ref(`/projects/${user.uid}`)
-      .once('value', snap =>
-        this.setState({ projects: snap.val(), status: 'done' })
-      )
-      .catch(error => this.setState({ error, status: 'error' }))
-  }
-
-  renderProjects() {
-    const { user, projects } = this.state
-
-    return projects.order ? (
-      <ul>
-        {projects.order.map(key => (
-          <li key={key}>
-            <Link to={`/${user.slug}/${projects.list[key].slug}`}>
-              {projects.list[key].title}
-            </Link>
-          </li>
-        ))}
-      </ul>
-    ) : (
-      <p>No Projects</p>
-    )
+    this.props.fetchUser(this.props.match.params.user)
   }
 
   render() {
-    const { user, status, error } = this.state
+    const { user, status, error } = this.props
+    const { path } = this.props.match
 
     return error.message || status === 'fetching' ? (
       <article>Fetching...</article>
     ) : status === 'done' ? user.uid ? (
       <article>
-        <h1>{user.name}</h1>
-        {this.renderProjects()}
+        <Switch>
+          <Route path={path} exact component={Projects} />
+          <Route path={path + '/:project'} component={Project} />
+        </Switch>
       </article>
     ) : (
       <article>
@@ -75,4 +40,9 @@ class User extends Component {
   }
 }
 
-export default User
+User.propTypes = propTypes
+
+const mapStateToProps = ({ user }) => user
+const mapDispatchToProps = dispatch => bindActionCreators(userActions, dispatch)
+
+export default connect(mapStateToProps, mapDispatchToProps)(User)
