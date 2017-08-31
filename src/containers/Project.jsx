@@ -1,9 +1,7 @@
 import _ from 'lodash'
 import React from 'react'
 import PropTypes from 'prop-types'
-import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import * as projectActions from '../actions/project'
 
 const propTypes = {
   project: PropTypes.object
@@ -25,11 +23,8 @@ const Project = ({ project }) =>
 Project.propTypes = propTypes
 Project.defaultProps = defaultProps
 
-const mapStateToProps = ({ projects }, ownProps) => ({
-  project: _.find(projects.list, ['slug', ownProps.match.params.project])
+const mapStateToProps = ({ user }, ownProps) => ({
+  project: _.find(user.projects.list, ['slug', ownProps.match.params.project])
 })
 
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(projectActions, dispatch)
-
-export default connect(mapStateToProps, mapDispatchToProps)(Project)
+export default connect(mapStateToProps)(Project)
