@@ -7,10 +7,10 @@ export const checkAuth = () => dispatch => {
     if (user) {
       const { uid } = user
       dispatch({ type: types.SIGN_IN, user: { uid } })
-      dispatch(fetchUser(user)).then(() =>
+      dispatch(fetchUser(uid)).then(() =>
         dispatch({ type: types.APP_RENDER, render: true })
       )
-      dispatch(fetchProjects(user))
+      dispatch(fetchProjects(uid))
     } else {
       dispatch({ type: types.APP_RENDER, render: true })
     }
@@ -23,8 +23,8 @@ export const signin = ({ email, password }) => dispatch =>
     .then(user => {
       const { uid } = user
       dispatch({ type: types.SIGN_IN, user: { uid } })
-      dispatch(fetchUser(user))
-      dispatch(fetchProjects(user))
+      dispatch(fetchUser(uid))
+      dispatch(fetchProjects(uid))
     })
     .catch(error => dispatch({ type: types.AUTH_ERROR, error }))
 
@@ -34,9 +34,9 @@ export const signout = () => dispatch =>
     .then(() => dispatch({ type: types.SIGN_OUT }))
     .catch(error => dispatch({ type: types.AUTH_ERROR, error }))
 
-const fetchUser = user => dispatch =>
+const fetchUser = uid => dispatch =>
   database
-    .ref(`/users/${user.uid}`)
+    .ref(`/users/${uid}`)
     .once('value', snap =>
       dispatch({ type: types.FETCH_USER, user: snap.val() || {} })
     )
