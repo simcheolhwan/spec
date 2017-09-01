@@ -7,7 +7,7 @@ export default (state = initial, action) => {
     case types.READ_USER:
       return { ...state, user: action.user }
 
-    case types.READ_USER_PROJECTS:
+    case types.READ_PROJECTS:
       return { ...state, projects: action.projects }
 
     case types.USER_STATUS:

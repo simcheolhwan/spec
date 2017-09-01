@@ -12,12 +12,13 @@ const propTypes = {
   user: PropTypes.object.isRequired,
   status: PropTypes.string.isRequired,
   error: PropTypes.object.isRequired,
-  fetchUser: PropTypes.func.isRequired
+  readUser: PropTypes.func.isRequired
 }
 
 class User extends Component {
   componentWillMount() {
-    this.props.fetchUser(this.props.match.params.user)
+    const { user: slug } = this.props.match.params
+    slug !== this.props.user.slug && this.props.readUser(slug)
   }
 
   render() {
