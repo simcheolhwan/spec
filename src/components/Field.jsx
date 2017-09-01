@@ -5,7 +5,7 @@ const propTypes = {
   name: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
-  value: PropTypes.string.isRequired,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]).isRequired,
   autoFocus: PropTypes.bool,
   onChange: PropTypes.func.isRequired,
   onKeyPress: PropTypes.func
