@@ -2,7 +2,7 @@ import _ from 'lodash'
 import types from '../constants/actions'
 import { database } from '../constants/firebase'
 
-export const fetchUser = slug => dispatch => {
+export const readUser = slug => dispatch => {
   dispatch({ type: types.USER_STATUS, status: 'fetching' })
   database
     .ref('/users')
@@ -13,15 +13,15 @@ export const fetchUser = slug => dispatch => {
 
       uid
         ? dispatch({ type: types.READ_USER, user }) &&
-          dispatch(fetchProjects(user))
+          dispatch(readProjects(uid))
         : dispatch({ type: types.USER_STATUS, status: 'done' })
     })
     .catch(error => dispatch({ type: types.USER_ERROR, error }))
 }
 
-const fetchProjects = user => dispatch =>
+const readProjects = uid => dispatch =>
   database
-    .ref(`/projects/${user.uid}`)
+    .ref(`/projects/${uid}`)
     .once('value', snap => {
       dispatch({ type: types.READ_USER_PROJECTS, projects: snap.val() || {} })
       dispatch({ type: types.USER_STATUS, status: 'done' })
