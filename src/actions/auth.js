@@ -36,6 +36,6 @@ const fetchUser = user => dispatch =>
   database
     .ref(`/users/${user.uid}`)
     .once('value', snap =>
-      dispatch({ type: types.SIGN_IN, user: snap.val() || {} })
+      dispatch({ type: types.FETCH_USER, user: snap.val() || {} })
     )
     .catch(error => dispatch({ type: types.AUTH_ERROR, error }))

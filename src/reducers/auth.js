@@ -17,7 +17,7 @@ const authenticated = (state = false, action) => {
 const initial = { uid: '', name: '', slug: '' }
 const user = (state = initial, action) => {
   switch (action.type) {
-    case types.SIGN_IN:
+    case types.FETCH_USER:
       return { ...state, ...action.user }
 
     case types.SIGN_OUT:
@@ -32,6 +32,7 @@ const error = (state = {}, action) => {
   switch (action.type) {
     case types.SIGN_IN:
     case types.SIGN_OUT:
+    case types.FETCH_USER:
       return {}
 
     case types.AUTH_ERROR:
