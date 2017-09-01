@@ -7,6 +7,7 @@ export default keyMirror({
   SIGN_IN: null,
   SIGN_OUT: null,
   FETCH_USER: null,
+  AUTH_REQUEST: null,
   AUTH_ERROR: null,
 
   READ_USER: null,
