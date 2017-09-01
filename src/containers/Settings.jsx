@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import { slugify } from '../helpers/utils'
 import { database } from '../constants/firebase'
-import Field from '../components/Field'
+import Form from '../components/Form'
 
 const propTypes = {
   authenticated: PropTypes.bool.isRequired,
@@ -59,33 +59,24 @@ class Settings extends Component {
   render() {
     const { name, slug, status, error } = this.state
     const { disabled } = this.sanitize()
+
     const fields = {
-      Name: { value: name, autoFocus: true },
-      Slug: { value: slug }
+      Name: { type: 'string', value: name, autoFocus: true },
+      Slug: { type: 'string', value: slug }
+    }
+
+    const formProps = {
+      fields,
+      disabled,
+      errorMessage: error.message,
+      isSubmitting: status === 'submitting',
+      isDone: status === 'done',
+      onInputChange: this.handleInputChange,
+      onSubmit: this.handleSubmit
     }
 
     return this.props.authenticated ? status ? (
-      <form onSubmit={this.handleSubmit}>
-        {Object.keys(fields).map(key => (
-          <Field
-            {...fields[key]}
-            label={key}
-            type="text"
-            name={key.toLowerCase()}
-            onChange={this.handleInputChange}
-            key={key}
-          />
-        ))}
-
-        <code>{slugify(slug)}</code>
-
-        <button type="submit" disabled={disabled}>
-          Submit
-        </button>
-
-        {error.message ||
-          (status === 'submitting' ? '🔄' : status === 'done' && '✅')}
-      </form>
+      <Form {...formProps} />
     ) : null : (
       <Redirect to="/signin" />
     )
