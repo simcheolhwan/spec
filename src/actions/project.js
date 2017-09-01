@@ -2,9 +2,9 @@ import uuidv4 from 'uuid/v4'
 import types from '../constants/actions'
 import { database } from '../constants/firebase'
 
-export const fetchProjects = user => dispatch =>
+export const fetchProjects = uid => dispatch =>
   database
-    .ref(`/projects/${user.uid}`)
+    .ref(`/projects/${uid}`)
     .once('value', snap =>
       dispatch({ type: types.FETCH_PROJECTS, projects: snap.val() || {} })
     )
