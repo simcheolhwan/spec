@@ -7,11 +7,13 @@ export const checkAuth = () => dispatch => {
     if (user) {
       const { uid } = user
       dispatch({ type: types.SIGN_IN, user: { uid } })
-      dispatch(fetchUser(user))
+      dispatch(fetchUser(user)).then(() =>
+        dispatch({ type: types.APP_RENDER, render: true })
+      )
       dispatch(fetchProjects(user))
+    } else {
+      dispatch({ type: types.APP_RENDER, render: true })
     }
-
-    dispatch({ type: types.APP_RENDER, render: true })
   })
 }
 
