@@ -2,7 +2,7 @@ import types from '../constants/actions'
 import { auth, database } from '../constants/firebase'
 import { fetchProjects } from './project'
 
-export const checkAuth = () => dispatch => {
+export const checkAuth = () => dispatch =>
   auth.onAuthStateChanged(user => {
     if (user) {
       const { uid } = user
@@ -15,9 +15,9 @@ export const checkAuth = () => dispatch => {
       dispatch({ type: types.APP_RENDER, render: true })
     }
   })
-}
 
-export const signin = ({ email, password }) => dispatch =>
+export const signin = ({ email, password }) => dispatch => {
+  dispatch({ type: types.AUTH_REQUEST })
   auth
     .signInWithEmailAndPassword(email, password)
     .then(user => {
@@ -27,6 +27,7 @@ export const signin = ({ email, password }) => dispatch =>
       dispatch(fetchProjects(uid))
     })
     .catch(error => dispatch({ type: types.AUTH_ERROR, error }))
+}
 
 export const signout = () => dispatch =>
   auth

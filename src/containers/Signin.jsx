@@ -4,10 +4,11 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import * as authActions from '../actions/auth'
-import Field from '../components/Field'
+import Form from '../components/Form'
 
 const propTypes = {
   authenticated: PropTypes.bool.isRequired,
+  status: PropTypes.string.isRequired,
   error: PropTypes.object.isRequired,
   signin: PropTypes.func.isRequired
 }
@@ -26,38 +27,38 @@ class Signin extends Component {
   }
 
   handleSubmit(event) {
-    const { email, password } = this.state
+    const { email, password, disabled } = this.sanitize()
     event.preventDefault()
-    email && password && this.props.signin({ email, password })
+    !disabled && this.props.signin({ email, password })
+  }
+
+  sanitize() {
+    const { email: _email, password } = this.state
+    const email = _email.trim()
+    return { email, password, disabled: !(email && password) }
   }
 
   render() {
-    const { authenticated, error } = this.props
+    const { authenticated, status, error } = this.props
     const { email, password } = this.state
+    const { disabled } = this.sanitize()
+
     const fields = {
       Email: { type: 'email', value: email, autoFocus: true },
       Password: { type: 'password', value: password }
     }
 
-    return authenticated ? (
-      <Redirect to="/" />
-    ) : (
-      <form onSubmit={this.handleSubmit}>
-        {Object.keys(fields).map(key => (
-          <Field
-            {...fields[key]}
-            label={key}
-            name={key.toLowerCase()}
-            onChange={this.handleInputChange}
-            key={key}
-          />
-        ))}
+    const formProps = {
+      fields,
+      disabled,
+      errorMessage: error.message,
+      isSubmitting: status === 'submitting',
+      isDone: status === 'done',
+      onInputChange: this.handleInputChange,
+      onSubmit: this.handleSubmit
+    }
 
-        <button type="submit">Submit</button>
-
-        {error.message && <p>{error.message}</p>}
-      </form>
-    )
+    return authenticated ? <Redirect to="/" /> : <Form {...formProps} />
   }
 }
 

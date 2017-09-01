@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import * as projectActions from '../actions/project'
 import { slugify } from '../helpers/utils'
-import Field from '../components/Field'
+import Form from '../components/Form'
 
 const propTypes = {
   authenticated: PropTypes.bool.isRequired,
@@ -55,33 +55,25 @@ class ProjectCreate extends Component {
   render() {
     const { title, slug, isPrivate, status, error } = this.state
     const { disabled } = this.sanitize()
+
     const fields = {
       Title: { type: 'text', value: title, autoFocus: true },
       Slug: { type: 'text', value: slug },
       Private: { type: 'checkbox', name: 'isPrivate', value: isPrivate }
     }
 
+    const formProps = {
+      fields,
+      disabled,
+      errorMessage: error.message,
+      isSubmitting: status === 'submitting',
+      isDone: status === 'done',
+      onInputChange: this.handleInputChange,
+      onSubmit: this.handleSubmit
+    }
+
     return this.props.authenticated ? (
-      <form onSubmit={this.handleSubmit}>
-        {Object.keys(fields).map(key => (
-          <Field
-            label={key}
-            name={key.toLowerCase()}
-            onChange={this.handleInputChange}
-            {...fields[key]}
-            key={key}
-          />
-        ))}
-
-        <code>{slugify(slug)}</code>
-
-        <button type="submit" disabled={disabled}>
-          Submit
-        </button>
-
-        {error.message ||
-          (status === 'submitting' ? '🔄' : status === 'done' && '✅')}
-      </form>
+      <Form {...formProps} />
     ) : (
       <Redirect to="/signin" />
     )

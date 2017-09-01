@@ -29,6 +29,19 @@ const user = (state = initial, action) => {
   }
 }
 
+const status = (state = '', action) => {
+  switch (action.type) {
+    case types.AUTH_REQUEST:
+      return 'submitting'
+
+    case types.SIGN_IN:
+      return ''
+
+    default:
+      return state
+  }
+}
+
 const error = (state = {}, action) => {
   switch (action.type) {
     case types.SIGN_IN:
@@ -44,4 +57,4 @@ const error = (state = {}, action) => {
   }
 }
 
-export default combineReducers({ authenticated, user, error })
+export default combineReducers({ authenticated, user, status, error })
