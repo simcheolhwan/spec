@@ -23,7 +23,7 @@ const readProjects = uid => dispatch =>
   database
     .ref(`/projects/${uid}`)
     .once('value', snap => {
-      dispatch({ type: types.READ_USER_PROJECTS, projects: snap.val() || {} })
+      dispatch({ type: types.READ_PROJECTS, projects: snap.val() || {} })
       dispatch({ type: types.USER_STATUS, status: 'done' })
     })
     .catch(error => dispatch({ type: types.USER_ERROR, error }))

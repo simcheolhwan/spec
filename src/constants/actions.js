@@ -10,7 +10,7 @@ export default keyMirror({
   AUTH_ERROR: null,
 
   READ_USER: null,
-  READ_USER_PROJECTS: null,
+  READ_PROJECTS: null,
   USER_STATUS: null,
   USER_ERROR: null,
 
