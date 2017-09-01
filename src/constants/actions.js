@@ -6,10 +6,11 @@ export default keyMirror({
 
   SIGN_IN: null,
   SIGN_OUT: null,
+  FETCH_USER: null,
   AUTH_ERROR: null,
 
-  FETCH_USER: null,
-  FETCH_USER_PROJECTS: null,
+  READ_USER: null,
+  READ_USER_PROJECTS: null,
   USER_STATUS: null,
   USER_ERROR: null,
 

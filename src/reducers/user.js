@@ -4,10 +4,10 @@ const initial = { user: {}, projects: {}, status: '', error: {} }
 
 export default (state = initial, action) => {
   switch (action.type) {
-    case types.FETCH_USER:
+    case types.READ_USER:
       return { ...state, user: action.user }
 
-    case types.FETCH_USER_PROJECTS:
+    case types.READ_USER_PROJECTS:
       return { ...state, projects: action.projects }
 
     case types.USER_STATUS:

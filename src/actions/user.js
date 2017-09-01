@@ -12,7 +12,7 @@ export const fetchUser = slug => dispatch => {
       const user = { ...users[uid], uid }
 
       uid
-        ? dispatch({ type: types.FETCH_USER, user }) &&
+        ? dispatch({ type: types.READ_USER, user }) &&
           dispatch(fetchProjects(user))
         : dispatch({ type: types.USER_STATUS, status: 'done' })
     })
@@ -23,7 +23,7 @@ const fetchProjects = user => dispatch =>
   database
     .ref(`/projects/${user.uid}`)
     .once('value', snap => {
-      dispatch({ type: types.FETCH_USER_PROJECTS, projects: snap.val() || {} })
+      dispatch({ type: types.READ_USER_PROJECTS, projects: snap.val() || {} })
       dispatch({ type: types.USER_STATUS, status: 'done' })
     })
     .catch(error => dispatch({ type: types.USER_ERROR, error }))

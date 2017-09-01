@@ -7,11 +7,12 @@ const propTypes = {
   authenticated: PropTypes.bool.isRequired
 }
 
-const Nav = ({ authenticated }) => (
+const Nav = ({ authenticated, user }) => (
   <nav>
     {authenticated ? (
       <section>
         <Link to="/new">New project</Link>
+        <Link to={'/' + user.slug}>Projects</Link>
         <Link to="/settings">Settings</Link>
         <Link to="/signout">Sign out</Link>
       </section>
