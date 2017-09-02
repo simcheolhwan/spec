@@ -1,14 +1,18 @@
+import _ from 'lodash'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
-import { createProject } from '../actions/project'
+import { updateProject, deleteProject } from '../actions/project'
 import { slugify } from '../helpers/utils'
 import Form from '../components/Form'
 
 const propTypes = {
   authenticated: PropTypes.bool.isRequired,
-  onCreate: PropTypes.func.isRequired
+  projectKey: PropTypes.string.isRequired,
+  project: PropTypes.object.isRequired,
+  onUpdate: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired
 }
 
 class ProjectUpdate extends Component {
@@ -16,15 +20,15 @@ class ProjectUpdate extends Component {
     super(props)
 
     this.state = {
-      title: '',
-      slug: '',
-      isPrivate: false,
+      ...this.props.project,
       status: '',
       error: {}
     }
 
     this.handleInputChange = this.handleInputChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleClose = this.handleClose.bind(this)
+    this.handleDelete = this.handleDelete.bind(this)
   }
 
   handleInputChange(event) {
@@ -35,13 +39,25 @@ class ProjectUpdate extends Component {
   handleSubmit(event) {
     const { title, slug, disabled } = this.sanitize()
     const { isPrivate } = this.state
-    const { onCreate } = this.props
+    const { projectKey: key, onUpdate } = this.props
 
     event.preventDefault()
     !disabled &&
       this.setState({ status: 'submitting' }, () =>
-        onCreate({ title, slug, isPrivate })
+        onUpdate(key, { title, slug, isPrivate })
       )
+  }
+
+  handleClose() {
+    const { projectKey: key, onUpdate } = this.props
+    this.setState({ status: 'submitting' }, () =>
+      onUpdate(key, { isClosed: true })
+    )
+  }
+
+  handleDelete() {
+    const { projectKey: key, onDelete } = this.props
+    this.setState({ status: 'submitting' }, () => onDelete(key))
   }
 
   sanitize() {
@@ -52,6 +68,7 @@ class ProjectUpdate extends Component {
   }
 
   render() {
+    const { project } = this.props
     const { title, slug, isPrivate, status, error } = this.state
     const { disabled } = this.sanitize()
 
@@ -72,7 +89,15 @@ class ProjectUpdate extends Component {
     }
 
     return this.props.authenticated ? (
-      <Form {...formProps} />
+      <article>
+        <Form {...formProps} />
+
+        <button onClick={this.handleClose} disabled={project.isClosed}>
+          Close project
+        </button>
+
+        <button onClick={this.handleDelete}>Delete project</button>
+      </article>
     ) : (
       <Redirect to="/signin" />
     )
@@ -81,9 +106,20 @@ class ProjectUpdate extends Component {
 
 ProjectUpdate.propTypes = propTypes
 
-const mapStateToProps = ({ auth }) => ({ authenticated: auth.authenticated })
+const mapStateToProps = ({ auth, user }, ownProps) => {
+  const slug = ownProps.match.params.project
+  const key = _.findKey(user.projects.list, ['slug', slug])
+
+  return {
+    authenticated: auth.authenticated,
+    projectKey: key,
+    project: user.projects.list[key]
+  }
+}
+
 const mapDispatchToProps = dispatch => ({
-  onCreate: project => dispatch(createProject(project))
+  onUpdate: (key, updates) => dispatch(updateProject(key, updates)),
+  onDelete: key => dispatch(deleteProject(key))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectUpdate)
