@@ -1,15 +1,14 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
-import * as projectActions from '../actions/project'
+import { createProject } from '../actions/project'
 import { slugify } from '../helpers/utils'
 import Form from '../components/Form'
 
 const propTypes = {
   authenticated: PropTypes.bool.isRequired,
-  createProject: PropTypes.func.isRequired
+  onCreate: PropTypes.func.isRequired
 }
 
 class ProjectCreate extends Component {
@@ -36,12 +35,12 @@ class ProjectCreate extends Component {
   handleSubmit(event) {
     const { title, slug, disabled } = this.sanitize()
     const { isPrivate } = this.state
-    const { createProject } = this.props
+    const { onCreate } = this.props
 
     event.preventDefault()
     !disabled &&
       this.setState({ status: 'submitting' }, () =>
-        createProject({ title, slug, isPrivate })
+        onCreate({ title, slug, isPrivate })
       )
   }
 
@@ -59,7 +58,7 @@ class ProjectCreate extends Component {
     const fields = {
       Title: { type: 'text', value: title, autoFocus: true },
       Slug: { type: 'text', value: slug },
-      Private: { type: 'checkbox', name: 'isPrivate', value: isPrivate }
+      Private: { type: 'checkbox', name: 'isPrivate', checked: isPrivate }
     }
 
     const formProps = {
@@ -83,7 +82,8 @@ class ProjectCreate extends Component {
 ProjectCreate.propTypes = propTypes
 
 const mapStateToProps = ({ auth }) => ({ authenticated: auth.authenticated })
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(projectActions, dispatch)
+const mapDispatchToProps = dispatch => ({
+  onCreate: project => dispatch(createProject(project))
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectCreate)
