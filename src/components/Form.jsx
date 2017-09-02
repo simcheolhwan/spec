@@ -1,44 +1,39 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-// import { slugify } from '../helpers/utils'
-import Field from './Field'
+import { Field } from 'redux-form'
+import renderField from './Field'
 
 const propTypes = {
   fields: PropTypes.object.isRequired,
-  disabled: PropTypes.bool.isRequired,
-  errorMessage: PropTypes.string,
-  isSubmitting: PropTypes.bool.isRequired,
-  isDone: PropTypes.bool.isRequired,
-  onInputChange: PropTypes.func.isRequired,
-  onSubmit: PropTypes.func.isRequired
+  errorMessage: PropTypes.string
 }
 
 const defaultProps = {
   errorMessage: ''
 }
 
-const Form = ({ fields, disabled, ...rest }) => {
-  const { errorMessage, isSubmitting, isDone, onInputChange, onSubmit } = rest
+const Form = ({ fields, errorMessage, ...rest }) => {
+  const { pristine, submitting, submitSucceeded } = rest
+  const { handleSubmit } = rest
 
   return (
-    <form onSubmit={onSubmit}>
+    <form onSubmit={handleSubmit}>
       {Object.keys(fields).map(key => (
         <Field
           label={key}
           name={key.toLowerCase()}
-          onChange={onInputChange}
-          {...fields[key]}
+          normalize={v => (fields[key].type === 'checkbox' ? !!v : v)}
+          component={renderField}
           key={key}
+          {...fields[key]}
         />
       ))}
 
-      {/* <code>{slugify(slug)}</code> */}
-
-      <button type="submit" disabled={disabled || isSubmitting}>
+      <button type="submit" disabled={pristine || submitting}>
         Submit
       </button>
 
-      {errorMessage || (isSubmitting ? '🔄' : isDone && '✅')}
+      {errorMessage || (submitting ? '🔄' : submitSucceeded && '✅')}
     </form>
   )
 }
