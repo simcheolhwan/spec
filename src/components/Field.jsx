@@ -5,13 +5,16 @@ const propTypes = {
   name: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
-  value: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]).isRequired,
+  value: PropTypes.string,
+  checked: PropTypes.bool,
   autoFocus: PropTypes.bool,
   onChange: PropTypes.func.isRequired,
   onKeyPress: PropTypes.func
 }
 
 const defaultProps = {
+  value: '',
+  checked: false,
   autoFocus: false,
   onKeyPress: () => null
 }
