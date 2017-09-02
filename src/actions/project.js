@@ -41,6 +41,55 @@ export const createProject = project => (dispatch, getState) => {
     )
 }
 
-export const updateProject = () => (dispatch, getState) => {}
+export const updateProject = (key, updates) => (dispatch, getState) => {
+  const { uid } = getState().auth.user
+  const project = getState().projects.list[key]
 
-export const deleteProject = () => (dispatch, getState) => {}
+  dispatch({
+    type: types.UPDATE_PROJECT,
+    key,
+    updates: { ...updates, isSyncing: true }
+  })
+
+  database
+    .ref(`/projects/${uid}/list/${key}`)
+    .update(updates)
+    .then(() =>
+      dispatch({
+        type: types.UPDATE_PROJECT,
+        key,
+        updates: { isSyncing: false }
+      })
+    )
+    .catch(error =>
+      dispatch({
+        type: types.UPDATE_PROJECT,
+        key,
+        updates: { ...project, isSyncing: false }
+      })
+    )
+}
+
+export const deleteProject = key => (dispatch, getState) => {
+  const { uid } = getState().auth.user
+  const project = getState().projects.list[key]
+
+  dispatch({
+    type: types.DELETE_PROJECT,
+    key
+  })
+
+  database
+    .ref(`/projects/${uid}`)
+    .update({
+      [`/list/${key}`]: null,
+      [`/order`]: getState().projects.order
+    })
+    .catch(error =>
+      dispatch({
+        type: types.CREATE_PROJECT,
+        key,
+        project
+      })
+    )
+}
