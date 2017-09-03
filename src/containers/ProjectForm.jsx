@@ -1,5 +1,6 @@
 import React from 'react'
 import { reduxForm } from 'redux-form'
+import { sanitize } from '../helpers/utils'
 import Form from '../components/Form'
 
 const fields = {
@@ -8,6 +9,14 @@ const fields = {
   Private: { type: 'checkbox', name: 'isPrivate' }
 }
 
-const ProjectForm = props => <Form {...props} fields={fields} />
+const validate = values => {
+  const errors = {}
+  const { title, slug } = sanitize(values)
+  errors.title = !title && 'Required'
+  errors.slug = !slug && 'Required'
+  return errors
+}
 
-export default reduxForm({ form: 'Project' })(ProjectForm)
+const ProjectForm = props => <Form fields={fields} {...props} />
+
+export default reduxForm({ form: 'Project', validate })(ProjectForm)
