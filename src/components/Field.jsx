@@ -1,30 +1,31 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { slugify } from '../helpers/utils'
 
 const propTypes = {
-  name: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
+  input: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+    checked: PropTypes.bool
+  }).isRequired,
+  meta: PropTypes.object.isRequired,
   type: PropTypes.string.isRequired,
-  value: PropTypes.string,
-  checked: PropTypes.bool,
-  autoFocus: PropTypes.bool,
-  onChange: PropTypes.func.isRequired,
-  onKeyPress: PropTypes.func
+  autoFocus: PropTypes.bool
 }
 
 const defaultProps = {
-  value: '',
-  checked: false,
-  autoFocus: false,
-  onKeyPress: () => null
+  autoFocus: false
 }
 
-const Field = ({ name, label, ...rest }) => (
+const Field = ({ label, input, meta, ...rest }) => (
   <div>
-    <label htmlFor={name} style={{ display: 'block' }}>
+    <label htmlFor={input.name} style={{ display: 'block' }}>
       {label}
     </label>
-    <input name={name} id={name} {...rest} />
+
+    <input {...input} {...rest} id={input.name} />
+    {input.name === 'slug' && <code>{slugify(input.value)}</code>}
   </div>
 )
 

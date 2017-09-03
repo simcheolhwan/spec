@@ -4,8 +4,8 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import { updateProject, deleteProject } from '../actions/project'
-import { slugify } from '../helpers/utils'
-import Form from '../components/Form'
+import { sanitize } from '../helpers/utils'
+import ProjectForm from './ProjectForm'
 
 const propTypes = {
   authenticated: PropTypes.bool.isRequired,
@@ -18,85 +18,48 @@ const propTypes = {
 class ProjectUpdate extends Component {
   constructor(props) {
     super(props)
-
-    this.state = {
-      ...this.props.project,
-      status: '',
-      error: {}
-    }
-
-    this.handleInputChange = this.handleInputChange.bind(this)
-    this.handleSubmit = this.handleSubmit.bind(this)
-    this.handleClose = this.handleClose.bind(this)
-    this.handleDelete = this.handleDelete.bind(this)
+    this.state = { status: '', error: {} }
+    this.update = this.update.bind(this)
+    this.close = this.close.bind(this)
+    this.delete = this.delete.bind(this)
   }
 
-  handleInputChange(event) {
-    const { name, type, value, checked } = event.target
-    this.setState({ [name]: type === 'checkbox' ? checked : value })
-  }
-
-  handleSubmit(event) {
-    const { title, slug, disabled } = this.sanitize()
-    const { isPrivate } = this.state
-    const { projectKey: key, onUpdate } = this.props
-
-    event.preventDefault()
-    !disabled &&
-      this.setState({ status: 'submitting' }, () =>
-        onUpdate(key, { title, slug, isPrivate })
-      )
-  }
-
-  handleClose() {
+  close() {
     const { projectKey: key, onUpdate } = this.props
     this.setState({ status: 'submitting' }, () =>
       onUpdate(key, { isClosed: true })
     )
   }
 
-  handleDelete() {
+  delete() {
     const { projectKey: key, onDelete } = this.props
     this.setState({ status: 'submitting' }, () => onDelete(key))
   }
 
-  sanitize() {
-    const { title: _title, slug: _slug } = this.state
-    const title = _title.trim()
-    const slug = slugify(_slug)
-    return { title, slug, disabled: !(title && slug) }
+  update(updates) {
+    const { projectKey: key, onUpdate } = this.props
+    this.setState({ status: 'submitting' }, () =>
+      onUpdate(key, sanitize(updates))
+    )
   }
 
   render() {
     const { project } = this.props
-    const { title, slug, isPrivate, status, error } = this.state
-    const { disabled } = this.sanitize()
-
-    const fields = {
-      Title: { type: 'text', value: title, autoFocus: true },
-      Slug: { type: 'text', value: slug },
-      Private: { type: 'checkbox', name: 'isPrivate', checked: isPrivate }
-    }
-
-    const formProps = {
-      fields,
-      disabled,
-      errorMessage: error.message,
-      isSubmitting: status === 'submitting',
-      isDone: status === 'done',
-      onInputChange: this.handleInputChange,
-      onSubmit: this.handleSubmit
-    }
+    const { error } = this.state
 
     return this.props.authenticated ? (
       <article>
-        <Form {...formProps} />
+        <ProjectForm
+          initialValues={project}
+          onSubmit={this.update}
+          errorMessage={error.message}
+        />
 
-        <button onClick={this.handleClose} disabled={project.isClosed}>
+        <button onClick={this.close} disabled={project.isClosed}>
           Close project
         </button>
 
-        <button onClick={this.handleDelete}>Delete project</button>
+        <button onClick={this.delete}>Delete project</button>
       </article>
     ) : (
       <Redirect to="/signin" />
