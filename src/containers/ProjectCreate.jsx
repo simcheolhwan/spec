@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import { createProject } from '../actions/project'
+import { sanitize } from '../helpers/utils'
 import ProjectForm from './ProjectForm'
 
 const propTypes = {
@@ -19,7 +20,7 @@ class ProjectCreate extends Component {
 
   create(updates) {
     const { onCreate } = this.props
-    this.setState({ status: 'submitting' }, () => onCreate(updates))
+    this.setState({ status: 'submitting' }, () => onCreate(sanitize(updates)))
   }
 
   render() {

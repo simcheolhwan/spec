@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import { updateProject, deleteProject } from '../actions/project'
+import { sanitize } from '../helpers/utils'
 import ProjectForm from './ProjectForm'
 
 const propTypes = {
@@ -37,7 +38,9 @@ class ProjectUpdate extends Component {
 
   update(updates) {
     const { projectKey: key, onUpdate } = this.props
-    this.setState({ status: 'submitting' }, () => onUpdate(key, updates))
+    this.setState({ status: 'submitting' }, () =>
+      onUpdate(key, sanitize(updates))
+    )
   }
 
   render() {
