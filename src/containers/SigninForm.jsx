@@ -3,7 +3,7 @@ import { reduxForm } from 'redux-form'
 import Form from '../components/Form'
 
 const fields = {
-  Email: { type: 'email', autoFocus: true },
+  Email: { type: 'email' },
   Password: { type: 'password' }
 }
 
@@ -14,6 +14,6 @@ const validate = ({ email = '', password = '' }) => {
   return errors
 }
 
-const Signin = props => <Form {...props} fields={fields} />
+const SigninForm = props => <Form {...props} fields={fields} />
 
-export default reduxForm({ form: 'Signin', validate })(Signin)
+export default reduxForm({ form: 'Signin', validate })(SigninForm)
