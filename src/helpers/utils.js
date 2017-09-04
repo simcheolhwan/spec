@@ -7,8 +7,14 @@ export const slugify = (string = '') =>
     .replace(/:|\/|\?|#|\[|\]|@|!|\$|&|'|\(|\)|\*|\+|,|;|=|%|\./g, '-')
     .replace(/--+/g, '-')
 
-export const sanitize = ({ title = '', slug = '', ...rest }) => ({
-  title: title.trim(),
-  slug: slugify(slug),
-  ...rest
-})
+export const sanitize = values => {
+  const { email, title, name, slug } = values
+
+  return Object.assign(
+    values,
+    email && { email: email.trim() },
+    title && { title: title.trim() },
+    name && { name: name.trim() },
+    slug && { slug: slugify(slug) }
+  )
+}

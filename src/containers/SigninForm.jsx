@@ -1,5 +1,6 @@
 import React from 'react'
 import { reduxForm } from 'redux-form'
+import { sanitize } from '../helpers/utils'
 import Form from '../components/Form'
 
 const fields = {
@@ -7,9 +8,10 @@ const fields = {
   Password: { type: 'password' }
 }
 
-const validate = ({ email = '', password = '' }) => {
+const validate = values => {
   const errors = {}
-  errors.email = !email.trim() && 'Required'
+  const { email, password } = sanitize(values)
+  errors.email = !email && 'Required'
   errors.password = !password && 'Required'
   return errors
 }
