@@ -4,7 +4,7 @@ import { sanitize } from '../helpers/utils'
 import Form from '../components/Form'
 
 const fields = {
-  Title: { type: 'text', autoFocus: true },
+  Title: { type: 'text' },
   Slug: { type: 'text' },
   Private: { type: 'checkbox', name: 'isPrivate' }
 }

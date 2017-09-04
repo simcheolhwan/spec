@@ -13,12 +13,13 @@ const Form = ({ fields, ...rest }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      {Object.keys(fields).map(key => (
+      {Object.keys(fields).map((key, index) => (
         <Field
           label={key}
           name={key.toLowerCase()}
-          normalize={v => (fields[key].type === 'checkbox' ? !!v : v)}
+          autoFocus={!index}
           component={renderField}
+          normalize={v => (fields[key].type === 'checkbox' ? !!v : v)}
           key={key}
           {...fields[key]}
         />
