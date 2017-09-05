@@ -94,7 +94,7 @@ class ProjectUpdate extends Component {
           />
         </Page>
 
-        <Page title="Danger Zone" variant={{ marginTop: '2rem' }}>
+        <Page title="Danger Zone">
           <Actions list={destructiveActions} />
         </Page>
       </div>

@@ -8,7 +8,7 @@ const propTypes = {
 
 const Grid = ({ aside, main }) => (
   <div style={{ display: 'grid', gridTemplateColumns: '15rem 1fr' }}>
-    <aside>{aside}</aside>
+    <aside style={{ padding: '2rem', paddingRight: 0 }}>{aside}</aside>
     <main>{main}</main>
   </div>
 )
