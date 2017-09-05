@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import { database } from '../constants/firebase'
 import { sanitize } from '../helpers/utils'
+import Page from '../components/Page'
 import SettingsForm from './SettingsForm'
 
 const propTypes = {
@@ -45,7 +46,13 @@ class Settings extends Component {
     const { authenticated } = this.props
     const { user, status } = this.state
     return authenticated ? status ? (
-      <SettingsForm initialValues={user} onSubmit={this.update} />
+      <Page title="Public Profile">
+        <SettingsForm
+          initialValues={user}
+          onSubmit={this.update}
+          submitButton="Update profile"
+        />
+      </Page>
     ) : null : (
       <Redirect to="/signin" />
     )

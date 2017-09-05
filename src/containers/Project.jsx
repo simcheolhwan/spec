@@ -3,6 +3,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Switch, Route, Link } from 'react-router-dom'
+import Grid from '../components/Grid'
 import ProjectUpdate from './ProjectUpdate'
 
 const propTypes = {
@@ -18,14 +19,19 @@ const Project = ({ project, isOwned, match }) =>
   _.isEmpty(project) ? (
     <article>Not found</article>
   ) : (
-    <article>
-      <h1>{project.title}</h1>
-      {isOwned && <Link to={match.url + '/settings'}>Setting</Link>}
-
-      <Switch>
-        <Route path={match.path + '/settings'} component={ProjectUpdate} />
-      </Switch>
-    </article>
+    <Grid
+      aside={
+        <section>
+          <h1>{project.title}</h1>
+          {isOwned && <Link to={match.url + '/settings'}>Setting</Link>}
+        </section>
+      }
+      main={
+        <Switch>
+          <Route path={match.path + '/settings'} component={ProjectUpdate} />
+        </Switch>
+      }
+    />
   )
 
 Project.propTypes = propTypes

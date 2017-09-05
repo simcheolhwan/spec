@@ -4,10 +4,15 @@ import { Field } from 'redux-form'
 import renderField from './Field'
 
 const propTypes = {
-  fields: PropTypes.object.isRequired
+  fields: PropTypes.object.isRequired,
+  submitButton: PropTypes.string
 }
 
-const Form = ({ fields, ...rest }) => {
+const defaultProps = {
+  submitButton: 'Submit'
+}
+
+const Form = ({ fields, submitButton, ...rest }) => {
   const { pristine, valid, submitting, submitSucceeded } = rest
   const { handleSubmit } = rest
 
@@ -26,7 +31,7 @@ const Form = ({ fields, ...rest }) => {
       ))}
 
       <button type="submit" disabled={pristine || !valid || submitting}>
-        Submit
+        {submitButton}
       </button>
 
       {submitting ? '🔄' : submitSucceeded && '✅'}
@@ -35,5 +40,6 @@ const Form = ({ fields, ...rest }) => {
 }
 
 Form.propTypes = propTypes
+Form.defaultProps = defaultProps
 
 export default Form

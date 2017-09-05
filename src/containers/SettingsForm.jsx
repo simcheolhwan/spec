@@ -1,6 +1,6 @@
 import React from 'react'
 import { reduxForm } from 'redux-form'
-import { sanitize } from '../helpers/utils'
+import { slugify } from '../helpers/utils'
 import Form from '../components/Form'
 
 const fields = {
@@ -8,11 +8,10 @@ const fields = {
   Slug: { type: 'string' }
 }
 
-const validate = values => {
+const validate = ({ name = '', slug = '' }) => {
   const errors = {}
-  const { name, slug } = sanitize(values)
-  errors.name = !name && 'Required'
-  errors.slug = !slug && 'Required'
+  errors.name = !name.trim() && 'Required'
+  errors.slug = !slugify(slug) && 'Required'
   return errors
 }
 

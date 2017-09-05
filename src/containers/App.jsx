@@ -21,10 +21,7 @@ class App extends Component {
     return this.props.app.render ? (
       <Router>
         <div>
-          <aside>
-            <Nav />
-          </aside>
-
+          <Nav />
           <main>{routes}</main>
         </div>
       </Router>

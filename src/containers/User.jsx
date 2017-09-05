@@ -1,53 +1,24 @@
-import React, { Component } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
-import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { Switch, Route } from 'react-router-dom'
-import * as userActions from '../actions/user'
-import Profile from './Profile'
-import Projects from './Projects'
-import Project from './Project'
+import Grid from '../components/Grid'
+import Profile from '../components/Profile'
+import Projects from '../components/Projects'
 
 const propTypes = {
   user: PropTypes.object.isRequired,
-  status: PropTypes.string.isRequired,
-  error: PropTypes.object.isRequired,
-  readUser: PropTypes.func.isRequired
+  projects: PropTypes.object.isRequired
 }
 
-class User extends Component {
-  componentWillMount() {
-    const { user: slug } = this.props.match.params
-    slug !== this.props.user.slug && this.props.readUser(slug)
-  }
-
-  render() {
-    const { user, status, error } = this.props
-    const { path } = this.props.match
-
-    return error.code ? (
-      <article>{error.code}</article>
-    ) : status === 'fetching' ? (
-      <article>Fetching...</article>
-    ) : status === 'done' ? user.uid ? (
-      <article>
-        <Route path={path} exact component={Profile} />
-        <Switch>
-          <Route path={path} exact component={Projects} />
-          <Route path={path + '/:project'} component={Project} />
-        </Switch>
-      </article>
-    ) : (
-      <article>
-        <h1>Not Found</h1>
-      </article>
-    ) : null
-  }
-}
+const User = ({ user, projects }) => (
+  <Grid
+    aside={<Profile {...user} />}
+    main={<Projects user={user} projects={projects} />}
+  />
+)
 
 User.propTypes = propTypes
 
 const mapStateToProps = ({ user }) => user
-const mapDispatchToProps = dispatch => bindActionCreators(userActions, dispatch)
 
-export default connect(mapStateToProps, mapDispatchToProps)(User)
+export default connect(mapStateToProps)(User)
