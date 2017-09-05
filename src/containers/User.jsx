@@ -2,8 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import Grid from '../components/Grid'
-import Profile from './Profile'
-import Projects from './Projects'
+import Profile from '../components/Profile'
+import Projects from '../components/Projects'
 
 const propTypes = {
   user: PropTypes.object.isRequired,

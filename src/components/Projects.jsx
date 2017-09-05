@@ -38,7 +38,7 @@ Projects.propTypes = propTypes
 
 const style = {
   item: {
-    borderBottom: colors.line,
+    borderBottom: `1px solid ${colors.line}`,
     padding: '1rem 0'
   }
 }

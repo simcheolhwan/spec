@@ -20,7 +20,7 @@ const Page = ({ title, variant, children }) => (
       style={{
         borderBottom: `1px solid ${colors.line}`,
         marginBottom: '1rem',
-        paddingBottom: '1rem',
+        paddingBottom: '.5rem',
         ...variant
       }}
     >

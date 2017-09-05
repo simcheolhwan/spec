@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { slugify } from '../helpers/utils'
+import { BOLD } from '../styles'
 
 const propTypes = {
   label: PropTypes.string.isRequired,
@@ -44,7 +45,7 @@ const Field = ({ label, input, meta, type, ...rest }) => {
         }
       >
         {isCheckbox && component}
-        <label htmlFor={name} style={{ fontWeight: 600, userSelect: 'none' }}>
+        <label htmlFor={name} style={{ fontWeight: BOLD, userSelect: 'none' }}>
           {label}
         </label>
       </section>

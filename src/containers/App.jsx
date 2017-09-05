@@ -21,11 +21,8 @@ class App extends Component {
     return this.props.app.render ? (
       <Router>
         <div>
-          <header>
-            <Nav />
-          </header>
-
-          <main style={{ margin: '0 auto', padding: '2rem' }}>{routes}</main>
+          <Nav />
+          <main>{routes}</main>
         </div>
       </Router>
     ) : null
