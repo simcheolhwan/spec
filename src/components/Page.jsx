@@ -15,15 +15,8 @@ const defaultProps = {
 }
 
 const Page = ({ title, variant, children }) => (
-  <article>
-    <header
-      style={{
-        borderBottom: `1px solid ${colors.line}`,
-        marginBottom: '1rem',
-        paddingBottom: '.5rem',
-        ...variant
-      }}
-    >
+  <article style={variant}>
+    <header style={style.header}>
       <h1>{title}</h1>
     </header>
 
@@ -33,5 +26,13 @@ const Page = ({ title, variant, children }) => (
 
 Page.propTypes = propTypes
 Page.defaultProps = defaultProps
+
+const style = {
+  header: {
+    borderBottom: `1px solid ${colors.line}`,
+    marginBottom: '1rem',
+    paddingBottom: '.5rem'
+  }
+}
 
 export default Page

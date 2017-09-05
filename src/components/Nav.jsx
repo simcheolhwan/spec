@@ -16,16 +16,16 @@ const propTypes = {
 const Nav = ({ title, links }) => (
   <nav style={style.Nav}>
     <header>
-      <h1 style={style.Title}>
-        <Link to="/" style={style.Link}>
+      <h1 style={style.title}>
+        <Link to="/" style={style.link}>
           {title}
         </Link>
       </h1>
     </header>
 
-    <section style={style.List}>
+    <section style={style.list}>
       {links.map(({ to, label }) => (
-        <Link to={'/' + to} style={style.Link} key={to}>
+        <Link to={'/' + to} style={style.link} key={to}>
           {label}
         </Link>
       ))}
@@ -43,16 +43,16 @@ const style = {
     padding: '0 1rem'
   },
 
-  Title: {
+  title: {
     fontSize: '1rem'
   },
 
-  List: {
+  list: {
     display: 'flex',
     justifyContent: 'flex-end'
   },
 
-  Link: {
+  link: {
     color: 'hsla(0, 0%, 100%, .75)',
     display: 'block',
     padding: '1rem'
