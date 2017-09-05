@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import { updateProject, deleteProject } from '../actions/project'
 import { sanitize } from '../helpers/utils'
+import Page from '../components/Page'
 import ProjectForm from './ProjectForm'
 
 const propTypes = {
@@ -48,19 +49,49 @@ class ProjectUpdate extends Component {
     const { error } = this.state
 
     return this.props.authenticated ? (
-      <article>
-        <ProjectForm
-          initialValues={project}
-          onSubmit={this.update}
-          errorMessage={error.message}
-        />
+      <div>
+        <Page title="Settings">
+          <ProjectForm
+            initialValues={project}
+            onSubmit={this.update}
+            submitButton="Update project"
+            errorMessage={error.message}
+          />
+        </Page>
 
-        <button onClick={this.close} disabled={project.isClosed}>
-          Close project
-        </button>
+        <Page title="Danger Zone" variant={{ marginTop: '2.5rem' }}>
+          <section style={{ display: 'flex', marginBottom: '1rem' }}>
+            <header style={{ flex: 1 }}>
+              <h3>Make this repository private</h3>
+              <p>Hide this repository from the public.</p>
+            </header>
+            <div style={{ flex: 'none', width: '8rem' }}>
+              <button
+                style={{ width: '100%' }}
+                onClick={this.close}
+                disabled={project.isClosed}
+              >
+                Close project
+              </button>
+            </div>
+          </section>
 
-        <button onClick={this.delete}>Delete project</button>
-      </article>
+          <section style={{ display: 'flex' }}>
+            <header style={{ flex: 1 }}>
+              <h3>Delete this repository</h3>
+              <p>
+                Once you delete a repository, there is no going back. Please be
+                certain.
+              </p>
+            </header>
+            <div style={{ flex: 'none', width: '8rem' }}>
+              <button style={{ width: '100%' }} onClick={this.delete}>
+                Delete project
+              </button>
+            </div>
+          </section>
+        </Page>
+      </div>
     ) : (
       <Redirect to="/signin" />
     )

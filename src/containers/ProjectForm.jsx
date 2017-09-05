@@ -1,6 +1,6 @@
 import React from 'react'
 import { reduxForm } from 'redux-form'
-import { sanitize } from '../helpers/utils'
+import { slugify } from '../helpers/utils'
 import Form from '../components/Form'
 
 const fields = {
@@ -9,11 +9,10 @@ const fields = {
   Private: { type: 'checkbox', name: 'isPrivate' }
 }
 
-const validate = values => {
+const validate = ({ title = '', slug = '' }) => {
   const errors = {}
-  const { title, slug } = sanitize(values)
-  errors.title = !title && 'Required'
-  errors.slug = !slug && 'Required'
+  errors.title = !title.trim() && 'Required'
+  errors.slug = !slugify(slug) && 'Required'
   return errors
 }
 

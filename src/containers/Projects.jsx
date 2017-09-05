@@ -1,7 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { colors } from '../styles'
+import Page from '../components/Page'
 
 const propTypes = {
   user: PropTypes.object.isRequired,
@@ -9,23 +10,37 @@ const propTypes = {
 }
 
 const Projects = ({ user, projects }) => {
-  return projects.order ? (
-    <ul>
-      {projects.order.map(key => (
-        <li key={key}>
-          <Link to={`/${user.slug}/${projects.list[key].slug}`}>
-            {projects.list[key].title}
-          </Link>
-        </li>
-      ))}
-    </ul>
-  ) : (
-    <p>No Projects</p>
+  return (
+    <Page title="Projects">
+      {projects.order ? (
+        <ul style={{ listStyle: 'none', padding: 0 }}>
+          {projects.order.map(key => (
+            <li style={style.item} key={key}>
+              <h2>
+                <Link to={`/${user.slug}/${projects.list[key].slug}`}>
+                  {projects.list[key].title}
+                </Link>
+              </h2>
+              <p>
+                <code>{projects.list[key].slug}</code>
+              </p>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p>No Projects</p>
+      )}
+    </Page>
   )
 }
 
 Projects.propTypes = propTypes
 
-const mapStateToProps = ({ user }) => user
+const style = {
+  item: {
+    borderBottom: colors.line,
+    padding: '1rem 0'
+  }
+}
 
-export default connect(mapStateToProps)(Projects)
+export default Projects

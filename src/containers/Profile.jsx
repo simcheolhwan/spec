@@ -1,6 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
 
 const propTypes = {
   name: PropTypes.string,
@@ -31,6 +30,4 @@ const Profile = ({ name, slug }) => (
 Profile.propTypes = propTypes
 Profile.defaultProps = defaultProps
 
-const mapStateToProps = ({ user }) => user.user
-
-export default connect(mapStateToProps)(Profile)
+export default Profile

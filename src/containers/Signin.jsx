@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import * as authActions from '../actions/auth'
 import { sanitize } from '../helpers/utils'
+import Page from '../components/Page'
 import SigninForm from './SigninForm'
 
 const propTypes = {
@@ -18,10 +19,13 @@ const Signin = ({ authenticated, status, error, signin }) =>
   authenticated ? (
     <Redirect to="/" />
   ) : (
-    <SigninForm
-      onSubmit={user => signin(sanitize(user))}
-      errorMessage={error.message}
-    />
+    <Page title="Sign in">
+      <SigninForm
+        onSubmit={user => signin(sanitize(user))}
+        submitButton="Sign in"
+        errorMessage={error.message}
+      />
+    </Page>
   )
 
 Signin.propTypes = propTypes
