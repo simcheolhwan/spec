@@ -8,7 +8,7 @@ export const fetchProjects = uid => dispatch =>
     .once('value', snap =>
       dispatch({ type: types.FETCH_PROJECTS, projects: snap.val() || {} })
     )
-    .catch(error => dispatch({ type: types.APP_ERROR, error }))
+    .catch(error => false)
 
 export const createProject = project => (dispatch, getState) => {
   const key = uuidv4()
