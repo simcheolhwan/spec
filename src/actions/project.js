@@ -1,12 +1,19 @@
 import uuidv4 from 'uuid/v4'
-import types from '../constants/actions'
 import { database } from '../constants/firebase'
+
+export const types = {
+  INIT: 'PROJECTS/INIT',
+  FETCH: 'PROJECTS/FETCH',
+  CREATE: 'PROJECT/CREATE',
+  UPDATE: 'PROJECT/UPDATE',
+  DELETE: 'PROJECT/DELETE'
+}
 
 export const fetchProjects = uid => dispatch =>
   database
     .ref(`/projects/${uid}`)
     .once('value', snap =>
-      dispatch({ type: types.FETCH_PROJECTS, projects: snap.val() || {} })
+      dispatch({ type: types.FETCH, projects: snap.val() || {} })
     )
     .catch(error => false)
 
@@ -15,7 +22,7 @@ export const createProject = project => (dispatch, getState) => {
   const { user } = getState().auth
 
   dispatch({
-    type: types.CREATE_PROJECT,
+    type: types.CREATE,
     key,
     project: { ...project, isSyncing: true }
   })
@@ -28,14 +35,14 @@ export const createProject = project => (dispatch, getState) => {
     })
     .then(() =>
       dispatch({
-        type: types.UPDATE_PROJECT,
+        type: types.UPDATE,
         key,
         updates: { isSyncing: false }
       })
     )
     .catch(error =>
       dispatch({
-        type: types.DELETE_PROJECT,
+        type: types.DELETE,
         key
       })
     )
@@ -46,7 +53,7 @@ export const updateProject = (key, updates) => (dispatch, getState) => {
   const project = getState().projects.list[key]
 
   dispatch({
-    type: types.UPDATE_PROJECT,
+    type: types.UPDATE,
     key,
     updates: { ...updates, isSyncing: true }
   })
@@ -56,14 +63,14 @@ export const updateProject = (key, updates) => (dispatch, getState) => {
     .update(updates)
     .then(() =>
       dispatch({
-        type: types.UPDATE_PROJECT,
+        type: types.UPDATE,
         key,
         updates: { isSyncing: false }
       })
     )
     .catch(error =>
       dispatch({
-        type: types.UPDATE_PROJECT,
+        type: types.UPDATE,
         key,
         updates: { ...project, isSyncing: false }
       })
@@ -75,7 +82,7 @@ export const deleteProject = key => (dispatch, getState) => {
   const project = getState().projects.list[key]
 
   dispatch({
-    type: types.DELETE_PROJECT,
+    type: types.DELETE,
     key
   })
 
@@ -87,7 +94,7 @@ export const deleteProject = key => (dispatch, getState) => {
     })
     .catch(error =>
       dispatch({
-        type: types.CREATE_PROJECT,
+        type: types.CREATE,
         key,
         project
       })
