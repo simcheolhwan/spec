@@ -1,41 +1,33 @@
 import { combineReducers } from 'redux'
-import types from '../constants/actions'
+import { types } from '../actions/auth'
 
 const authenticated = (state = false, action) => {
   switch (action.type) {
-    case types.SIGN_IN:
-      return true
-
-    case types.SIGN_OUT:
-      return false
+    case types.AUTH:
+      return action.authenticated
 
     default:
       return state
   }
 }
 
-const initial = { uid: '', name: '', slug: '' }
-const user = (state = initial, action) => {
+const user = (state = {}, action) => {
   switch (action.type) {
-    case types.SIGN_IN:
-    case types.FETCH_USER:
+    case types.AUTH:
+      return action.authenticated ? action.user : {}
+
+    case types.USER:
       return { ...state, ...action.user }
 
-    case types.SIGN_OUT:
-      return initial
-
     default:
       return state
   }
 }
 
-const status = (state = '', action) => {
+const state = (state = 'idle', action) => {
   switch (action.type) {
-    case types.AUTH_REQUEST:
-      return 'submitting'
-
-    case types.SIGN_IN:
-      return ''
+    case types.AUTH:
+      return action.authenticated ? 'idle' : 'auth'
 
     default:
       return state
@@ -44,9 +36,8 @@ const status = (state = '', action) => {
 
 const error = (state = {}, action) => {
   switch (action.type) {
-    case types.SIGN_IN:
-    case types.SIGN_OUT:
-    case types.FETCH_USER:
+    case types.AUTH:
+    case types.USER:
       return {}
 
     case types.AUTH_ERROR:
@@ -57,4 +48,4 @@ const error = (state = {}, action) => {
   }
 }
 
-export default combineReducers({ authenticated, user, status, error })
+export default combineReducers({ authenticated, user, state, error })

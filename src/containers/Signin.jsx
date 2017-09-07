@@ -10,12 +10,12 @@ import SigninForm from './SigninForm'
 
 const propTypes = {
   authenticated: PropTypes.bool.isRequired,
-  status: PropTypes.string.isRequired,
+  state: PropTypes.string.isRequired,
   error: PropTypes.object.isRequired,
   signin: PropTypes.func.isRequired
 }
 
-const Signin = ({ authenticated, status, error, signin }) =>
+const Signin = ({ authenticated, state, error, signin }) =>
   authenticated ? (
     <Redirect to="/" />
   ) : (

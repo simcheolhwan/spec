@@ -1,15 +1,6 @@
 import keyMirror from 'keymirror'
 
 export default keyMirror({
-  APP_RENDER: null,
-  APP_ERROR: null,
-
-  SIGN_IN: null,
-  SIGN_OUT: null,
-  FETCH_USER: null,
-  AUTH_REQUEST: null,
-  AUTH_ERROR: null,
-
   READ_USER: null,
   READ_PROJECTS: null,
   USER_STATUS: null,
