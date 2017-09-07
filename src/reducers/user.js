@@ -1,22 +1,47 @@
-import types from '../constants/actions'
+import { combineReducers } from 'redux'
+import { types } from '../actions/user'
 
-const initial = { user: {}, projects: {}, status: '', error: {} }
-
-export default (state = initial, action) => {
+const user = (state = {}, action) => {
   switch (action.type) {
-    case types.READ_USER:
-      return { ...state, user: action.user }
-
-    case types.READ_PROJECTS:
-      return { ...state, projects: action.projects }
-
-    case types.USER_STATUS:
-      return { ...state, status: action.status }
-
-    case types.USER_ERROR:
-      return { ...state, error: action.error, status: 'error' }
+    case types.READ:
+      return action.user
 
     default:
       return state
   }
 }
+
+const projects = (state = {}, action) => {
+  switch (action.type) {
+    case types.PROJECTS:
+      return action.projects
+
+    default:
+      return state
+  }
+}
+
+const state = (state = 'idle', action) => {
+  switch (action.type) {
+    case types.PROJECTS:
+      return 'projects'
+
+    default:
+      return state
+  }
+}
+
+const error = (state = {}, action) => {
+  switch (action.type) {
+    case types.READ:
+      return {}
+
+    case types.ERROR:
+      return action.error
+
+    default:
+      return state
+  }
+}
+
+export default combineReducers({ user, projects, state, error })

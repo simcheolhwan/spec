@@ -9,7 +9,7 @@ import Project from './Project'
 
 const propTypes = {
   user: PropTypes.object.isRequired,
-  status: PropTypes.string.isRequired,
+  state: PropTypes.string.isRequired,
   error: PropTypes.object.isRequired,
   readUser: PropTypes.func.isRequired
 }
@@ -21,23 +21,25 @@ class UserContainer extends Component {
   }
 
   render() {
-    const { user, status, error } = this.props
+    const { user, state, error } = this.props
     const { path } = this.props.match
 
-    return error.code ? (
-      <article>{error.code}</article>
-    ) : status === 'fetching' ? (
-      <article>Fetching...</article>
-    ) : status === 'done' ? user.uid ? (
-      <Switch>
-        <Route path={path} exact component={User} />
-        <Route path={path + '/:project'} component={Project} />
-      </Switch>
-    ) : (
-      <article>
-        <h1>Not Found</h1>
-      </article>
-    ) : null
+    const ui = {
+      idle: <article>Fetching...</article>,
+      projects: user.uid ? (
+        <Switch>
+          <Route path={path} exact component={User} />
+          <Route path={path + '/:project'} component={Project} />
+        </Switch>
+      ) : (
+        <article>
+          <h1>Not Found</h1>
+        </article>
+      ),
+      error: <article>{error.code}</article>
+    }
+
+    return ui[state]
   }
 }
 
