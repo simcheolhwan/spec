@@ -8,35 +8,37 @@ import User from './User'
 import Project from './Project'
 
 const propTypes = {
-  user: PropTypes.object.isRequired,
-  state: PropTypes.string.isRequired,
-  error: PropTypes.object.isRequired,
+  state: PropTypes.oneOf(['idle', 'projects', 404]),
+  read: PropTypes.bool,
   readUser: PropTypes.func.isRequired
 }
 
+const defaultProps = {
+  read: false
+}
+
 class UserContainer extends Component {
-  componentWillMount() {
-    const { user: slug } = this.props.match.params
-    slug !== this.props.user.slug && this.props.readUser(slug)
+  componentWillReceiveProps(nextProps) {
+    const { read, readUser, match } = nextProps
+    read && readUser(match.params.user)
   }
 
   render() {
-    const { user, state, error } = this.props
-    const { path } = this.props.match
+    const { state, match: { path } } = this.props
 
     const ui = {
       idle: <article>Fetching...</article>,
-      projects: user.uid ? (
+      projects: (
         <Switch>
           <Route path={path} exact component={User} />
           <Route path={path + '/:project'} component={Project} />
         </Switch>
-      ) : (
+      ),
+      404: (
         <article>
           <h1>Not Found</h1>
         </article>
-      ),
-      error: <article>{error.code}</article>
+      )
     }
 
     return ui[state]
@@ -44,8 +46,37 @@ class UserContainer extends Component {
 }
 
 UserContainer.propTypes = propTypes
+UserContainer.defaultProps = defaultProps
 
-const mapStateToProps = ({ user }) => user
+const mapStateToProps = ({ auth, projects, user }, ownProps) => {
+  const { user: slug } = ownProps.match.params
+
+  const stateByUser = {
+    idle: { state: 'idle', read: true },
+    404: { state: 404 },
+    projects:
+      slug === user.user.slug
+        ? { state: 'projects' }
+        : { state: 'idle', read: true }
+  }
+
+  const stateByProjects = {
+    idle: { state: 'idle' },
+    projects: { state: 'projects' }
+  }
+
+  const state = {
+    idle: { state: 'idle' },
+    auth: stateByUser[user.state],
+    user:
+      slug === auth.user.slug
+        ? stateByProjects[projects.state]
+        : stateByUser[user.state]
+  }
+
+  return state[auth.state]
+}
+
 const mapDispatchToProps = dispatch => bindActionCreators(userActions, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserContainer)

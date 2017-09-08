@@ -23,6 +23,9 @@ const projects = (state = {}, action) => {
 
 const state = (state = 'idle', action) => {
   switch (action.type) {
+    case types.READ:
+      return action.user.uid ? 'idle' : 404
+
     case types.PROJECTS:
       return 'projects'
 

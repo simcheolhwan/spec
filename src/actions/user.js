@@ -13,9 +13,9 @@ export const readUser = slug => dispatch => {
     .once('value', snap => {
       const users = snap.val()
       const uid = _.findKey(users, ['slug', slug])
-      const user = uid ? { ...users[uid], uid } : null
+      const user = uid ? { ...users[uid], uid } : {}
       dispatch({ type: types.READ, user })
-      dispatch(readProjects(uid))
+      uid && dispatch(readProjects(uid))
     })
     .catch(error => dispatch({ type: types.ERROR, error }))
 }
