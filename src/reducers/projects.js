@@ -1,20 +1,23 @@
 import _ from 'lodash'
 import { combineReducers } from 'redux'
-import types from '../constants/actions'
+import { types } from '../actions/project'
 import dotProp from 'dot-prop-immutable'
 
 const list = (state = {}, action) => {
   switch (action.type) {
-    case types.FETCH_PROJECTS:
+    case types.INIT:
+      return {}
+
+    case types.FETCH:
       return action.projects.list || {}
 
-    case types.CREATE_PROJECT:
+    case types.CREATE:
       return dotProp.set(state, action.key, action.project)
 
-    case types.UPDATE_PROJECT:
+    case types.UPDATE:
       return dotProp.merge(state, action.key, action.updates)
 
-    case types.DELETE_PROJECT:
+    case types.DELETE:
       return dotProp.delete(state, action.key)
 
     default:
@@ -24,13 +27,16 @@ const list = (state = {}, action) => {
 
 const order = (state = [], action) => {
   switch (action.type) {
-    case types.FETCH_PROJECTS:
+    case types.INIT:
+      return []
+
+    case types.FETCH:
       return action.projects.order || []
 
-    case types.CREATE_PROJECT:
+    case types.CREATE:
       return [...state, action.key]
 
-    case types.DELETE_PROJECT:
+    case types.DELETE:
       return _.without(state, action.key)
 
     default:
@@ -38,4 +44,17 @@ const order = (state = [], action) => {
   }
 }
 
-export default combineReducers({ list, order })
+const state = (state = 'idle', action) => {
+  switch (action.type) {
+    case types.INIT:
+      return 'idle'
+
+    case types.FETCH:
+      return 'projects'
+
+    default:
+      return state
+  }
+}
+
+export default combineReducers({ list, order, state })
