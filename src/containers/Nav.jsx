@@ -4,13 +4,14 @@ import Nav from '../components/Nav'
 const mapStateToProps = ({ auth, projects }) => {
   const states = {
     idle: auth.state,
-    projects: projects.state
+    projects: 'projects'
   }
 
   const state = states[projects.state]
 
   const links = {
     idle: [],
+    user: [],
     auth: [{ to: 'signin', label: 'Sign in' }],
     projects: [
       { to: 'new', label: 'New project' },

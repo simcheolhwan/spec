@@ -29,6 +29,9 @@ const state = (state = 'idle', action) => {
     case types.AUTH:
       return action.authenticated ? 'idle' : 'auth'
 
+    case types.USER:
+      return 'user'
+
     default:
       return state
   }
