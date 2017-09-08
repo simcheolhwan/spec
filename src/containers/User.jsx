@@ -19,6 +19,9 @@ const User = ({ user, projects }) => (
 
 User.propTypes = propTypes
 
-const mapStateToProps = ({ user }) => user
+const mapStateToProps = ({ auth, projects, user }, ownProps) =>
+  ownProps.match.params.user === auth.user.slug
+    ? { user: auth.user, projects }
+    : user
 
 export default connect(mapStateToProps)(User)
