@@ -1,66 +1,41 @@
-import React, { Component } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
-import { database } from '../constants/firebase'
+import { updateUser } from '../actions/auth'
 import { sanitize } from '../helpers/utils'
 import Page from '../components/Page'
 import SettingsForm from './SettingsForm'
 
 const propTypes = {
-  authenticated: PropTypes.bool.isRequired,
-  user: PropTypes.object.isRequired
+  user: PropTypes.object.isRequired,
+  state: PropTypes.oneOf(['idle', 'auth', 'user']).isRequired,
+  onUpdate: PropTypes.func.isRequired
 }
 
-class Settings extends Component {
-  constructor(props) {
-    super(props)
-    this.state = { user: {}, status: '', error: {} }
-    this.update = this.update.bind(this)
-  }
-
-  componentWillMount() {
-    this.getUser(this.props.user.uid)
-  }
-
-  getUser(uid) {
-    database
-      .ref(`/users/${uid}`)
-      .once('value', snap =>
-        this.setState({ user: snap.val(), status: 'fetched' })
-      )
-      .catch(error => this.setState({ status: 'error', error }))
-  }
-
-  update(user) {
-    this.setState({ status: 'submitting' }, () =>
-      database
-        .ref(`/users/${user.uid}`)
-        .set(sanitize(user))
-        .then(() => this.setState({ status: 'done' }))
-        .catch(error => this.setState({ status: 'error', error }))
-    )
-  }
-
-  render() {
-    const { authenticated } = this.props
-    const { user, status } = this.state
-    return authenticated ? status ? (
+const Settings = ({ user, state, onUpdate }) => {
+  const ui = {
+    idle: null,
+    auth: <Redirect to="/signin" />,
+    user: (
       <Page title="Public Profile">
         <SettingsForm
           initialValues={user}
-          onSubmit={this.update}
+          onSubmit={updates => onUpdate(user.uid, sanitize(updates))}
           submitButton="Update profile"
         />
       </Page>
-    ) : null : (
-      <Redirect to="/signin" />
     )
   }
+
+  return ui[state]
 }
 
 Settings.propTypes = propTypes
 
 const mapStateToProps = ({ auth }) => auth
+const mapDispatchToProps = dispatch => ({
+  onUpdate: (uid, updates) => dispatch(updateUser(uid, updates))
+})
 
-export default connect(mapStateToProps)(Settings)
+export default connect(mapStateToProps, mapDispatchToProps)(Settings)

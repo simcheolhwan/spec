@@ -4,6 +4,7 @@ import { types as projects, fetchProjects } from './project'
 export const types = {
   AUTH: 'AUTH',
   USER: 'AUTH/USER',
+  UPDATE: 'AUTH/USER/UPDATE',
   ERROR: 'AUTH/ERROR'
 }
 
@@ -39,4 +40,11 @@ const fetchUser = uid => dispatch =>
       dispatch({ type: types.USER, user: snap.val() || {} })
       dispatch(fetchProjects(uid))
     })
+    .catch(error => dispatch({ type: types.ERROR, error }))
+
+export const updateUser = (uid, updates) => dispatch =>
+  database
+    .ref(`/users/${uid}`)
+    .set(updates)
+    .then(() => dispatch({ type: types.USER, user: updates }))
     .catch(error => dispatch({ type: types.ERROR, error }))
