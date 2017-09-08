@@ -2,10 +2,10 @@ import { auth, database } from '../constants/firebase'
 import { types as projects, fetchProjects } from './project'
 
 export const types = {
-  AUTH: 'AUTH',
-  USER: 'AUTH/USER',
-  UPDATE: 'AUTH/USER/UPDATE',
-  ERROR: 'AUTH/ERROR'
+  AUTH: '~/auth',
+  USER: '~/auth/user',
+  UPDATE: '~/auth/user/update',
+  ERROR: '~/auth/error'
 }
 
 export const checkAuth = () => dispatch =>

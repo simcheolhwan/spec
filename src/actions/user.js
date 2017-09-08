@@ -2,9 +2,9 @@ import _ from 'lodash'
 import { database } from '../constants/firebase'
 
 export const types = {
-  READ: 'USER/READ',
-  PROJECTS: 'USER/PROJECTS',
-  ERROR: 'USER/READ/ERROR'
+  READ: '~/user/read',
+  PROJECTS: '~/user/projects',
+  ERROR: '~/user/read/error'
 }
 
 export const readUser = slug => dispatch => {

@@ -2,11 +2,11 @@ import uuidv4 from 'uuid/v4'
 import { database } from '../constants/firebase'
 
 export const types = {
-  INIT: 'PROJECTS/INIT',
-  FETCH: 'PROJECTS/FETCH',
-  CREATE: 'PROJECT/CREATE',
-  UPDATE: 'PROJECT/UPDATE',
-  DELETE: 'PROJECT/DELETE'
+  INIT: '~/projects/init',
+  FETCH: '~/projects/fetch',
+  CREATE: '~/project/create',
+  UPDATE: '~/project/update',
+  DELETE: '~/project/delete'
 }
 
 export const fetchProjects = uid => dispatch =>
