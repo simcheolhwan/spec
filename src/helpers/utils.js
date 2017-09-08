@@ -1,3 +1,5 @@
+import _ from 'lodash'
+
 export const slugify = (string = '') =>
   string
     .trim()
@@ -17,4 +19,12 @@ export const sanitize = values => {
     name && { name: name.trim() },
     slug && { slug: slugify(slug) }
   )
+}
+
+export const getProject = ({ auth, projects, user }, props) => {
+  const { user: slug, project } = props.match.params
+  const isOwned = slug === auth.user.slug
+  const { list } = isOwned ? projects : user.projects
+  const projectKey = _.findKey(list, ['slug', project])
+  return { isOwned, projectKey, project: list[projectKey] }
 }

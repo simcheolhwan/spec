@@ -3,6 +3,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Switch, Route, Link } from 'react-router-dom'
+import { getProject } from '../helpers/utils'
 import Grid from '../components/Grid'
 import ProjectUpdate from './ProjectUpdate'
 
@@ -37,15 +38,6 @@ const Project = ({ project, isOwned, match }) =>
 Project.propTypes = propTypes
 Project.defaultProps = defaultProps
 
-const mapStateToProps = ({ auth, projects, user }, ownProps) => {
-  const { user: slug, project } = ownProps.match.params
-  const isOwned = slug === auth.user.slug
-  const { list } = isOwned ? projects : user.projects
-
-  return {
-    project: _.find(list, ['slug', project]),
-    isOwned
-  }
-}
+const mapStateToProps = (state, ownProps) => getProject(state, ownProps)
 
 export default connect(mapStateToProps)(Project)

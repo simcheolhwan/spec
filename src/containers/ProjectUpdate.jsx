@@ -1,10 +1,9 @@
-import _ from 'lodash'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import { updateProject, deleteProject } from '../actions/project'
-import { sanitize } from '../helpers/utils'
+import { getProject, sanitize } from '../helpers/utils'
 import Page from '../components/Page'
 import Actions from '../components/Actions'
 import ProjectForm from './ProjectForm'
@@ -106,18 +105,10 @@ class ProjectUpdate extends Component {
 
 ProjectUpdate.propTypes = propTypes
 
-const mapStateToProps = ({ auth, projects, user }, ownProps) => {
-  const { user: slug, project } = ownProps.match.params
-  const isOwned = slug === auth.user.slug
-  const { list } = isOwned ? projects : user.projects
-  const key = _.findKey(list, ['slug', project])
-
-  return {
-    authenticated: auth.authenticated,
-    projectKey: key,
-    project: list[key]
-  }
-}
+const mapStateToProps = (state, ownProps) => ({
+  authenticated: state.auth.authenticated,
+  ...getProject(state, ownProps)
+})
 
 const mapDispatchToProps = dispatch => ({
   onUpdate: (key, updates) => dispatch(updateProject(key, updates)),
