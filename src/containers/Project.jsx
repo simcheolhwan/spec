@@ -37,9 +37,15 @@ const Project = ({ project, isOwned, match }) =>
 Project.propTypes = propTypes
 Project.defaultProps = defaultProps
 
-const mapStateToProps = ({ auth, user }, ownProps) => ({
-  project: _.find(user.projects.list, ['slug', ownProps.match.params.project]),
-  isOwned: auth.user.uid === user.user.uid
-})
+const mapStateToProps = ({ auth, projects, user }, ownProps) => {
+  const { user: slug, project } = ownProps.match.params
+  const isOwned = slug === auth.user.slug
+  const { list } = isOwned ? projects : user.projects
+
+  return {
+    project: _.find(list, ['slug', project]),
+    isOwned
+  }
+}
 
 export default connect(mapStateToProps)(Project)

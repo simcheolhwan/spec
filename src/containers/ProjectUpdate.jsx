@@ -106,14 +106,16 @@ class ProjectUpdate extends Component {
 
 ProjectUpdate.propTypes = propTypes
 
-const mapStateToProps = ({ auth, user }, ownProps) => {
-  const slug = ownProps.match.params.project
-  const key = _.findKey(user.projects.list, ['slug', slug])
+const mapStateToProps = ({ auth, projects, user }, ownProps) => {
+  const { user: slug, project } = ownProps.match.params
+  const isOwned = slug === auth.user.slug
+  const { list } = isOwned ? projects : user.projects
+  const key = _.findKey(list, ['slug', project])
 
   return {
     authenticated: auth.authenticated,
     projectKey: key,
-    project: user.projects.list[key]
+    project: list[key]
   }
 }
 
