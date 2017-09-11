@@ -23,7 +23,9 @@ const Project = ({ project, isOwned, match }) =>
     <Grid
       aside={
         <nav>
-          <h1>{project.title}</h1>
+          <h1>
+            <Link to={match.url}>{project.title}</Link>
+          </h1>
           {isOwned && <Link to={match.url + '/settings'}>Setting</Link>}
         </nav>
       }

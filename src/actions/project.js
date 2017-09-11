@@ -1,5 +1,5 @@
 import uuidv4 from 'uuid/v4'
-import { push } from 'react-router-redux'
+import { push, replace } from 'react-router-redux'
 import { database } from '../constants/firebase'
 
 export const types = {
@@ -59,7 +59,7 @@ export const updateProject = (key, updates) => (dispatch, getState) => {
     key,
     project: { ...updates, isSyncing: true }
   })
-  updates.slug && dispatch(push(`/${user.slug}/${updates.slug}/settings`))
+  updates.slug && dispatch(replace(`/${user.slug}/${updates.slug}/settings`))
 
   database
     .ref(`/projects/${user.uid}/list/${key}`)
@@ -74,7 +74,8 @@ export const updateProject = (key, updates) => (dispatch, getState) => {
     .catch(error => {
       dispatch({ type: types.UPDATE, key, project })
       dispatch({ type: types.ERROR, error })
-      updates.slug && dispatch(push(`/${user.slug}/${project.slug}/settings`))
+      updates.slug &&
+        dispatch(replace(`/${user.slug}/${project.slug}/settings`))
     })
 }
 
