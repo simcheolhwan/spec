@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { BrowserRouter as Router } from 'react-router-dom'
-import * as authActions from '../actions/auth'
+import { checkAuth } from '../actions/auth'
 import routes from '../routes'
 import Nav from './Nav'
 
@@ -30,6 +30,7 @@ class App extends Component {
 
 App.propTypes = propTypes
 
-const mapDispatchToProps = dispatch => bindActionCreators(authActions, dispatch)
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({ checkAuth }, dispatch)
 
 export default connect(null, mapDispatchToProps)(App)

@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import { updateProject, deleteProject } from '../actions/project'
@@ -13,12 +14,12 @@ const propTypes = {
   projectKey: PropTypes.string.isRequired,
   project: PropTypes.object.isRequired,
   error: PropTypes.object.isRequired,
-  onUpdate: PropTypes.func.isRequired,
-  onDelete: PropTypes.func.isRequired
+  updateProject: PropTypes.func.isRequired,
+  deleteProject: PropTypes.func.isRequired
 }
 
 const ProjectUpdate = ({ state, projectKey, project, error, ...rest }) => {
-  const { onUpdate, onDelete } = rest
+  const { updateProject, deleteProject } = rest
 
   const destructiveActions = [
     {
@@ -27,11 +28,11 @@ const ProjectUpdate = ({ state, projectKey, project, error, ...rest }) => {
       button: project.isClosed
         ? {
             label: 'Reopen project',
-            action: () => onUpdate(projectKey, { isClosed: false })
+            action: () => updateProject(projectKey, { isClosed: false })
           }
         : {
             label: 'Close project',
-            action: () => onUpdate(projectKey, { isClosed: true })
+            action: () => updateProject(projectKey, { isClosed: true })
           }
     },
     {
@@ -41,7 +42,7 @@ const ProjectUpdate = ({ state, projectKey, project, error, ...rest }) => {
         'Please be certain.',
       button: {
         label: 'Delete project',
-        action: () => onDelete(projectKey)
+        action: () => deleteProject(projectKey)
       }
     }
   ]
@@ -54,7 +55,7 @@ const ProjectUpdate = ({ state, projectKey, project, error, ...rest }) => {
         <Page title="Settings">
           <ProjectForm
             initialValues={project}
-            onSubmit={updates => onUpdate(projectKey, sanitize(updates))}
+            onSubmit={updates => updateProject(projectKey, sanitize(updates))}
             submitButton="Update project"
             errorMessage={error.message}
           />
@@ -78,9 +79,7 @@ const mapStateToProps = (state, ownProps) => ({
   ...getProject(state, ownProps)
 })
 
-const mapDispatchToProps = dispatch => ({
-  onUpdate: (key, updates) => dispatch(updateProject(key, updates)),
-  onDelete: key => dispatch(deleteProject(key))
-})
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({ updateProject, deleteProject }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectUpdate)

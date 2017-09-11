@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import { createProject } from '../actions/project'
@@ -10,17 +11,17 @@ import ProjectForm from './ProjectForm'
 const propTypes = {
   state: PropTypes.oneOf(['idle', 'auth', 'user']).isRequired,
   error: PropTypes.object.isRequired,
-  onCreate: PropTypes.func.isRequired
+  createProject: PropTypes.func.isRequired
 }
 
-const ProjectCreate = ({ state, error, onCreate }) => {
+const ProjectCreate = ({ state, error, createProject }) => {
   const ui = {
     idle: null,
     auth: <Redirect to="/signin" />,
     user: (
       <Page title="Create a new project">
         <ProjectForm
-          onSubmit={project => onCreate(sanitize(project))}
+          onSubmit={project => createProject(sanitize(project))}
           submitButton="Create project"
           errorMessage={error.message}
         />
@@ -38,8 +39,7 @@ const mapStateToProps = ({ auth, projects }) => ({
   error: projects.error
 })
 
-const mapDispatchToProps = dispatch => ({
-  onCreate: project => dispatch(createProject(project))
-})
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({ createProject }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectCreate)

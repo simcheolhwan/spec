@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
-import * as authActions from '../actions/auth'
+import { signout } from '../actions/auth'
 
 const propTypes = {
   signout: PropTypes.func.isRequired
@@ -21,6 +21,6 @@ class Signout extends Component {
 
 Signout.propTypes = propTypes
 
-const mapDispatchToProps = dispatch => bindActionCreators(authActions, dispatch)
+const mapDispatchToProps = dispatch => bindActionCreators({ signout }, dispatch)
 
 export default connect(null, mapDispatchToProps)(Signout)

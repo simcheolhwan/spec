@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
-import * as authActions from '../actions/auth'
+import { signin } from '../actions/auth'
 import { sanitize } from '../helpers/utils'
 import Page from '../components/Page'
 import SigninForm from './SigninForm'
@@ -35,6 +35,6 @@ const Signin = ({ state, error, signin }) => {
 Signin.propTypes = propTypes
 
 const mapStateToProps = ({ auth }) => auth
-const mapDispatchToProps = dispatch => bindActionCreators(authActions, dispatch)
+const mapDispatchToProps = dispatch => bindActionCreators({ signin }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(Signin)
