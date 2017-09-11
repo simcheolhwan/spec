@@ -43,7 +43,7 @@ const error = (state = {}, action) => {
     case types.USER:
       return {}
 
-    case types.AUTH_ERROR:
+    case types.ERROR:
       return action.error
 
     default:

@@ -6,7 +6,8 @@ export const types = {
   FETCH: '~/projects/fetch',
   CREATE: '~/project/create',
   UPDATE: '~/project/update',
-  DELETE: '~/project/delete'
+  DELETE: '~/project/delete',
+  ERROR: '~/project/error'
 }
 
 export const fetchProjects = uid => dispatch =>
@@ -15,7 +16,7 @@ export const fetchProjects = uid => dispatch =>
     .once('value', snap =>
       dispatch({ type: types.FETCH, projects: snap.val() || {} })
     )
-    .catch(error => false)
+    .catch(error => dispatch({ type: types.ERROR, error }))
 
 export const createProject = project => (dispatch, getState) => {
   const key = uuidv4()
@@ -34,18 +35,12 @@ export const createProject = project => (dispatch, getState) => {
       [`/order`]: getState().projects.order
     })
     .then(() =>
-      dispatch({
-        type: types.UPDATE,
-        key,
-        updates: { isSyncing: false }
-      })
+      dispatch({ type: types.UPDATE, key, updates: { isSyncing: false } })
     )
-    .catch(error =>
-      dispatch({
-        type: types.DELETE,
-        key
-      })
-    )
+    .catch(error => {
+      dispatch({ type: types.DELETE, key })
+      dispatch({ type: types.ERROR, error })
+    })
 }
 
 export const updateProject = (key, updates) => (dispatch, getState) => {
@@ -62,29 +57,20 @@ export const updateProject = (key, updates) => (dispatch, getState) => {
     .ref(`/projects/${uid}/list/${key}`)
     .update(updates)
     .then(() =>
-      dispatch({
-        type: types.UPDATE,
-        key,
-        updates: { isSyncing: false }
-      })
+      dispatch({ type: types.UPDATE, key, updates: { isSyncing: false } })
     )
-    .catch(error =>
-      dispatch({
-        type: types.UPDATE,
-        key,
-        updates: { ...project, isSyncing: false }
-      })
-    )
+    .catch(error => {
+      const updates = { ...project, isSyncing: false }
+      dispatch({ type: types.UPDATE, key, updates })
+      dispatch({ type: types.ERROR, error })
+    })
 }
 
 export const deleteProject = key => (dispatch, getState) => {
   const { uid } = getState().auth.user
   const project = getState().projects.list[key]
 
-  dispatch({
-    type: types.DELETE,
-    key
-  })
+  dispatch({ type: types.DELETE, key })
 
   database
     .ref(`/projects/${uid}`)
@@ -92,11 +78,8 @@ export const deleteProject = key => (dispatch, getState) => {
       [`/list/${key}`]: null,
       [`/order`]: getState().projects.order
     })
-    .catch(error =>
-      dispatch({
-        type: types.CREATE,
-        key,
-        project
-      })
-    )
+    .catch(error => {
+      dispatch({ type: types.CREATE, key, project })
+      dispatch({ type: types.ERROR, error })
+    })
 }

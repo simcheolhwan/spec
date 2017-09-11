@@ -57,4 +57,20 @@ const state = (state = 'idle', action) => {
   }
 }
 
-export default combineReducers({ list, order, state })
+const error = (state = {}, action) => {
+  switch (action.type) {
+    case types.ERROR:
+      return error
+
+    case types.FETCH:
+    case types.CREATE:
+    case types.UPDATE:
+    case types.DELETE:
+      return {}
+
+    default:
+      return state
+  }
+}
+
+export default combineReducers({ list, order, state, error })
