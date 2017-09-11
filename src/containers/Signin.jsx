@@ -9,24 +9,28 @@ import Page from '../components/Page'
 import SigninForm from './SigninForm'
 
 const propTypes = {
-  authenticated: PropTypes.bool.isRequired,
-  state: PropTypes.string.isRequired,
+  state: PropTypes.oneOf(['idle', 'auth', 'user']).isRequired,
   error: PropTypes.object.isRequired,
   signin: PropTypes.func.isRequired
 }
 
-const Signin = ({ authenticated, state, error, signin }) =>
-  authenticated ? (
-    <Redirect to="/" />
-  ) : (
-    <Page title="Sign in">
-      <SigninForm
-        onSubmit={user => signin(sanitize(user))}
-        submitButton="Sign in"
-        errorMessage={error.message}
-      />
-    </Page>
-  )
+const Signin = ({ state, error, signin }) => {
+  const ui = {
+    idle: null,
+    auth: (
+      <Page title="Sign in">
+        <SigninForm
+          onSubmit={user => signin(sanitize(user))}
+          submitButton="Sign in"
+          errorMessage={error.message}
+        />
+      </Page>
+    ),
+    user: <Redirect to="/" />
+  }
+
+  return ui[state]
+}
 
 Signin.propTypes = propTypes
 

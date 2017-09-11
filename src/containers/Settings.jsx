@@ -10,10 +10,11 @@ import SettingsForm from './SettingsForm'
 const propTypes = {
   user: PropTypes.object.isRequired,
   state: PropTypes.oneOf(['idle', 'auth', 'user']).isRequired,
+  error: PropTypes.object.isRequired,
   onUpdate: PropTypes.func.isRequired
 }
 
-const Settings = ({ user, state, onUpdate }) => {
+const Settings = ({ user, state, error, onUpdate }) => {
   const ui = {
     idle: null,
     auth: <Redirect to="/signin" />,
@@ -23,6 +24,7 @@ const Settings = ({ user, state, onUpdate }) => {
           initialValues={user}
           onSubmit={updates => onUpdate(user.uid, sanitize(updates))}
           submitButton="Update profile"
+          errorMessage={error.message}
         />
       </Page>
     )
