@@ -37,7 +37,11 @@ export const createProject = project => (dispatch, getState) => {
       [`/order`]: getState().projects.order
     })
     .then(() => {
-      dispatch({ type: types.UPDATE, key, updates: { isSyncing: false } })
+      dispatch({
+        type: types.UPDATE,
+        key,
+        project: { ...project, isSyncing: false }
+      })
     })
     .catch(error => {
       dispatch({ type: types.DELETE, key })
@@ -53,20 +57,24 @@ export const updateProject = (key, updates) => (dispatch, getState) => {
   dispatch({
     type: types.UPDATE,
     key,
-    updates: { ...updates, isSyncing: true }
+    project: { ...updates, isSyncing: true }
   })
-  dispatch(push(`/${user.slug}/${updates.slug}/settings`))
+  updates.slug && dispatch(push(`/${user.slug}/${updates.slug}/settings`))
 
   database
     .ref(`/projects/${user.uid}/list/${key}`)
     .update(updates)
     .then(() =>
-      dispatch({ type: types.UPDATE, key, updates: { isSyncing: false } })
+      dispatch({
+        type: types.UPDATE,
+        key,
+        project: { ...updates, isSyncing: false }
+      })
     )
     .catch(error => {
-      const updates = { ...project, isSyncing: false }
-      dispatch({ type: types.UPDATE, key, updates })
+      dispatch({ type: types.UPDATE, key, project })
       dispatch({ type: types.ERROR, error })
+      updates.slug && dispatch(push(`/${user.slug}/${project.slug}/settings`))
     })
 }
 

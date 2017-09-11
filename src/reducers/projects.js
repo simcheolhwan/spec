@@ -12,10 +12,8 @@ const list = (state = {}, action) => {
       return action.projects.list || {}
 
     case types.CREATE:
-      return dotProp.set(state, action.key, action.project)
-
     case types.UPDATE:
-      return dotProp.merge(state, action.key, action.updates)
+      return dotProp.set(state, action.key, action.project)
 
     case types.DELETE:
       return dotProp.delete(state, action.key)
