@@ -1,4 +1,5 @@
 import uuidv4 from 'uuid/v4'
+import { push } from 'react-router-redux'
 import { database } from '../constants/firebase'
 
 export const types = {
@@ -27,6 +28,7 @@ export const createProject = project => (dispatch, getState) => {
     key,
     project: { ...project, isSyncing: true }
   })
+  dispatch(push(`/${user.slug}/${project.slug}`))
 
   database
     .ref(`/projects/${user.uid}`)
@@ -34,17 +36,18 @@ export const createProject = project => (dispatch, getState) => {
       [`/list/${key}`]: project,
       [`/order`]: getState().projects.order
     })
-    .then(() =>
+    .then(() => {
       dispatch({ type: types.UPDATE, key, updates: { isSyncing: false } })
-    )
+    })
     .catch(error => {
       dispatch({ type: types.DELETE, key })
       dispatch({ type: types.ERROR, error })
+      dispatch(push('/'))
     })
 }
 
 export const updateProject = (key, updates) => (dispatch, getState) => {
-  const { uid } = getState().auth.user
+  const { user } = getState().auth
   const project = getState().projects.list[key]
 
   dispatch({
@@ -52,9 +55,10 @@ export const updateProject = (key, updates) => (dispatch, getState) => {
     key,
     updates: { ...updates, isSyncing: true }
   })
+  dispatch(push(`/${user.slug}/${updates.slug}/settings`))
 
   database
-    .ref(`/projects/${uid}/list/${key}`)
+    .ref(`/projects/${user.uid}/list/${key}`)
     .update(updates)
     .then(() =>
       dispatch({ type: types.UPDATE, key, updates: { isSyncing: false } })
@@ -71,6 +75,7 @@ export const deleteProject = key => (dispatch, getState) => {
   const project = getState().projects.list[key]
 
   dispatch({ type: types.DELETE, key })
+  dispatch(push('/'))
 
   database
     .ref(`/projects/${uid}`)
