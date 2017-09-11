@@ -12,7 +12,7 @@ const defaultProps = {
   submitButton: 'Submit'
 }
 
-const Form = ({ fields, submitButton, ...rest }) => {
+const Form = ({ fields, submitButton, errorMessage, ...rest }) => {
   const { pristine, valid, submitting, submitSucceeded } = rest
   const { handleSubmit } = rest
 
@@ -34,7 +34,7 @@ const Form = ({ fields, submitButton, ...rest }) => {
         {submitButton}
       </button>
 
-      {submitting ? '🔄' : submitSucceeded && '✅'}
+      {errorMessage || (submitting ? '🔄' : submitSucceeded && '✅')}
     </form>
   )
 }
