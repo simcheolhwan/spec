@@ -1,4 +1,5 @@
 import uuidv4 from 'uuid/v4'
+import { push } from 'react-router-redux'
 import { database } from '../constants/firebase'
 
 export const types = {
@@ -6,7 +7,8 @@ export const types = {
   FETCH: '~/projects/fetch',
   CREATE: '~/project/create',
   UPDATE: '~/project/update',
-  DELETE: '~/project/delete'
+  DELETE: '~/project/delete',
+  ERROR: '~/project/error'
 }
 
 export const fetchProjects = uid => dispatch =>
@@ -15,7 +17,7 @@ export const fetchProjects = uid => dispatch =>
     .once('value', snap =>
       dispatch({ type: types.FETCH, projects: snap.val() || {} })
     )
-    .catch(error => false)
+    .catch(error => dispatch({ type: types.ERROR, error }))
 
 export const createProject = project => (dispatch, getState) => {
   const key = uuidv4()
@@ -26,6 +28,7 @@ export const createProject = project => (dispatch, getState) => {
     key,
     project: { ...project, isSyncing: true }
   })
+  dispatch(push(`/${user.slug}/${project.slug}`))
 
   database
     .ref(`/projects/${user.uid}`)
@@ -33,23 +36,18 @@ export const createProject = project => (dispatch, getState) => {
       [`/list/${key}`]: project,
       [`/order`]: getState().projects.order
     })
-    .then(() =>
-      dispatch({
-        type: types.UPDATE,
-        key,
-        updates: { isSyncing: false }
-      })
-    )
-    .catch(error =>
-      dispatch({
-        type: types.DELETE,
-        key
-      })
-    )
+    .then(() => {
+      dispatch({ type: types.UPDATE, key, updates: { isSyncing: false } })
+    })
+    .catch(error => {
+      dispatch({ type: types.DELETE, key })
+      dispatch({ type: types.ERROR, error })
+      dispatch(push('/'))
+    })
 }
 
 export const updateProject = (key, updates) => (dispatch, getState) => {
-  const { uid } = getState().auth.user
+  const { user } = getState().auth
   const project = getState().projects.list[key]
 
   dispatch({
@@ -57,34 +55,27 @@ export const updateProject = (key, updates) => (dispatch, getState) => {
     key,
     updates: { ...updates, isSyncing: true }
   })
+  dispatch(push(`/${user.slug}/${updates.slug}/settings`))
 
   database
-    .ref(`/projects/${uid}/list/${key}`)
+    .ref(`/projects/${user.uid}/list/${key}`)
     .update(updates)
     .then(() =>
-      dispatch({
-        type: types.UPDATE,
-        key,
-        updates: { isSyncing: false }
-      })
+      dispatch({ type: types.UPDATE, key, updates: { isSyncing: false } })
     )
-    .catch(error =>
-      dispatch({
-        type: types.UPDATE,
-        key,
-        updates: { ...project, isSyncing: false }
-      })
-    )
+    .catch(error => {
+      const updates = { ...project, isSyncing: false }
+      dispatch({ type: types.UPDATE, key, updates })
+      dispatch({ type: types.ERROR, error })
+    })
 }
 
 export const deleteProject = key => (dispatch, getState) => {
   const { uid } = getState().auth.user
   const project = getState().projects.list[key]
 
-  dispatch({
-    type: types.DELETE,
-    key
-  })
+  dispatch({ type: types.DELETE, key })
+  dispatch(push('/'))
 
   database
     .ref(`/projects/${uid}`)
@@ -92,11 +83,8 @@ export const deleteProject = key => (dispatch, getState) => {
       [`/list/${key}`]: null,
       [`/order`]: getState().projects.order
     })
-    .catch(error =>
-      dispatch({
-        type: types.CREATE,
-        key,
-        project
-      })
-    )
+    .catch(error => {
+      dispatch({ type: types.CREATE, key, project })
+      dispatch({ type: types.ERROR, error })
+    })
 }

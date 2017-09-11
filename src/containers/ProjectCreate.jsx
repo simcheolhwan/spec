@@ -1,5 +1,6 @@
-import React, { Component } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
+import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import { createProject } from '../actions/project'
@@ -8,44 +9,37 @@ import Page from '../components/Page'
 import ProjectForm from './ProjectForm'
 
 const propTypes = {
-  authenticated: PropTypes.bool.isRequired,
-  onCreate: PropTypes.func.isRequired
+  state: PropTypes.oneOf(['idle', 'auth', 'user']).isRequired,
+  error: PropTypes.object.isRequired,
+  createProject: PropTypes.func.isRequired
 }
 
-class ProjectCreate extends Component {
-  constructor(props) {
-    super(props)
-    this.state = { status: '', error: {} }
-    this.create = this.create.bind(this)
-  }
-
-  create(updates) {
-    const { onCreate } = this.props
-    this.setState({ status: 'submitting' }, () => onCreate(sanitize(updates)))
-  }
-
-  render() {
-    const { error } = this.state
-
-    return this.props.authenticated ? (
+const ProjectCreate = ({ state, error, createProject }) => {
+  const ui = {
+    idle: null,
+    auth: <Redirect to="/signin" />,
+    user: (
       <Page title="Create a new project">
         <ProjectForm
-          onSubmit={this.create}
+          onSubmit={project => createProject(sanitize(project))}
           submitButton="Create project"
           errorMessage={error.message}
         />
       </Page>
-    ) : (
-      <Redirect to="/signin" />
     )
   }
+
+  return ui[state]
 }
 
 ProjectCreate.propTypes = propTypes
 
-const mapStateToProps = ({ auth }) => ({ authenticated: auth.authenticated })
-const mapDispatchToProps = dispatch => ({
-  onCreate: project => dispatch(createProject(project))
+const mapStateToProps = ({ auth, projects }) => ({
+  state: auth.state,
+  error: projects.error
 })
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({ createProject }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectCreate)

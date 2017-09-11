@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Switch, Route } from 'react-router-dom'
-import * as userActions from '../actions/user'
+import { readUser } from '../actions/user'
 import User from './User'
 import Project from './Project'
 
@@ -77,6 +77,7 @@ const mapStateToProps = ({ auth, projects, user }, ownProps) => {
   return state[auth.state]
 }
 
-const mapDispatchToProps = dispatch => bindActionCreators(userActions, dispatch)
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({ readUser }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserContainer)

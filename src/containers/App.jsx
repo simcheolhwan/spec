@@ -2,8 +2,9 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { BrowserRouter as Router } from 'react-router-dom'
-import * as authActions from '../actions/auth'
+import { ConnectedRouter as Router } from 'react-router-redux'
+import { checkAuth } from '../actions/auth'
+import history from '../history'
 import routes from '../routes'
 import Nav from './Nav'
 
@@ -18,7 +19,7 @@ class App extends Component {
 
   render() {
     return (
-      <Router>
+      <Router history={history}>
         <div>
           <Nav />
           <main>{routes}</main>
@@ -30,6 +31,7 @@ class App extends Component {
 
 App.propTypes = propTypes
 
-const mapDispatchToProps = dispatch => bindActionCreators(authActions, dispatch)
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({ checkAuth }, dispatch)
 
 export default connect(null, mapDispatchToProps)(App)
