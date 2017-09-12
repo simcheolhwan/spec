@@ -1,4 +1,4 @@
-import { auth, database } from '../constants/firebase'
+import { auth, database } from '../firebase'
 import { types as projects, fetchProjects } from './project'
 
 export const types = {

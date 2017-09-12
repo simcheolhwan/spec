@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { database } from '../constants/firebase'
+import { database } from '../firebase'
 
 export const types = {
   READ: '~/user/read',

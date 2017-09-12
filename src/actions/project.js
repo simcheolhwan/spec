@@ -1,6 +1,6 @@
 import uuidv4 from 'uuid/v4'
 import { push, replace } from 'react-router-redux'
-import { database } from '../constants/firebase'
+import { database } from '../firebase'
 
 export const types = {
   INIT: '~/projects/init',
