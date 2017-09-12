@@ -9,6 +9,7 @@ import routes from '../routes'
 import Nav from './Nav'
 
 const propTypes = {
+  state: PropTypes.oneOf(['idle', 'auth', 'user']).isRequired,
   checkAuth: PropTypes.func.isRequired
 }
 
@@ -22,7 +23,7 @@ class App extends Component {
       <Router history={history}>
         <div>
           <Nav />
-          <main>{routes}</main>
+          <main>{this.props.state !== 'idle' && routes}</main>
         </div>
       </Router>
     )
@@ -31,7 +32,8 @@ class App extends Component {
 
 App.propTypes = propTypes
 
+const mapStateToProps = ({ auth: { state } }) => ({ state })
 const mapDispatchToProps = dispatch =>
   bindActionCreators({ checkAuth }, dispatch)
 
-export default connect(null, mapDispatchToProps)(App)
+export default connect(mapStateToProps, mapDispatchToProps)(App)

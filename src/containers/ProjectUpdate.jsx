@@ -48,7 +48,6 @@ const ProjectUpdate = ({ state, projectKey, project, error, ...rest }) => {
   ]
 
   const ui = {
-    idle: null,
     auth: <Redirect to="/signin" />,
     user: (
       <div>

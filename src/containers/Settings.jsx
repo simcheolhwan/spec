@@ -17,7 +17,6 @@ const propTypes = {
 
 const Settings = ({ user, state, error, updateUser }) => {
   const ui = {
-    idle: null,
     auth: <Redirect to="/signin" />,
     user: (
       <Page title="Public Profile">

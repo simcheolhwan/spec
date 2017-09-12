@@ -18,8 +18,8 @@ const defaultProps = {
 }
 
 class UserContainer extends Component {
-  componentWillReceiveProps(nextProps) {
-    const { read, readUser, match } = nextProps
+  componentWillMount() {
+    const { read, readUser, match } = this.props
     read && readUser(match.params.user)
   }
 
@@ -66,7 +66,6 @@ const mapStateToProps = ({ auth, projects, user }, ownProps) => {
   }
 
   const state = {
-    idle: { state: 'idle' },
     auth: stateByUser[user.state],
     user:
       slug === auth.user.slug

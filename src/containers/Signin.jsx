@@ -16,7 +16,6 @@ const propTypes = {
 
 const Signin = ({ state, error, signin }) => {
   const ui = {
-    idle: null,
     auth: (
       <Page title="Sign in">
         <SigninForm

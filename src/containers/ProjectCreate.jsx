@@ -16,7 +16,6 @@ const propTypes = {
 
 const ProjectCreate = ({ state, error, createProject }) => {
   const ui = {
-    idle: null,
     auth: <Redirect to="/signin" />,
     user: (
       <Page title="Create a new project">
