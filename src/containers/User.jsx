@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { getProject } from '../helpers/utils'
+import { getProject } from '../utils'
 import Grid from '../components/Grid'
 import Profile from '../components/Profile'
 import Projects from '../components/Projects'

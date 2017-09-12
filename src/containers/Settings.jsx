@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import { updateUser } from '../actions/auth'
-import { sanitize } from '../helpers/utils'
+import { sanitize } from '../utils'
 import Page from '../components/Page'
 import SettingsForm from './SettingsForm'
 

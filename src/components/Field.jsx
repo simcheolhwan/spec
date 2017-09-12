@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { slugify } from '../helpers/utils'
+import { slugify } from '../utils'
 import { BOLD } from '../styles'
 
 const propTypes = {
