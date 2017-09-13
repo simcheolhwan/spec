@@ -48,8 +48,8 @@ class UserContainer extends Component {
 UserContainer.propTypes = propTypes
 UserContainer.defaultProps = defaultProps
 
-const mapStateToProps = ({ auth, projects, user }, ownProps) => {
-  const { user: slug } = ownProps.match.params
+const mapStateToProps = ({ auth, projects, user }, { match: { params } }) => {
+  const { user: slug } = params
 
   const stateByUser = {
     idle: { state: 'idle', read: true },

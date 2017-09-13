@@ -33,9 +33,9 @@ const ProjectCreate = ({ state, error, createProject }) => {
 
 ProjectCreate.propTypes = propTypes
 
-const mapStateToProps = ({ auth, projects }) => ({
-  state: auth.state,
-  error: projects.error
+const mapStateToProps = ({ auth: { state }, projects: { error } }) => ({
+  state,
+  error
 })
 
 const mapDispatchToProps = dispatch =>
