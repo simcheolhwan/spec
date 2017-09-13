@@ -12,7 +12,7 @@ const mapStateToProps = ({ auth, projects }) => {
   const links = {
     idle: [],
     user: [],
-    auth: [{ to: 'signin', label: 'Sign in' }],
+    guest: [{ to: 'signin', label: 'Sign in' }],
     projects: [
       { to: 'new', label: 'New project' },
       { to: auth.user.slug, label: 'Projects' },

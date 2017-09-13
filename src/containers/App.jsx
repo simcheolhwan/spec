@@ -9,7 +9,7 @@ import routes from '../routes'
 import Nav from './Nav'
 
 const propTypes = {
-  state: PropTypes.oneOf(['idle', 'auth', 'user']).isRequired,
+  state: PropTypes.oneOf(['idle', 'guest', 'user']).isRequired,
   checkAuth: PropTypes.func.isRequired
 }
 

@@ -10,14 +10,14 @@ import SettingsForm from './SettingsForm'
 
 const propTypes = {
   user: PropTypes.object.isRequired,
-  state: PropTypes.oneOf(['idle', 'auth', 'user']).isRequired,
+  state: PropTypes.oneOf(['idle', 'guest', 'user']).isRequired,
   error: PropTypes.object.isRequired,
   updateUser: PropTypes.func.isRequired
 }
 
 const Settings = ({ user, state, error, updateUser }) => {
   const ui = {
-    auth: <Redirect to="/signin" />,
+    guest: <Redirect to="/signin" />,
     user: (
       <Page title="Public Profile">
         <SettingsForm

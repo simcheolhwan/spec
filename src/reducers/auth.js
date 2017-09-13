@@ -27,7 +27,7 @@ const user = (state = {}, action) => {
 const state = (state = 'idle', action) => {
   switch (action.type) {
     case types.AUTH:
-      return action.authenticated ? 'idle' : 'auth'
+      return action.authenticated ? 'idle' : 'guest'
 
     case types.USER:
       return 'user'

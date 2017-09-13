@@ -66,7 +66,7 @@ const mapStateToProps = ({ auth, projects, user }, ownProps) => {
   }
 
   const state = {
-    auth: stateByUser[user.state],
+    guest: stateByUser[user.state],
     user:
       slug === auth.user.slug
         ? stateByProjects[projects.state]

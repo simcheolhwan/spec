@@ -9,14 +9,14 @@ import Page from '../components/Page'
 import ProjectForm from './ProjectForm'
 
 const propTypes = {
-  state: PropTypes.oneOf(['idle', 'auth', 'user']).isRequired,
+  state: PropTypes.oneOf(['idle', 'guest', 'user']).isRequired,
   error: PropTypes.object.isRequired,
   createProject: PropTypes.func.isRequired
 }
 
 const ProjectCreate = ({ state, error, createProject }) => {
   const ui = {
-    auth: <Redirect to="/signin" />,
+    guest: <Redirect to="/signin" />,
     user: (
       <Page title="Create a new project">
         <ProjectForm

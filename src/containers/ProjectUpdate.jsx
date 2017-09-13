@@ -10,7 +10,7 @@ import Actions from '../components/Actions'
 import ProjectForm from './ProjectForm'
 
 const propTypes = {
-  state: PropTypes.oneOf(['idle', 'auth', 'user']).isRequired,
+  state: PropTypes.oneOf(['idle', 'guest', 'user']).isRequired,
   projectKey: PropTypes.string.isRequired,
   project: PropTypes.object.isRequired,
   error: PropTypes.object.isRequired,
@@ -48,7 +48,7 @@ const ProjectUpdate = ({ state, projectKey, project, error, ...rest }) => {
   ]
 
   const ui = {
-    auth: <Redirect to="/signin" />,
+    guest: <Redirect to="/signin" />,
     user: (
       <div>
         <Page title="Settings">

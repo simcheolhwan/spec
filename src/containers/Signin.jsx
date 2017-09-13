@@ -9,14 +9,14 @@ import Page from '../components/Page'
 import SigninForm from './SigninForm'
 
 const propTypes = {
-  state: PropTypes.oneOf(['idle', 'auth', 'user']).isRequired,
+  state: PropTypes.oneOf(['idle', 'guest', 'user']).isRequired,
   error: PropTypes.object.isRequired,
   signin: PropTypes.func.isRequired
 }
 
 const Signin = ({ state, error, signin }) => {
   const ui = {
-    auth: (
+    guest: (
       <Page title="Sign in">
         <SigninForm
           onSubmit={user => signin(sanitize(user))}
