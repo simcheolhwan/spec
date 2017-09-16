@@ -26,5 +26,6 @@ export const getProject = ({ auth, projects, user }, props) => {
   const isOwned = slug === auth.user.slug
   const { list } = isOwned ? projects : user.projects
   const projectKey = _.findKey(list, ['slug', project])
-  return { isOwned, projectKey, project: list[projectKey] }
+  const { user: _user } = isOwned ? auth : user
+  return { project: list[projectKey], projectKey, isOwned, user: _user }
 }

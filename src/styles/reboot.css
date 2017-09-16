@@ -54,6 +54,11 @@ a {
   text-decoration: none;
 }
 
+code {
+  font-family: monospace, monospace;
+  font-size: 1em;
+}
+
 button,
 input {
   font-family: inherit;
