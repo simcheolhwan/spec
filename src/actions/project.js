@@ -7,8 +7,7 @@ export const types = {
   FETCH: '~/projects/fetch',
   CREATE: '~/project/create',
   UPDATE: '~/project/update',
-  DELETE: '~/project/delete',
-  ERROR: '~/project/error'
+  DELETE: '~/project/delete'
 }
 
 export const fetchProjects = uid => dispatch =>
@@ -17,7 +16,6 @@ export const fetchProjects = uid => dispatch =>
     .once('value', snap =>
       dispatch({ type: types.FETCH, projects: snap.val() || {} })
     )
-    .catch(error => dispatch({ type: types.ERROR, error }))
 
 export const createProject = project => (dispatch, getState) => {
   const key = uuidv4()
@@ -45,7 +43,6 @@ export const createProject = project => (dispatch, getState) => {
     })
     .catch(error => {
       dispatch({ type: types.DELETE, key })
-      dispatch({ type: types.ERROR, error })
       dispatch(push('/'))
     })
 }
@@ -73,7 +70,6 @@ export const updateProject = (key, updates) => (dispatch, getState) => {
     )
     .catch(error => {
       dispatch({ type: types.UPDATE, key, project })
-      dispatch({ type: types.ERROR, error })
       updates.slug &&
         dispatch(replace(`/${user.slug}/${project.slug}/settings`))
     })
@@ -94,6 +90,5 @@ export const deleteProject = key => (dispatch, getState) => {
     })
     .catch(error => {
       dispatch({ type: types.CREATE, key, project })
-      dispatch({ type: types.ERROR, error })
     })
 }

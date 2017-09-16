@@ -15,7 +15,7 @@ const propTypes = {
   updateUser: PropTypes.func.isRequired
 }
 
-const Settings = ({ user, state, error, updateUser }) => {
+const Settings = ({ user, state, updateUser }) => {
   const ui = {
     guest: <Redirect to="/signin" />,
     user: (
@@ -24,7 +24,6 @@ const Settings = ({ user, state, error, updateUser }) => {
           initialValues={user}
           onSubmit={updates => updateUser(user.uid, sanitize(updates))}
           submitButton="Update profile"
-          errorMessage={error.message}
         />
       </Page>
     )

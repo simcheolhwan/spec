@@ -34,17 +34,4 @@ const state = (state = 'idle', action) => {
   }
 }
 
-const error = (state = {}, action) => {
-  switch (action.type) {
-    case types.READ:
-      return {}
-
-    case types.ERROR:
-      return action.error
-
-    default:
-      return state
-  }
-}
-
-export default combineReducers({ user, projects, state, error })
+export default combineReducers({ user, projects, state })

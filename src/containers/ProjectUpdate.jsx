@@ -13,12 +13,11 @@ const propTypes = {
   state: PropTypes.oneOf(['idle', 'guest', 'user']).isRequired,
   projectKey: PropTypes.string.isRequired,
   project: PropTypes.object.isRequired,
-  error: PropTypes.object.isRequired,
   updateProject: PropTypes.func.isRequired,
   deleteProject: PropTypes.func.isRequired
 }
 
-const ProjectUpdate = ({ state, projectKey, project, error, ...rest }) => {
+const ProjectUpdate = ({ state, projectKey, project, ...rest }) => {
   const { updateProject, deleteProject } = rest
 
   const destructiveActions = [
@@ -56,7 +55,6 @@ const ProjectUpdate = ({ state, projectKey, project, error, ...rest }) => {
             initialValues={project}
             onSubmit={updates => updateProject(projectKey, sanitize(updates))}
             submitButton="Update project"
-            errorMessage={error.message}
           />
         </Page>
 
@@ -74,7 +72,6 @@ ProjectUpdate.propTypes = propTypes
 
 const mapStateToProps = (state, ownProps) => ({
   state: state.auth.state,
-  error: state.projects.error,
   ...getProject(state, ownProps)
 })
 

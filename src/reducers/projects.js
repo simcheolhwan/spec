@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import { combineReducers } from 'redux'
-import { types } from '../actions/project'
 import dotProp from 'dot-prop-immutable'
+import { types } from '../actions/project'
 
 const list = (state = {}, action) => {
   switch (action.type) {
@@ -55,20 +55,4 @@ const state = (state = 'idle', action) => {
   }
 }
 
-const error = (state = {}, action) => {
-  switch (action.type) {
-    case types.ERROR:
-      return error
-
-    case types.FETCH:
-    case types.CREATE:
-    case types.UPDATE:
-    case types.DELETE:
-      return {}
-
-    default:
-      return state
-  }
-}
-
-export default combineReducers({ list, order, state, error })
+export default combineReducers({ list, order, state })

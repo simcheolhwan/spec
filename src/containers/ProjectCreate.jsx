@@ -9,12 +9,11 @@ import Page from '../components/Page'
 import ProjectForm from './ProjectForm'
 
 const propTypes = {
-  state: PropTypes.oneOf(['idle', 'guest', 'user']).isRequired,
-  error: PropTypes.object.isRequired,
+  state: PropTypes.oneOf(['guest', 'user']).isRequired,
   createProject: PropTypes.func.isRequired
 }
 
-const ProjectCreate = ({ state, error, createProject }) => {
+const ProjectCreate = ({ state, createProject }) => {
   const ui = {
     guest: <Redirect to="/signin" />,
     user: (
@@ -22,7 +21,6 @@ const ProjectCreate = ({ state, error, createProject }) => {
         <ProjectForm
           onSubmit={project => createProject(sanitize(project))}
           submitButton="Create project"
-          errorMessage={error.message}
         />
       </Page>
     )
