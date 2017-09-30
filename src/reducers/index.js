@@ -4,5 +4,15 @@ import { reducer as form } from 'redux-form'
 import auth from './auth'
 import user from './user'
 import projects from './projects'
+import features from './features'
+import specs from './specs'
 
-export default combineReducers({ auth, user, projects, router, form })
+export default combineReducers({
+  auth,
+  user,
+  projects,
+  features,
+  specs,
+  router,
+  form
+})
