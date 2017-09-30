@@ -16,13 +16,15 @@ const propTypes = {
 }
 
 const Settings = ({ user, state, updateUser }) => {
+  const submit = updates => updateUser(user.uid, sanitize(updates))
+
   const ui = {
     guest: <Redirect to="/signin" />,
     user: (
       <Page title="Public Profile">
         <SettingsForm
           initialValues={user}
-          onSubmit={updates => updateUser(user.uid, sanitize(updates))}
+          onSubmit={submit}
           submitButton="Update profile"
         />
       </Page>

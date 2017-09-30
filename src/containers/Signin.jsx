@@ -15,11 +15,13 @@ const propTypes = {
 }
 
 const Signin = ({ state, error, signin }) => {
+  const submit = user => signin(sanitize(user))
+
   const ui = {
     guest: (
       <Page title="Sign in">
         <SigninForm
-          onSubmit={user => signin(sanitize(user))}
+          onSubmit={submit}
           submitButton="Sign in"
           errorMessage={error.message}
         />

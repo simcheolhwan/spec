@@ -20,19 +20,19 @@ const propTypes = {
 const ProjectUpdate = ({ state, projectKey, project, ...rest }) => {
   const { updateProject, deleteProject } = rest
 
+  const open = () => update({ isClosed: false })
+  const close = () => update({ isClosed: true })
+  const submit = updates => update(sanitize(updates))
+  const update = updates => updateProject(projectKey, updates)
+  const _delete = () => deleteProject(projectKey)
+
   const destructiveActions = [
     {
       title: 'Make this repository private',
       description: 'Hide this repository from the public.',
       button: project.isClosed
-        ? {
-            label: 'Reopen project',
-            action: () => updateProject(projectKey, { isClosed: false })
-          }
-        : {
-            label: 'Close project',
-            action: () => updateProject(projectKey, { isClosed: true })
-          }
+        ? { label: 'Reopen project', action: open }
+        : { label: 'Close project', action: close }
     },
     {
       title: 'Delete this repository',
@@ -41,7 +41,7 @@ const ProjectUpdate = ({ state, projectKey, project, ...rest }) => {
         'Please be certain.',
       button: {
         label: 'Delete project',
-        action: () => deleteProject(projectKey)
+        action: _delete
       }
     }
   ]
@@ -53,7 +53,7 @@ const ProjectUpdate = ({ state, projectKey, project, ...rest }) => {
         <Page title="Settings">
           <ProjectForm
             initialValues={project}
-            onSubmit={updates => updateProject(projectKey, sanitize(updates))}
+            onSubmit={submit}
             submitButton="Update project"
           />
         </Page>

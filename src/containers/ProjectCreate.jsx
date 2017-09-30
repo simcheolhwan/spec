@@ -14,14 +14,13 @@ const propTypes = {
 }
 
 const ProjectCreate = ({ state, createProject }) => {
+  const submit = project => createProject(sanitize(project))
+
   const ui = {
     guest: <Redirect to="/signin" />,
     user: (
       <Page title="Create a new project">
-        <ProjectForm
-          onSubmit={project => createProject(sanitize(project))}
-          submitButton="Create project"
-        />
+        <ProjectForm onSubmit={submit} submitButton="Create project" />
       </Page>
     )
   }
