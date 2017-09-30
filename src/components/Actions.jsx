@@ -15,29 +15,50 @@ const propTypes = {
   ).isRequired
 }
 
-const Actions = ({ list }) => (
-  <ul style={{ listStyle: 'none', padding: 0 }}>
-    {list.map(({ title, description, button }, index) => (
-      <li style={{ display: 'flex', marginBottom: '1rem' }} key={index}>
-        <header style={{ flex: 1 }}>
-          <h3 style={{ fontSize: '1rem', fontWeight: BOLD }}>{title}</h3>
-          <p>{description}</p>
-        </header>
+const Action = ({ title, description, button }) => (
+  <article style={style.Action}>
+    <header style={style.Action.header}>
+      <h3 style={style.Action.title}>{title}</h3>
+      <p>{description}</p>
+    </header>
 
-        <div style={{ flex: 'none', width: '10rem' }}>
-          <button
-            style={{ width: '100%' }}
-            onClick={button.action}
-            disabled={button.disabled}
-          >
-            {button.label}
-          </button>
-        </div>
+    <section style={style.Action.button.container}>
+      <button
+        style={style.Action.button}
+        onClick={button.action}
+        disabled={button.disabled}
+      >
+        {button.label}
+      </button>
+    </section>
+  </article>
+)
+
+const Actions = ({ list }) => (
+  <ul style={style.list}>
+    {list.map((item, index) => (
+      <li style={style.item} key={index}>
+        <Action {...item} />
       </li>
     ))}
   </ul>
 )
 
 Actions.propTypes = propTypes
+
+const style = {
+  list: { listStyle: 'none', padding: 0 },
+  item: { marginBottom: '1rem' },
+
+  Action: {
+    display: 'flex',
+    header: { flex: 1 },
+    title: { fontSize: '1rem', fontWeight: BOLD },
+    button: {
+      width: '100%',
+      container: { flex: 'none', width: '10rem' }
+    }
+  }
+}
 
 export default Actions

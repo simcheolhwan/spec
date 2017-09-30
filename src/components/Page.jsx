@@ -15,7 +15,7 @@ const defaultProps = {
 }
 
 const Page = ({ title, actions, children }) => (
-  <article style={style.Page}>
+  <article style={style}>
     <header style={style.header}>
       <h1>{title}</h1>
       {!!actions.length && <section>{actions}</section>}
@@ -29,9 +29,7 @@ Page.propTypes = propTypes
 Page.defaultProps = defaultProps
 
 const style = {
-  Page: {
-    padding: '2rem'
-  },
+  padding: '2rem',
 
   header: {
     display: 'flex',

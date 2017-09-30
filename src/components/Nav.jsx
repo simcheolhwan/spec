@@ -14,7 +14,7 @@ const propTypes = {
 }
 
 const Nav = ({ title, links }) => (
-  <nav style={style.Nav}>
+  <nav style={style}>
     <header>
       <h1 style={style.title}>
         <Link to="/" style={style.link}>
@@ -36,26 +36,24 @@ const Nav = ({ title, links }) => (
 Nav.propTypes = propTypes
 
 const style = {
-  Nav: {
-    backgroundColor: colors.black,
-    display: 'flex',
-    justifyContent: 'space-between',
-    padding: '0 1rem'
-  },
+  backgroundColor: colors.black,
+  display: 'flex',
+  justifyContent: 'space-between',
+  padding: '0 1rem',
 
   title: {
     fontSize: '1rem'
-  },
-
-  list: {
-    display: 'flex',
-    justifyContent: 'flex-end'
   },
 
   link: {
     color: 'hsla(0, 0%, 100%, .75)',
     display: 'block',
     padding: '1rem'
+  },
+
+  list: {
+    display: 'flex',
+    justifyContent: 'flex-end'
   }
 }
 

@@ -39,7 +39,7 @@ const Field = ({ label, input, meta, type, ...rest }) => {
   const component = <input {...inputProps} />
 
   return (
-    <div style={{ marginBottom: '1rem' }}>
+    <div style={style}>
       <section style={labelContainerStyle}>
         {isCheckbox && component}
         <label htmlFor={name} style={style.label}>
@@ -59,6 +59,8 @@ Field.propTypes = propTypes
 Field.defaultProps = defaultProps
 
 const style = {
+  marginBottom: '1rem',
+
   labelContainer: {
     marginBottom: '.25rem',
     checkbox: { display: 'flex', alignItems: 'center' }

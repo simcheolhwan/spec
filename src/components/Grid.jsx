@@ -7,12 +7,18 @@ const propTypes = {
 }
 
 const Grid = ({ aside, main }) => (
-  <div style={{ display: 'grid', gridTemplateColumns: '15rem 1fr' }}>
-    <aside style={{ padding: '2rem', paddingRight: 0 }}>{aside}</aside>
+  <div style={style}>
+    <aside style={style.aside}>{aside}</aside>
     <main>{main}</main>
   </div>
 )
 
 Grid.propTypes = propTypes
+
+const style = {
+  display: 'grid',
+  gridTemplateColumns: '15rem 1fr',
+  aside: { padding: '2rem', paddingRight: 0 }
+}
 
 export default Grid

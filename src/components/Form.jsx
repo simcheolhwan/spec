@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Field } from 'redux-form'
 import renderField from './Field'
+import { Sync, Done } from './Icons'
 
 const propTypes = {
   fields: PropTypes.object.isRequired,
@@ -34,7 +35,7 @@ const Form = ({ fields, submitButton, errorMessage, ...rest }) => {
         {submitButton}
       </button>
 
-      {errorMessage || (submitting ? '🔄' : submitSucceeded && '✅')}
+      {errorMessage || (submitting ? <Sync /> : submitSucceeded && <Done />)}
     </form>
   )
 }
