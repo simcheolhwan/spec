@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { Switch, Route, Link } from 'react-router-dom'
 import { getProject } from '../utils'
 import Grid from '../components/Grid'
+import Features from './Features'
 import ProjectUpdate from './ProjectUpdate'
 
 const propTypes = {
@@ -16,7 +17,7 @@ const defaultProps = {
   project: {}
 }
 
-const Project = ({ project, isOwned, match }) =>
+const Project = ({ project, isOwned, user: { name, slug }, match }) =>
   _.isEmpty(project) ? (
     <article>Not found</article>
   ) : (
@@ -24,13 +25,15 @@ const Project = ({ project, isOwned, match }) =>
       aside={
         <nav>
           <h1>
-            <Link to={match.url}>{project.title}</Link>
+            <Link to={'/' + slug}>{name}</Link>
+            /<Link to={match.url}>{project.title}</Link>
           </h1>
           {isOwned && <Link to={match.url + '/settings'}>Setting</Link>}
         </nav>
       }
       main={
         <Switch>
+          <Route path={match.path} exact component={Features} />
           <Route path={match.path + '/settings'} component={ProjectUpdate} />
         </Switch>
       }
