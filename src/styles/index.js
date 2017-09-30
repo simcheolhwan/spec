@@ -25,3 +25,25 @@ export const colors = {
   gray: '#AAAAAA',
   black: '#111111'
 }
+
+export default {
+  input: {
+    border: 0,
+    padding: 0
+  },
+
+  button: {
+    backgroundColor: 'transparent',
+    border: 0,
+    borderRadius: 0,
+    cursor: 'pointer',
+    padding: 0,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+
+    icon: {
+      width: '1.5rem'
+    }
+  }
+}
