@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import isEmpty from 'lodash/fp/isEmpty'
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
@@ -59,7 +59,7 @@ const Project = ({ project, isOwned, user: { name, slug }, match }) => {
     )
   }
 
-  return _.isEmpty(project) ? <article>Not found</article> : <Grid {...grid} />
+  return isEmpty(project) ? <article>Not found</article> : <Grid {...grid} />
 }
 
 Project.propTypes = propTypes

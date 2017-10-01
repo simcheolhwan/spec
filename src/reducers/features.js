@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import without from 'lodash/fp/without'
 import { combineReducers } from 'redux'
 import dotProp from 'dot-prop-immutable'
 import { types } from '../actions/feature'
@@ -35,7 +35,7 @@ const order = (state = [], action) => {
       return [...state, action.key]
 
     case types.DELETE:
-      return _.without(state, action.key)
+      return without([action.key])(state)
 
     default:
       return state

@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import without from 'lodash/fp/without'
 import { combineReducers } from 'redux'
 import dotProp from 'dot-prop-immutable'
 import { types } from '../actions/spec'
@@ -38,7 +38,7 @@ const orders = (state = {}, action) => {
       return dotProp.set(
         state,
         action.featureKey,
-        _.without(state[action.featureKey], action.key)
+        without([action.key])(state[action.featureKey])
       )
 
     default:

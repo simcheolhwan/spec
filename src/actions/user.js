@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import findKey from 'lodash/fp/findKey'
 import { database } from '../firebase'
 
 export const types = {
@@ -9,7 +9,7 @@ export const types = {
 export const readUser = slug => dispatch => {
   database.ref('/users').once('value', snap => {
     const users = snap.val()
-    const uid = _.findKey(users, ['slug', slug])
+    const uid = findKey(['slug', slug])(users)
     const user = uid ? { ...users[uid], uid } : {}
     dispatch({ type: types.READ, user })
     uid && dispatch(readProjects(uid))

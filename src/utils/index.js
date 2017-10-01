@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import findKey from 'lodash/fp/findKey'
 
 export const slugify = (string = '') =>
   string
@@ -25,7 +25,7 @@ export const getProject = ({ auth, projects, user }, props) => {
   const { user: slug, project } = props.match.params
   const isOwned = slug === auth.user.slug
   const { list } = isOwned ? projects : user.projects
-  const projectKey = _.findKey(list, ['slug', project])
+  const projectKey = findKey(['slug', project])(list)
   const { user: _user } = isOwned ? auth : user
   return { project: list[projectKey], projectKey, isOwned, user: _user }
 }
