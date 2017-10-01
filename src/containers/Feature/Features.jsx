@@ -2,12 +2,12 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { getProject } from '../utils'
-import { fetchFeatures } from '../actions/feature'
-import { fetchSpecs } from '../actions/spec'
-import Page from '../components/Page'
-import Feature from './Feature'
-import FeatureCreate from './FeatureCreate'
+import { getProject } from '../../utils'
+import { fetchFeatures } from '../../actions/feature'
+import { fetchSpecs } from '../../actions/spec'
+import Page from '../../components/Page'
+import Feature from '.'
+import Create from './Create'
 
 const propTypes = {
   features: PropTypes.object.isRequired,
@@ -31,7 +31,7 @@ class Features extends Component {
     return (
       <Page
         title="Features"
-        actions={[<FeatureCreate projectKey={projectKey} key="create" />]}
+        actions={[<Create projectKey={projectKey} key="create" />]}
       >
         {features.order.map(key => (
           <Feature

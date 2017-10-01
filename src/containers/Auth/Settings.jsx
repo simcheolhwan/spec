@@ -3,10 +3,10 @@ import PropTypes from 'prop-types'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
-import { updateUser } from '../actions/auth'
-import { sanitize } from '../utils'
-import Page from '../components/Page'
-import SettingsForm from './SettingsForm'
+import { updateUser } from '../../actions/auth'
+import { sanitize } from '../../utils'
+import Page from '../../components/Page'
+import Form from './SettingsForm'
 
 const propTypes = {
   user: PropTypes.object.isRequired,
@@ -22,7 +22,7 @@ const Settings = ({ user, state, updateUser }) => {
     guest: <Redirect to="/signin" />,
     user: (
       <Page title="Public Profile">
-        <SettingsForm
+        <Form
           initialValues={user}
           onSubmit={submit}
           submitButton="Update profile"

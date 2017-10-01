@@ -3,9 +3,9 @@ import PropTypes from 'prop-types'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Switch, Route } from 'react-router-dom'
-import { readUser } from '../actions/user'
+import { readUser } from '../../actions/user'
 import User from './User'
-import Project from './Project'
+import Project from '../Project'
 
 const propTypes = {
   state: PropTypes.oneOf(['idle', 'projects', 404]),
@@ -17,7 +17,7 @@ const defaultProps = {
   read: false
 }
 
-class UserContainer extends Component {
+class Container extends Component {
   componentWillMount() {
     const { read, readUser, match } = this.props
     read && readUser(match.params.user)
@@ -45,8 +45,8 @@ class UserContainer extends Component {
   }
 }
 
-UserContainer.propTypes = propTypes
-UserContainer.defaultProps = defaultProps
+Container.propTypes = propTypes
+Container.defaultProps = defaultProps
 
 const mapStateToProps = ({ auth, projects, user }, { match: { params } }) => {
   const { user: slug } = params
@@ -79,4 +79,4 @@ const mapStateToProps = ({ auth, projects, user }, { match: { params } }) => {
 const mapDispatchToProps = dispatch =>
   bindActionCreators({ readUser }, dispatch)
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserContainer)
+export default connect(mapStateToProps, mapDispatchToProps)(Container)

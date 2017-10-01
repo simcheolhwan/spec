@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { createSpec } from '../actions/spec'
-import Name from '../components/Spec/Name'
+import { createSpec } from '../../actions/spec'
+import Name from '../../components/Spec/Name'
 
 const propTypes = {
   projectKey: PropTypes.string.isRequired,
@@ -11,7 +11,7 @@ const propTypes = {
   createSpec: PropTypes.func.isRequired
 }
 
-class SpecCreate extends Component {
+class Create extends Component {
   constructor(props) {
     super(props)
     this.state = { name: '' }
@@ -43,9 +43,9 @@ class SpecCreate extends Component {
   }
 }
 
-SpecCreate.propTypes = propTypes
+Create.propTypes = propTypes
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators({ createSpec }, dispatch)
 
-export default connect(null, mapDispatchToProps)(SpecCreate)
+export default connect(null, mapDispatchToProps)(Create)

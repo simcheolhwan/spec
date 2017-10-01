@@ -2,15 +2,14 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { updateSpec, deleteSpec } from '../actions/spec'
-import { colors } from '../styles'
-
-import { File, Delete } from '../components/Icons'
-import Checkbox from '../components/Spec/Checkbox'
-import Name from '../components/Spec/Name'
-import Meta from '../components/Spec/Meta'
-import Menu from '../components/Spec/Menu'
-import Subspecs from '../components/Spec/Subspecs'
+import { updateSpec, deleteSpec } from '../../actions/spec'
+import { colors } from '../../styles'
+import { File, Delete } from '../../components/Icons'
+import Checkbox from '../../components/Spec/Checkbox'
+import Name from '../../components/Spec/Name'
+import Meta from '../../components/Spec/Meta'
+import Menu from '../../components/Spec/Menu'
+import Subspecs from '../../components/Spec/Subspecs'
 
 const propTypes = {
   projectKey: PropTypes.string.isRequired,

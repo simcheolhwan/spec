@@ -3,11 +3,11 @@ import PropTypes from 'prop-types'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
-import { updateProject, deleteProject } from '../actions/project'
-import { getProject, sanitize } from '../utils'
-import Page from '../components/Page'
-import Actions from '../components/Actions'
-import ProjectForm from './ProjectForm'
+import { updateProject, deleteProject } from '../../actions/project'
+import { getProject, sanitize } from '../../utils'
+import Page from '../../components/Page'
+import Actions from '../../components/Actions'
+import Form from './ProjectForm'
 
 const propTypes = {
   state: PropTypes.oneOf(['idle', 'guest', 'user']).isRequired,
@@ -51,7 +51,7 @@ const ProjectUpdate = ({ state, projectKey, project, ...rest }) => {
     user: (
       <div>
         <Page title="Settings">
-          <ProjectForm
+          <Form
             initialValues={project}
             onSubmit={submit}
             submitButton="Update project"

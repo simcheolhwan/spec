@@ -3,10 +3,10 @@ import PropTypes from 'prop-types'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
-import { signin } from '../actions/auth'
-import { sanitize } from '../utils'
-import Page from '../components/Page'
-import SigninForm from './SigninForm'
+import { signin } from '../../actions/auth'
+import { sanitize } from '../../utils'
+import Page from '../../components/Page'
+import Form from './SigninForm'
 
 const propTypes = {
   state: PropTypes.oneOf(['idle', 'guest', 'user']).isRequired,
@@ -20,7 +20,7 @@ const Signin = ({ state, error, signin }) => {
   const ui = {
     guest: (
       <Page title="Sign in">
-        <SigninForm
+        <Form
           onSubmit={submit}
           submitButton="Sign in"
           errorMessage={error.message}

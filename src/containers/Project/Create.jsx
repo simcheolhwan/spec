@@ -3,10 +3,10 @@ import PropTypes from 'prop-types'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
-import { createProject } from '../actions/project'
-import { sanitize } from '../utils'
-import Page from '../components/Page'
-import ProjectForm from './ProjectForm'
+import { createProject } from '../../actions/project'
+import { sanitize } from '../../utils'
+import Page from '../../components/Page'
+import Form from './ProjectForm'
 
 const propTypes = {
   state: PropTypes.oneOf(['guest', 'user']).isRequired,
@@ -20,7 +20,7 @@ const ProjectCreate = ({ state, createProject }) => {
     guest: <Redirect to="/signin" />,
     user: (
       <Page title="Create a new project">
-        <ProjectForm onSubmit={submit} submitButton="Create project" />
+        <Form onSubmit={submit} submitButton="Create project" />
       </Page>
     )
   }
