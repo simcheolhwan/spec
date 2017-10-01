@@ -22,10 +22,7 @@ const propTypes = {
 }
 
 class Spec extends Component {
-  constructor(props) {
-    super(props)
-    this.state = { name: props.spec.name, hover: false }
-  }
+  state = { name: this.props.spec.name, hover: false }
 
   handleKeyPress = e => {
     e.key === 'Enter' && this.updateName()

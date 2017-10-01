@@ -21,10 +21,7 @@ const propTypes = {
 }
 
 class Feature extends Component {
-  constructor(props) {
-    super(props)
-    this.state = { name: props.feature.name }
-  }
+  state = { name: this.props.feature.name }
 
   handleKeyPress = e => {
     e.key === 'Enter' && this.updateName()

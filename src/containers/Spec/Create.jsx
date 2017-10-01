@@ -12,10 +12,7 @@ const propTypes = {
 }
 
 class Create extends Component {
-  constructor(props) {
-    super(props)
-    this.state = { name: '' }
-  }
+  state = { name: '' }
 
   handleKeyPress = e => {
     e.key === 'Enter' && this.create()
