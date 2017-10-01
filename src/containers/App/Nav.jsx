@@ -1,13 +1,15 @@
+import findKey from 'lodash/fp/findKey'
 import { connect } from 'react-redux'
 import Nav from '../../components/App/Nav'
 
-const mapStateToProps = ({ auth, projects }) => {
-  const states = {
-    idle: auth.state,
-    projects: 'projects'
-  }
+const findSyncing = findKey('isSyncing')
 
-  const state = states[projects.state]
+const mapStateToProps = ({ auth, projects, features, specs }) => {
+  const syncing = !!(
+    findSyncing(projects.list) ||
+    findSyncing(features.list) ||
+    findSyncing(specs.list)
+  )
 
   const links = {
     idle: [],
@@ -21,8 +23,16 @@ const mapStateToProps = ({ auth, projects }) => {
     ]
   }
 
+  const states = {
+    idle: auth.state,
+    projects: 'projects'
+  }
+
+  const state = states[projects.state]
+
   return {
     title: 'Spec',
+    indicator: syncing,
     links: links[state]
   }
 }

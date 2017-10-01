@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import { colors } from '../../styles'
+import Progress from '../Progress'
 
 const propTypes = {
   title: PropTypes.string.isRequired,
@@ -13,7 +14,7 @@ const propTypes = {
   ).isRequired
 }
 
-const Nav = ({ title, links }) => (
+const Nav = ({ title, indicator, links }) => (
   <nav style={style}>
     <header>
       <h1 style={style.title}>
@@ -24,6 +25,10 @@ const Nav = ({ title, links }) => (
     </header>
 
     <section style={style.list}>
+      {indicator && (
+        <Progress color={colors.white} variant={{ opacity: OPACITY }} />
+      )}
+
       {links.map(({ to, label }) => (
         <Link to={'/' + to} style={style.link} key={to}>
           {label}
@@ -35,6 +40,8 @@ const Nav = ({ title, links }) => (
 
 Nav.propTypes = propTypes
 
+const OPACITY = 0.75
+
 const style = {
   backgroundColor: colors.black,
   display: 'flex',
@@ -45,15 +52,15 @@ const style = {
     fontSize: '1rem'
   },
 
-  link: {
-    color: 'hsla(0, 0%, 100%, .75)',
-    display: 'block',
-    padding: '1rem'
-  },
-
   list: {
     display: 'flex',
-    justifyContent: 'flex-end'
+    alignItems: 'center'
+  },
+
+  link: {
+    color: `hsla(0, 0%, 100%, ${OPACITY})`,
+    display: 'block',
+    padding: '1rem'
   }
 }
 
