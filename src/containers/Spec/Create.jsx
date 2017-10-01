@@ -17,15 +17,19 @@ class Create extends Component {
     this.state = { name: '' }
   }
 
+  handleKeyPress = e => {
+    e.key === 'Enter' && this.create()
+  }
+
   setName = e => {
     this.setState({ name: e.target.value })
   }
 
-  create = e => {
+  create = () => {
     const { projectKey, featureKey, createSpec } = this.props
     const { name: _name } = this.state
     const name = _name.trim()
-    e.key === 'Enter' && name && createSpec(projectKey, featureKey, { name })
+    name && createSpec(projectKey, featureKey, { name })
     this.setState({ name: '' })
   }
 
@@ -37,7 +41,7 @@ class Create extends Component {
         name={name}
         variant={{ paddingLeft: '1.5rem', display: 'block', width: '100%' }}
         onChange={this.setName}
-        onKeyPress={this.create}
+        onKeyPress={this.handleKeyPress}
       />
     )
   }

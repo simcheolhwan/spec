@@ -26,14 +26,18 @@ class Feature extends Component {
     this.state = { name: props.feature.name }
   }
 
+  handleKeyPress = e => {
+    e.key === 'Enter' && this.updateName()
+  }
+
   setName = e => {
     this.setState({ name: e.target.value })
   }
 
-  updateName = e => {
+  updateName = () => {
     const { name: _name } = this.state
     const name = _name.trim()
-    e.key === 'Enter' && name && this.update({ name })
+    name && this.update({ name })
   }
 
   update = updates => {
@@ -56,7 +60,7 @@ class Feature extends Component {
           style={{ flex: 1, ...styles.input }}
           value={name}
           onChange={this.setName}
-          onKeyPress={this.updateName}
+          onKeyPress={this.handleKeyPress}
         />
 
         <Button variant={{ flex: 'none' }} onClick={this.delete}>

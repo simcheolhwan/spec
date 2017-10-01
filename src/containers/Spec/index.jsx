@@ -27,6 +27,10 @@ class Spec extends Component {
     this.state = { name: props.spec.name, hover: false }
   }
 
+  handleKeyPress = e => {
+    e.key === 'Enter' && this.updateName()
+  }
+
   showMenu = () => {
     this.setState({ hover: true })
   }
@@ -44,9 +48,9 @@ class Spec extends Component {
     this.setState({ name: e.target.value })
   }
 
-  updateName = e => {
+  updateName = () => {
     const { name } = this.state
-    e.key === 'Enter' && this.update({ name: name.trim() })
+    this.update({ name: name.trim() })
   }
 
   updateFilename = () => {
@@ -95,7 +99,7 @@ class Spec extends Component {
       Name: {
         name,
         onChange: this.setName,
-        onKeyPress: this.updateName,
+        onKeyPress: this.handleKeyPress,
         variant: { flex: 1 }
       },
 
