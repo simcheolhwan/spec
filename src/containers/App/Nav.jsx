@@ -13,9 +13,8 @@ const mapStateToProps = ({ auth, projects, features, specs }) => {
 
   const links = {
     idle: [],
-    user: [],
     guest: [{ to: 'signin', label: 'Sign in' }],
-    projects: [
+    user: [
       { to: 'new', label: 'New project' },
       { to: auth.user.slug, label: 'Projects' },
       { to: 'settings', label: 'Settings' },
@@ -23,17 +22,10 @@ const mapStateToProps = ({ auth, projects, features, specs }) => {
     ]
   }
 
-  const states = {
-    idle: auth.state,
-    projects: 'projects'
-  }
-
-  const state = states[projects.state]
-
   return {
     title: 'Spec',
     indicator: syncing,
-    links: links[state]
+    links: links[auth.state]
   }
 }
 
