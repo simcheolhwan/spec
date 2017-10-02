@@ -42,6 +42,19 @@ const order = (state = [], action) => {
   }
 }
 
+const user = (state = '', action) => {
+  switch (action.type) {
+    case types.INIT:
+      return ''
+
+    case types.FETCH:
+      return action.user
+
+    default:
+      return state
+  }
+}
+
 const state = (state = 'idle', action) => {
   switch (action.type) {
     case types.INIT:
@@ -55,4 +68,4 @@ const state = (state = 'idle', action) => {
   }
 }
 
-export default combineReducers({ list, order, state })
+export default combineReducers({ list, order, user, state })

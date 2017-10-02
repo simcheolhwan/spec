@@ -10,12 +10,16 @@ export const types = {
   DELETE: '~/project/delete'
 }
 
-export const fetchProjects = uid => dispatch =>
-  database
-    .ref(`/projects/${uid}`)
-    .once('value', snap =>
-      dispatch({ type: types.FETCH, projects: snap.val() || {} })
-    )
+export const initProjects = () => dispatch => dispatch({ type: types.INIT })
+
+export const fetchProjects = user => dispatch =>
+  database.ref(`/projects/${user.uid}`).once('value', snap =>
+    dispatch({
+      type: types.FETCH,
+      projects: snap.val() || {},
+      user: user.slug
+    })
+  )
 
 export const createProject = project => (dispatch, getState) => {
   const key = uuidv4()

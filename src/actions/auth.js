@@ -1,5 +1,7 @@
 import { auth, database } from '../firebase'
-import { types as projects, fetchProjects } from './project'
+import { initProjects } from './project'
+import { initFeatures } from './feature'
+import { initSpecs } from './spec'
 
 export const types = {
   AUTH: '~/auth',
@@ -25,13 +27,18 @@ export const signin = ({ email, password }) => dispatch =>
     .catch(error => dispatch({ type: types.ERROR, error }))
 
 export const signout = () => dispatch =>
-  auth.signOut().then(() => dispatch({ type: projects.INIT }))
+  auth.signOut().then(() => {
+    dispatch(initProjects())
+    dispatch(initFeatures())
+    dispatch(initSpecs())
+  })
 
 const fetchUser = uid => dispatch =>
-  database.ref(`/users/${uid}`).once('value', snap => {
-    dispatch({ type: types.USER, user: snap.val() || {} })
-    dispatch(fetchProjects(uid))
-  })
+  database
+    .ref(`/users/${uid}`)
+    .once('value', snap =>
+      dispatch({ type: types.USER, user: snap.val() || {} })
+    )
 
 export const updateUser = (uid, updates) => dispatch =>
   database

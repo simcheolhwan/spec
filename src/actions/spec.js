@@ -9,6 +9,8 @@ export const types = {
   DELETE: '~/spec/delete'
 }
 
+export const initSpecs = () => dispatch => dispatch({ type: types.INIT })
+
 export const fetchSpecs = (uid, projectKey) => dispatch =>
   database
     .ref(`/specs/${uid}/${projectKey}`)

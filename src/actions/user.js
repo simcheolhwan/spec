@@ -2,21 +2,14 @@ import findKey from 'lodash/fp/findKey'
 import { database } from '../firebase'
 
 export const types = {
-  READ: '~/user/read',
-  PROJECTS: '~/user/projects'
+  FETCH: '~/user/fetch'
 }
 
-export const readUser = slug => dispatch => {
+export const fetchUser = slug => dispatch => {
   database.ref('/users').once('value', snap => {
     const users = snap.val()
     const uid = findKey(['slug', slug])(users)
-    const user = uid ? { ...users[uid], uid } : {}
-    dispatch({ type: types.READ, user })
-    uid && dispatch(readProjects(uid))
+    const user = uid ? users[uid] : {}
+    dispatch({ type: types.FETCH, user })
   })
 }
-
-const readProjects = uid => dispatch =>
-  database.ref(`/projects/${uid}`).once('value', snap => {
-    dispatch({ type: types.PROJECTS, projects: snap.val() || {} })
-  })
