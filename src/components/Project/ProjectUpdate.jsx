@@ -70,9 +70,9 @@ const ProjectUpdate = ({ state, projectKey, project, ...rest }) => {
 
 ProjectUpdate.propTypes = propTypes
 
-const mapStateToProps = (state, ownProps) => ({
-  state: state.auth.state,
-  ...getProject(state, ownProps)
+const mapStateToProps = ({ auth: { state }, projects }, ownProps) => ({
+  state,
+  ...getProject(ownProps)(projects)
 })
 
 const mapDispatchToProps = dispatch =>
