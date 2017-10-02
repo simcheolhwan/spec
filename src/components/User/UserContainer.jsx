@@ -35,14 +35,14 @@ class UserContainer extends Component {
   }
 
   render() {
-    const { state, match: { path } } = this.props
+    const { state, action: { fetchProjects }, match: { path } } = this.props
 
     const ui = {
       idle: null,
 
       user: (
         <Switch>
-          <Route path={path} exact component={User} />
+          {!fetchProjects && <Route path={path} exact component={User} />}
           <Route path={path + '/:project'} component={Project} />
         </Switch>
       ),
