@@ -9,7 +9,7 @@ const propTypes = {
   createFeature: PropTypes.func.isRequired
 }
 
-const Create = ({ projectKey, createFeature }) => {
+const FeatureCreate = ({ projectKey, createFeature }) => {
   const create = () => {
     const _name = window.prompt('Type a feature name') || ''
     const name = _name.trim()
@@ -19,9 +19,9 @@ const Create = ({ projectKey, createFeature }) => {
   return <button onClick={create}>New feature</button>
 }
 
-Create.propTypes = propTypes
+FeatureCreate.propTypes = propTypes
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators({ createFeature }, dispatch)
 
-export default connect(null, mapDispatchToProps)(Create)
+export default connect(null, mapDispatchToProps)(FeatureCreate)
