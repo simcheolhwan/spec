@@ -4,6 +4,7 @@ import styles from '../../styles'
 
 const propTypes = {
   name: PropTypes.string,
+  readOnly: PropTypes.bool,
   variant: PropTypes.object,
   onChange: PropTypes.func,
   onKeyPress: PropTypes.func
@@ -11,15 +12,17 @@ const propTypes = {
 
 const defaultProps = {
   name: '',
+  readOnly: false,
   variant: {},
   onChange: () => undefined,
   onKeyPress: () => undefined
 }
 
-const Name = ({ name, variant, onChange, onKeyPress }) => (
+const Name = ({ name, readOnly, variant, onChange, onKeyPress }) => (
   <input
     style={{ ...styles.input, ...variant }}
     value={name}
+    readOnly={readOnly}
     onChange={onChange}
     onKeyPress={onKeyPress}
   />

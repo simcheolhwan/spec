@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { getProject } from '../../utils'
+import { match, getProject } from '../../utils'
 import Page from '../Page'
 import Feature from './Feature'
 import FeatureCreate from './FeatureCreate'
@@ -9,13 +9,18 @@ import FeatureCreate from './FeatureCreate'
 const propTypes = {
   features: PropTypes.object.isRequired,
   specs: PropTypes.object.isRequired,
-  projectKey: PropTypes.string.isRequired
+  projectKey: PropTypes.string.isRequired,
+  isOwner: PropTypes.bool.isRequired
 }
 
-const Features = ({ features, specs, projectKey }) => (
+const Features = ({ features, specs, projectKey, isOwner }) => (
   <Page
     title="Features"
-    actions={[<FeatureCreate projectKey={projectKey} key="Featurecreate" />]}
+    actions={
+      isOwner
+        ? [<FeatureCreate projectKey={projectKey} key="Featurecreate" />]
+        : []
+    }
   >
     {features.order.map(key => (
       <Feature
@@ -23,6 +28,7 @@ const Features = ({ features, specs, projectKey }) => (
         featureKey={key}
         feature={features.list[key]}
         specs={{ list: specs.list, order: specs.orders[key] || [] }}
+        isOwner={isOwner}
         key={key}
       />
     ))}
@@ -31,10 +37,11 @@ const Features = ({ features, specs, projectKey }) => (
 
 Features.propTypes = propTypes
 
-const mapStateToProps = ({ projects, features, specs }, ownProps) => ({
+const mapStateToProps = ({ auth, projects, features, specs }, ownProps) => ({
   ...getProject(ownProps)(projects),
   features,
-  specs
+  specs,
+  isOwner: match(ownProps)(auth)
 })
 
 export default connect(mapStateToProps)(Features)
