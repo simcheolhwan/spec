@@ -31,7 +31,7 @@ class UserContainer extends Component {
 
   fetch = ({ user, action, fetchUser, fetchProjects }) => {
     action.fetchUser && fetchUser(user.slug)
-    action.fetchProjects && fetchProjects(user)
+    action.fetchProjects && fetchProjects(user.uid)
   }
 
   render() {
@@ -60,8 +60,8 @@ const mapStateToProps = ({ auth, user, projects }, ownProps) => {
   const { user: slug } = ownProps.match.params
   const matchAuth = slug === auth.user.slug
   const matchUser = slug === user.user.slug
-  const matchProjects = slug === projects.user
   const uid = matchAuth ? auth.user.uid : matchUser ? user.user.uid : undefined
+  const matchProjects = uid === projects.user
   const state = matchAuth ? auth.state : user.state
   const userNotFound = state === 404
 
