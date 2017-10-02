@@ -1,7 +1,7 @@
 import without from 'lodash/fp/without'
 import { combineReducers } from 'redux'
 import dotProp from 'dot-prop-immutable'
-import { types } from 'actions/featureActions'
+import { types } from '../actions/featureActions'
 
 const list = (state = {}, action) => {
   switch (action.type) {

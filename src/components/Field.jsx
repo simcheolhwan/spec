@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { slugify } from 'utils'
-import { BOLD } from 'styles'
+import { slugify } from '../utils'
+import { BOLD } from '../styles'
 
 const propTypes = {
   label: PropTypes.string.isRequired,

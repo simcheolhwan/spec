@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { createFeature } from 'actions/featureActions'
+import { createFeature } from '../../actions/featureActions'
 
 const propTypes = {
   projectKey: PropTypes.string.isRequired,

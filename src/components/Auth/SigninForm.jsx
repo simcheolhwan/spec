@@ -1,6 +1,6 @@
 import React from 'react'
 import { reduxForm } from 'redux-form'
-import Form from 'Form'
+import Form from '../Form'
 
 const fields = {
   Email: { type: 'email' },

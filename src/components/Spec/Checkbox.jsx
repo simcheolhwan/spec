@@ -1,8 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { colors } from 'styles'
-import { Done, Blank } from 'Icons'
-import Button from 'Button'
+import { colors } from '../../styles'
+import { Done, Blank } from '../Icons'
+import Button from '../Button'
 
 const propTypes = {
   checked: PropTypes.bool.isRequired,
