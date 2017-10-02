@@ -1,5 +1,6 @@
 {
   "name": "spec",
+  "homepage" : "https://spec.nomad.works",
   "private": true,
   "dependencies": {
     "dot-prop-immutable": "^1.3.1",
