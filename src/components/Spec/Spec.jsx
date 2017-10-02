@@ -17,6 +17,7 @@ const propTypes = {
   specKey: PropTypes.string.isRequired,
   spec: PropTypes.object.isRequired,
   specs: PropTypes.object.isRequired,
+  isOwner: PropTypes.bool.isRequired,
   updateSpec: PropTypes.func.isRequired,
   deleteSpec: PropTypes.func.isRequired
 }
@@ -72,7 +73,7 @@ class Spec extends Component {
   }
 
   render() {
-    const { spec, specs } = this.props
+    const { spec, specs, isOwner } = this.props
     const { name, hover } = this.state
     const { completed = false, subspecs = [] } = spec
     const hasSubspecs = !!subspecs.length
@@ -90,13 +91,14 @@ class Spec extends Component {
 
       Checkbox: {
         checked: completed,
-        onClick: this.toggleCompleted
+        onClick: isOwner ? this.toggleCompleted : undefined
       },
 
       Name: {
         name,
         onChange: this.setName,
         onKeyPress: this.handleKeyPress,
+        readOnly: !isOwner,
         variant: { flex: 1 }
       },
 
@@ -128,7 +130,7 @@ class Spec extends Component {
           <Checkbox {...props.Checkbox} />
           <Name {...props.Name} />
           <Meta {...props.Meta} />
-          <Menu {...props.Menu} />
+          {isOwner && <Menu {...props.Menu} />}
         </section>
 
         {hasSubspecs && <Subspecs subspecs={subspecs} specs={specs} />}

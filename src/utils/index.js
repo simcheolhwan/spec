@@ -24,11 +24,7 @@ export const sanitize = values => {
 export const match = props => ({ user }) =>
   props.match.params.user === user.slug
 
-export const getProject = ({ auth, projects, user }, props) => {
-  const { list } = projects
-  const { project } = props.match.params
-  const projectKey = findKey(['slug', project])(list)
-  const isOwned = match(props)(auth)
-  const { user: _user } = isOwned ? auth : user
-  return { project: list[projectKey], projectKey, isOwned, user: _user }
+export const getProject = props => ({ list }) => {
+  const projectKey = findKey(['slug', props.match.params.project])(list)
+  return { project: list[projectKey], projectKey }
 }

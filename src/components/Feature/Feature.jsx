@@ -16,6 +16,7 @@ const propTypes = {
     name: PropTypes.string.isRequired
   }).isRequired,
   specs: PropTypes.object.isRequired,
+  isOwner: PropTypes.bool.isRequired,
   updateFeature: PropTypes.func.isRequired,
   deleteFeature: PropTypes.func.isRequired
 }
@@ -49,6 +50,7 @@ class Feature extends Component {
   }
 
   title = () => {
+    const { isOwner } = this.props
     const { name } = this.state
 
     return (
@@ -56,19 +58,22 @@ class Feature extends Component {
         <input
           style={{ flex: 1, ...styles.input }}
           value={name}
+          readOnly={!isOwner}
           onChange={this.setName}
           onKeyPress={this.handleKeyPress}
         />
 
-        <Button variant={{ flex: 'none' }} onClick={this.delete}>
-          <Delete color={colors.silver} />
-        </Button>
+        {isOwner && (
+          <Button variant={{ flex: 'none' }} onClick={this.delete}>
+            <Delete color={colors.silver} />
+          </Button>
+        )}
       </h2>
     )
   }
 
   specs = () => {
-    const { projectKey, featureKey, specs } = this.props
+    const { projectKey, featureKey, specs, isOwner } = this.props
 
     return (
       !!specs.order.length && (
@@ -80,6 +85,7 @@ class Feature extends Component {
               specKey={key}
               specs={specs}
               spec={specs.list[key]}
+              isOwner={isOwner}
               key={key}
             />
           ))}

@@ -11,7 +11,7 @@ const propTypes = {
   createSpec: PropTypes.func.isRequired
 }
 
-class Create extends Component {
+class SpecCreate extends Component {
   state = { name: '' }
 
   handleKeyPress = e => {
@@ -44,9 +44,9 @@ class Create extends Component {
   }
 }
 
-Create.propTypes = propTypes
+SpecCreate.propTypes = propTypes
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators({ createSpec }, dispatch)
 
-export default connect(null, mapDispatchToProps)(Create)
+export default connect(null, mapDispatchToProps)(SpecCreate)

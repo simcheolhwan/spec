@@ -31,18 +31,18 @@ class UserContainer extends Component {
 
   fetch = ({ user, action, fetchUser, fetchProjects }) => {
     action.fetchUser && fetchUser(user.slug)
-    action.fetchProjects && fetchProjects(user)
+    action.fetchProjects && fetchProjects(user.uid)
   }
 
   render() {
-    const { state, match: { path } } = this.props
+    const { state, action: { fetchProjects }, match: { path } } = this.props
 
     const ui = {
       idle: null,
 
       user: (
         <Switch>
-          <Route path={path} exact component={User} />
+          {!fetchProjects && <Route path={path} exact component={User} />}
           <Route path={path + '/:project'} component={Project} />
         </Switch>
       ),
@@ -60,18 +60,18 @@ const mapStateToProps = ({ auth, user, projects }, ownProps) => {
   const { user: slug } = ownProps.match.params
   const matchAuth = slug === auth.user.slug
   const matchUser = slug === user.user.slug
-  const matchProjects = slug === projects.user
   const uid = matchAuth ? auth.user.uid : matchUser ? user.user.uid : undefined
+  const matchProjects = uid === projects.user
   const state = matchAuth ? auth.state : user.state
   const userNotFound = state === 404
 
   return {
     state,
-    user: { slug, uid },
     action: {
       fetchUser: !matchAuth && !matchUser && !userNotFound,
       fetchProjects: !matchProjects && !!uid
-    }
+    },
+    user: { slug, uid }
   }
 }
 

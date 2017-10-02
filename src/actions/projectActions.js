@@ -12,12 +12,12 @@ export const types = {
 
 export const initProjects = () => dispatch => dispatch({ type: types.INIT })
 
-export const fetchProjects = user => dispatch =>
-  database.ref(`/projects/${user.uid}`).once('value', snap =>
+export const fetchProjects = uid => dispatch =>
+  database.ref(`/projects/${uid}`).once('value', snap =>
     dispatch({
       type: types.FETCH,
       projects: snap.val() || {},
-      user: user.slug
+      user: uid
     })
   )
 
