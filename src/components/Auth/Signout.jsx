@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
-import { signout } from '../../actions/auth'
+import { signout } from 'actions/auth'
 
 const propTypes = {
   signout: PropTypes.func.isRequired

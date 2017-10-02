@@ -1,10 +1,10 @@
 import React from 'react'
 import { Switch, Route } from 'react-router-dom'
-import Signin from './components/Auth/Signin'
-import Signout from './components/Auth/Signout'
-import Settings from './components/Auth/Settings'
-import ProjectCreate from './components/Project/ProjectCreate'
-import UserContainer from './components/User/UserContainer.jsx'
+import Signin from 'Auth/Signin'
+import Signout from 'Auth/Signout'
+import Settings from 'Auth/Settings'
+import ProjectCreate from 'Project/ProjectCreate'
+import UserContainer from 'User/UserContainer.jsx'
 
 export default (
   <Switch>

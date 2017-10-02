@@ -3,9 +3,9 @@ import PropTypes from 'prop-types'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { ConnectedRouter as Router } from 'react-router-redux'
-import { checkAuth } from '../../actions/auth'
+import { checkAuth } from 'actions/auth'
+import routes from 'routes'
 import history from '../../history'
-import routes from '../../routes'
 import Nav from './NavContainer'
 
 const propTypes = {

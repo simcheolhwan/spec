@@ -1,8 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Field } from 'redux-form'
-import renderField from './Field'
-import { Sync, Done } from './Icons'
+import renderField from 'Field'
+import { Sync, Done } from 'Icons'
 
 const propTypes = {
   fields: PropTypes.object.isRequired,

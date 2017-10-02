@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { colors } from '../styles'
+import { colors } from 'styles'
 
 const propTypes = {
   title: PropTypes.string,

@@ -3,9 +3,9 @@ import PropTypes from 'prop-types'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
-import { createProject } from '../../actions/project'
-import { sanitize } from '../../utils'
-import Page from '../Page'
+import { createProject } from 'actions/project'
+import { sanitize } from 'utils'
+import Page from 'Page'
 import Form from './ProjectForm'
 
 const propTypes = {

@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux'
-import { types } from '../actions/auth'
+import { types } from 'actions/auth'
 
 const authenticated = (state = false, action) => {
   switch (action.type) {
