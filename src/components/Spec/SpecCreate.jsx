@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { createSpec } from '../../actions/spec'
-import Name from '../../components/Spec/Name'
+import { createSpec } from 'actions/specActions'
+import Name from './Name'
 
 const propTypes = {
   projectKey: PropTypes.string.isRequired,

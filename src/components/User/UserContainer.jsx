@@ -3,11 +3,11 @@ import PropTypes from 'prop-types'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Switch, Route } from 'react-router-dom'
-import { fetchUser } from '../../actions/user'
-import { fetchProjects } from '../../actions/project'
-import NotFound from '../../components/NotFound'
+import { fetchUser } from 'actions/userActions'
+import { fetchProjects } from 'actions/projectActions'
+import NotFound from 'NotFound'
 import User from './User'
-import Project from '../Project'
+import Project from 'Project/Project'
 
 const propTypes = {
   state: PropTypes.oneOf(['idle', 'user', 404]),

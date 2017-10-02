@@ -3,12 +3,12 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Switch, Route, Link } from 'react-router-dom'
-import { getProject } from '../../utils'
-import { colors } from '../../styles'
-import NotFound from '../../components/NotFound'
-import Grid from '../../components/Grid'
-import Update from './Update'
-import Features from '../Feature/Features'
+import { getProject } from 'utils'
+import { colors } from 'styles'
+import NotFound from 'NotFound'
+import Grid from 'Grid'
+import ProjectUpdate from './ProjectUpdate'
+import Features from 'Feature/Features'
 
 const propTypes = {
   project: PropTypes.object,
@@ -55,7 +55,7 @@ const Project = ({ project, isOwned, user: { name, slug }, match }) => {
     main: (
       <Switch>
         <Route path={match.path} exact component={Features} />
-        <Route path={match.path + '/settings'} component={Update} />
+        <Route path={match.path + '/settings'} component={ProjectUpdate} />
       </Switch>
     )
   }

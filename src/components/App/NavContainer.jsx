@@ -1,6 +1,6 @@
 import findKey from 'lodash/fp/findKey'
 import { connect } from 'react-redux'
-import Nav from '../../components/App/Nav'
+import Nav from './Nav'
 
 const findSyncing = findKey('isSyncing')
 
