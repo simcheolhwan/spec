@@ -1,7 +1,7 @@
 import { auth, database } from '../firebase'
-import { initProjects } from './project'
-import { initFeatures } from './feature'
-import { initSpecs } from './spec'
+import { initProjects } from './projectActions'
+import { initFeatures } from './featureActions'
+import { initSpecs } from './specActions'
 
 export const types = {
   AUTH: '~/auth',

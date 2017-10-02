@@ -1,7 +1,7 @@
 import without from 'lodash/fp/without'
 import { combineReducers } from 'redux'
 import dotProp from 'dot-prop-immutable'
-import { types } from 'actions/feature'
+import { types } from 'actions/specActions'
 
 const list = (state = {}, action) => {
   switch (action.type) {
@@ -9,11 +9,11 @@ const list = (state = {}, action) => {
       return {}
 
     case types.FETCH:
-      return action.features.list || {}
+      return action.specs.list || {}
 
     case types.CREATE:
     case types.UPDATE:
-      return dotProp.set(state, action.key, action.feature)
+      return dotProp.set(state, action.key, action.spec)
 
     case types.DELETE:
       return dotProp.delete(state, action.key)
@@ -23,23 +23,27 @@ const list = (state = {}, action) => {
   }
 }
 
-const order = (state = [], action) => {
+const orders = (state = {}, action) => {
   switch (action.type) {
     case types.INIT:
-      return []
+      return {}
 
     case types.FETCH:
-      return action.features.order || []
+      return action.specs.orders || {}
 
     case types.CREATE:
-      return [...state, action.key]
+      return dotProp.merge(state, action.featureKey, [action.key])
 
     case types.DELETE:
-      return without([action.key])(state)
+      return dotProp.set(
+        state,
+        action.featureKey,
+        without([action.key])(state[action.featureKey])
+      )
 
     default:
       return state
   }
 }
 
-export default combineReducers({ list, order })
+export default combineReducers({ list, orders })
