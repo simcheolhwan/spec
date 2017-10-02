@@ -3,80 +3,79 @@ import PropTypes from 'prop-types'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Switch, Route } from 'react-router-dom'
-import { readUser } from '../../actions/user'
+import { fetchUser } from '../../actions/user'
+import { fetchProjects } from '../../actions/project'
+import NotFound from '../../components/NotFound'
 import User from './User'
 import Project from '../Project'
 
 const propTypes = {
-  state: PropTypes.oneOf(['idle', 'projects', 404]),
-  read: PropTypes.bool,
-  readUser: PropTypes.func.isRequired
+  state: PropTypes.oneOf(['idle', 'user', 404]),
+  user: PropTypes.object.isRequired,
+  action: PropTypes.shape({
+    fetchUser: PropTypes.bool.isRequired,
+    fetchProjects: PropTypes.bool.isRequired
+  }).isRequired,
+  fetchUser: PropTypes.func.isRequired,
+  fetchProjects: PropTypes.func.isRequired
 }
 
-const defaultProps = {
-  read: false
-}
-
-class Container extends Component {
+class UserContainer extends Component {
   componentWillMount() {
-    const { read, readUser, match } = this.props
-    read && readUser(match.params.user)
+    this.fetch(this.props)
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.fetch(nextProps)
+  }
+
+  fetch = ({ user, action, fetchUser, fetchProjects }) => {
+    action.fetchUser && fetchUser(user.slug)
+    action.fetchProjects && fetchProjects(user)
   }
 
   render() {
     const { state, match: { path } } = this.props
 
     const ui = {
-      idle: <article>Fetching...</article>,
-      projects: (
+      idle: null,
+
+      user: (
         <Switch>
           <Route path={path} exact component={User} />
           <Route path={path + '/:project'} component={Project} />
         </Switch>
       ),
-      404: (
-        <article>
-          <h1>Not Found</h1>
-        </article>
-      )
+
+      404: <NotFound />
     }
 
     return ui[state]
   }
 }
 
-Container.propTypes = propTypes
-Container.defaultProps = defaultProps
+UserContainer.propTypes = propTypes
 
-const mapStateToProps = ({ auth, projects, user }, { match: { params } }) => {
-  const { user: slug } = params
+const mapStateToProps = ({ auth, user, projects }, ownProps) => {
+  const { user: slug } = ownProps.match.params
+  const matchAuth = slug === auth.user.slug
+  const matchUser = slug === user.user.slug
+  const matchProjects = slug === projects.user
+  const uid = matchAuth ? auth.user.uid : matchUser ? user.user.uid : undefined
+  const state = matchAuth ? auth.state : user.state
+  const userNotFound = state === 404
 
-  const stateByUser = {
-    idle: { state: 'idle', read: true },
-    404: { state: 404 },
-    projects:
-      slug === user.user.slug
-        ? { state: 'projects' }
-        : { state: 'idle', read: true }
+  return {
+    state,
+    user: { slug, uid },
+    action: {
+      fetchUser: !matchAuth && !matchUser && !userNotFound,
+      fetchProjects: !matchProjects && !!uid
+    }
   }
-
-  const stateByProjects = {
-    idle: { state: 'idle' },
-    projects: { state: 'projects' }
-  }
-
-  const state = {
-    guest: stateByUser[user.state],
-    user:
-      slug === auth.user.slug
-        ? stateByProjects[projects.state]
-        : stateByUser[user.state]
-  }
-
-  return state[auth.state]
 }
 
 const mapDispatchToProps = dispatch =>
-  bindActionCreators({ readUser }, dispatch)
+  bindActionCreators({ fetchUser, fetchProjects }, dispatch)
 
-export default connect(mapStateToProps, mapDispatchToProps)(Container)
+export default connect(mapStateToProps, mapDispatchToProps)(UserContainer)

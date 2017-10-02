@@ -1,8 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { colors } from '../../styles'
-import Page from '../Page'
+import Page from '../../components/Page'
 
 const propTypes = {
   user: PropTypes.object.isRequired,
@@ -46,4 +47,6 @@ const style = {
   Project: { borderBottom: `1px solid ${colors.line}`, padding: '1rem 0' }
 }
 
-export default Projects
+const mapStateToProps = ({ projects }) => ({ projects })
+
+export default connect(mapStateToProps)(Projects)
