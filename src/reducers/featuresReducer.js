@@ -42,4 +42,14 @@ const order = (state = [], action) => {
   }
 }
 
-export default combineReducers({ list, order })
+const project = (state = '', action) => {
+  switch (action.type) {
+    case types.FETCH:
+      return action.project
+
+    default:
+      return state
+  }
+}
+
+export default combineReducers({ list, order, project })
