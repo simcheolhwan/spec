@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { Switch, Route, Link } from 'react-router-dom'
 import { getProject } from '../../utils'
 import { colors } from '../../styles'
+import NotFound from '../../components/NotFound'
 import Grid from '../../components/Grid'
 import Update from './Update'
 import Features from '../Feature/Features'
@@ -59,7 +60,7 @@ const Project = ({ project, isOwned, user: { name, slug }, match }) => {
     )
   }
 
-  return isEmpty(project) ? <article>Not found</article> : <Grid {...grid} />
+  return isEmpty(project) ? <NotFound /> : <Grid {...grid} />
 }
 
 Project.propTypes = propTypes
