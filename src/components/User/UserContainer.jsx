@@ -67,11 +67,11 @@ const mapStateToProps = ({ auth, user, projects }, ownProps) => {
 
   return {
     state,
-    user: { slug, uid },
     action: {
       fetchUser: !matchAuth && !matchUser && !userNotFound,
       fetchProjects: !matchProjects && !!uid
-    }
+    },
+    user: { slug, uid }
   }
 }
 
