@@ -4,12 +4,12 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { updateSpec, deleteSpec } from '../../actions/spec'
 import { colors } from '../../styles'
-import { File, Delete } from '../../components/Icons'
-import Checkbox from '../../components/Spec/Checkbox'
-import Name from '../../components/Spec/Name'
-import Meta from '../../components/Spec/Meta'
-import Menu from '../../components/Spec/Menu'
-import Subspecs from '../../components/Spec/Subspecs'
+import { File, Delete } from '../Icons'
+import Checkbox from './Checkbox'
+import Name from './Name'
+import Meta from './Meta'
+import Menu from './Menu'
+import Subspecs from './Subspecs'
 
 const propTypes = {
   projectKey: PropTypes.string.isRequired,

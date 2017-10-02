@@ -5,9 +5,9 @@ import { bindActionCreators } from 'redux'
 import { getProject } from '../../utils'
 import { fetchFeatures } from '../../actions/feature'
 import { fetchSpecs } from '../../actions/spec'
-import Page from '../../components/Page'
-import Feature from '.'
-import Create from './Create'
+import Page from '../Page'
+import Feature from './Feature'
+import FeatureCreate from './FeatureCreate'
 
 const propTypes = {
   features: PropTypes.object.isRequired,
@@ -31,7 +31,9 @@ class Features extends Component {
     return (
       <Page
         title="Features"
-        actions={[<Create projectKey={projectKey} key="create" />]}
+        actions={[
+          <FeatureCreate projectKey={projectKey} key="Featurecreate" />
+        ]}
       >
         {features.order.map(key => (
           <Feature

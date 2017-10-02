@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import './keyframes.css'
+import './Progress.css'
 
 const propTypes = {
   size: PropTypes.number,

@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import { colors } from '../../styles'
-import Progress from '../Progress'
+import Progress from '../Progress/Progress'
 
 const propTypes = {
   title: PropTypes.string.isRequired,

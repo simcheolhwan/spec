@@ -5,8 +5,8 @@ import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import { updateProject, deleteProject } from '../../actions/project'
 import { getProject, sanitize } from '../../utils'
-import Page from '../../components/Page'
-import Actions from '../../components/Actions'
+import Page from '../Page'
+import Actions from '../Actions'
 import Form from './ProjectForm'
 
 const propTypes = {

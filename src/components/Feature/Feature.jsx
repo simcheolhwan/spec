@@ -4,10 +4,10 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { updateFeature, deleteFeature } from '../../actions/feature'
 import styles, { colors } from '../../styles'
-import Button from '../../components/Button'
-import { Delete } from '../../components/Icons'
-import Spec from '../Spec'
-import SpecCreate from '../Spec/Create'
+import Button from '../Button'
+import { Delete } from '../Icons'
+import Spec from '../Spec/Spec'
+import SpecCreate from '../Spec/SpecCreate'
 
 const propTypes = {
   projectKey: PropTypes.string.isRequired,

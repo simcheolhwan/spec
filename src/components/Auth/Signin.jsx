@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import { signin } from '../../actions/auth'
 import { sanitize } from '../../utils'
-import Page from '../../components/Page'
+import Page from '../Page'
 import Form from './SigninForm'
 
 const propTypes = {

@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import Spec from '../../containers/Spec'
+import Spec from './Spec'
 
 const propTypes = {
   subspecs: PropTypes.array.isRequired,

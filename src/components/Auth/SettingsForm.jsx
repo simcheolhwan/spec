@@ -1,7 +1,7 @@
 import React from 'react'
 import { reduxForm } from 'redux-form'
 import { slugify } from '../../utils'
-import Form from '../../components/Form'
+import Form from '../Form'
 
 const fields = {
   Name: { type: 'string' },

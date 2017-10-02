@@ -6,7 +6,7 @@ import { ConnectedRouter as Router } from 'react-router-redux'
 import { checkAuth } from '../../actions/auth'
 import history from '../../history'
 import routes from '../../routes'
-import Nav from './Nav'
+import Nav from './NavContainer'
 
 const propTypes = {
   state: PropTypes.oneOf(['idle', 'guest', 'user']).isRequired,

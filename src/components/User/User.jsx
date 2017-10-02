@@ -2,8 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { match } from '../../utils'
-import Grid from '../../components/Grid'
-import Profile from '../../components/User/Profile'
+import Grid from '../Grid'
+import Profile from './Profile'
 import Projects from '../Project/Projects'
 
 const propTypes = {

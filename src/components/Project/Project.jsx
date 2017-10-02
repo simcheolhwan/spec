@@ -5,9 +5,9 @@ import { connect } from 'react-redux'
 import { Switch, Route, Link } from 'react-router-dom'
 import { getProject } from '../../utils'
 import { colors } from '../../styles'
-import NotFound from '../../components/NotFound'
-import Grid from '../../components/Grid'
-import Update from './Update'
+import NotFound from '../NotFound'
+import Grid from '../Grid'
+import ProjectUpdate from './ProjectUpdate'
 import Features from '../Feature/Features'
 
 const propTypes = {
@@ -55,7 +55,7 @@ const Project = ({ project, isOwned, user: { name, slug }, match }) => {
     main: (
       <Switch>
         <Route path={match.path} exact component={Features} />
-        <Route path={match.path + '/settings'} component={Update} />
+        <Route path={match.path + '/settings'} component={ProjectUpdate} />
       </Switch>
     )
   }
