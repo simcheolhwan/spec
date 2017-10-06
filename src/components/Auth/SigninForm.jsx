@@ -4,7 +4,7 @@ import Form from '../Form'
 
 const fields = {
   Email: { type: 'email' },
-  Password: { type: 'password' }
+  Password: { type: 'password', autoComplete: 'on' }
 }
 
 const validate = ({ email = '', password = '' }) => {
