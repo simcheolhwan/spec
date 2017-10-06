@@ -35,13 +35,16 @@ export const signout = () => dispatch =>
 
 const fetchUser = uid => dispatch =>
   database
-    .ref(`/users/${uid}`)
-    .once('value', snap =>
-      dispatch({ type: types.USER, user: snap.val() || {} })
+    .collection('users')
+    .doc(uid)
+    .get()
+    .then(doc =>
+      dispatch({ type: types.USER, user: doc.exists ? doc.data() : {} })
     )
 
 export const updateUser = (uid, updates) => dispatch =>
   database
-    .ref(`/users/${uid}`)
+    .collection('users')
+    .doc(uid)
     .set(updates)
     .then(() => dispatch({ type: types.USER, user: updates }))
