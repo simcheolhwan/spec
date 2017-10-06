@@ -25,7 +25,7 @@ const mapStateToProps = ({ auth, projects, features, specs }) => {
   return {
     title: 'Spec',
     indicator: syncing,
-    links: links[auth.state]
+    links: links[auth.state].filter(link => link.to)
   }
 }
 
