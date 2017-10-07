@@ -7,8 +7,18 @@ const propTypes = {
   specs: PropTypes.object.isRequired
 }
 
-const Subspecs = ({ subspecs, specs }) =>
-  subspecs.map(key => <Spec spec={specs[key]} specs={specs} key={key} />)
+const Subspecs = ({ subspecs, ...props }) =>
+  subspecs.map(key => (
+    <Spec
+      {...props}
+      isSubspec={true}
+      parentKey={props.specKey}
+      specKey={key}
+      spec={props.specs.list[key]}
+      variant={{ paddingLeft: '1.5rem' }}
+      key={key}
+    />
+  ))
 
 Subspecs.propTypes = propTypes
 
