@@ -23,7 +23,9 @@ class App extends Component {
       <Router history={history}>
         <div>
           <Nav />
-          <main>{this.props.state !== 'idle' && routes}</main>
+          <main style={{ maxWidth: 960 }}>
+            {this.props.state !== 'idle' && routes}
+          </main>
         </div>
       </Router>
     )

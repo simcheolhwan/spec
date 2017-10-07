@@ -25,13 +25,9 @@ export const createSpec = (projectKey, featureKey, spec) => (
 ) => {
   const key = uuidv4()
   const { uid } = getState().auth.user
+  const specSyncing = { ...spec, isSyncing: true }
 
-  dispatch({
-    type: types.CREATE,
-    featureKey,
-    key,
-    spec: { ...spec, isSyncing: true }
-  })
+  dispatch({ type: types.CREATE, featureKey, key, spec: specSyncing })
 
   database
     .ref(`/specs/${uid}/${projectKey}`)
@@ -39,16 +35,8 @@ export const createSpec = (projectKey, featureKey, spec) => (
       [`/list/${key}`]: spec,
       [`/orders/${featureKey}`]: getState().specs.orders[featureKey]
     })
-    .then(() => {
-      dispatch({
-        type: types.UPDATE,
-        key,
-        spec: { ...spec, isSyncing: false }
-      })
-    })
-    .catch(error => {
-      dispatch({ type: types.DELETE, featureKey, key })
-    })
+    .then(() => dispatch({ type: types.UPDATE, key, spec }))
+    .catch(error => dispatch({ type: types.DELETE, featureKey, key }))
 }
 
 export const updateSpec = (projectKey, featureKey, key, updates) => (
@@ -57,26 +45,16 @@ export const updateSpec = (projectKey, featureKey, key, updates) => (
 ) => {
   const { uid } = getState().auth.user
   const spec = getState().specs.list[key]
+  const specUpdates = { ...spec, ...updates }
+  const specUpdatesSyncing = { ...specUpdates, isSyncing: true }
 
-  dispatch({
-    type: types.UPDATE,
-    key,
-    spec: { ...spec, ...updates, isSyncing: true }
-  })
+  dispatch({ type: types.UPDATE, key, spec: specUpdatesSyncing })
 
   database
     .ref(`/specs/${uid}/${projectKey}/list/${key}`)
     .update(updates)
-    .then(() =>
-      dispatch({
-        type: types.UPDATE,
-        key,
-        spec: { ...spec, ...updates, isSyncing: false }
-      })
-    )
-    .catch(error => {
-      dispatch({ type: types.UPDATE, key, spec })
-    })
+    .then(() => dispatch({ type: types.UPDATE, key, spec: specUpdates }))
+    .catch(error => dispatch({ type: types.UPDATE, key, spec }))
 }
 
 export const deleteSpec = (projectKey, featureKey, key) => (
@@ -94,9 +72,7 @@ export const deleteSpec = (projectKey, featureKey, key) => (
       [`/list/${key}`]: null,
       [`/orders/${featureKey}`]: getState().specs.orders[featureKey]
     })
-    .catch(error => {
-      dispatch({ type: types.CREATE, featureKey, key, spec })
-    })
+    .catch(error => dispatch({ type: types.CREATE, featureKey, key, spec }))
 }
 
 export const createSubspec = (projectKey, parentKey, spec) => (
