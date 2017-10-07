@@ -32,14 +32,18 @@ const orders = (state = {}, action) => {
       return action.specs.orders || {}
 
     case types.CREATE:
-      return dotProp.merge(state, action.featureKey, [action.key])
+      return action.featureKey
+        ? dotProp.merge(state, action.featureKey, [action.key])
+        : state
 
     case types.DELETE:
-      return dotProp.set(
-        state,
-        action.featureKey,
-        without([action.key])(state[action.featureKey])
-      )
+      return action.featureKey
+        ? dotProp.set(
+            state,
+            action.featureKey,
+            without([action.key])(state[action.featureKey])
+          )
+        : state
 
     default:
       return state
