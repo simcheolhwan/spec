@@ -28,16 +28,16 @@ const ProjectUpdate = ({ state, projectKey, project, ...rest }) => {
 
   const destructiveActions = [
     {
-      title: 'Make this repository private',
-      description: 'Hide this repository from the public.',
+      title: 'Make this project private',
+      description: 'Hide this project from the public.',
       button: project.isClosed
         ? { label: 'Reopen project', action: open }
         : { label: 'Close project', action: close }
     },
     {
-      title: 'Delete this repository',
+      title: 'Delete this project',
       description:
-        'Once you delete a repository, there is no going back. ' +
+        'Once you delete a project, there is no going back. ' +
         'Please be certain.',
       button: {
         label: 'Delete project',
