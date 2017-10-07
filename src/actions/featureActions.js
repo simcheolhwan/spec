@@ -23,12 +23,9 @@ export const fetchFeatures = (uid, projectKey) => dispatch =>
 export const createFeature = (projectKey, feature) => (dispatch, getState) => {
   const key = uuidv4()
   const { uid } = getState().auth.user
+  const featureSyncing = { ...feature, isSyncing: true }
 
-  dispatch({
-    type: types.CREATE,
-    key,
-    feature: { ...feature, isSyncing: true }
-  })
+  dispatch({ type: types.CREATE, key, feature: featureSyncing })
 
   database
     .ref(`/features/${uid}/${projectKey}`)
@@ -36,16 +33,8 @@ export const createFeature = (projectKey, feature) => (dispatch, getState) => {
       [`/list/${key}`]: feature,
       [`/order`]: getState().features.order
     })
-    .then(() => {
-      dispatch({
-        type: types.UPDATE,
-        key,
-        feature: { ...feature, isSyncing: false }
-      })
-    })
-    .catch(error => {
-      dispatch({ type: types.DELETE, key })
-    })
+    .then(() => dispatch({ type: types.UPDATE, key, feature }))
+    .catch(error => dispatch({ type: types.DELETE, key }))
 }
 
 export const updateFeature = (projectKey, key, updates) => (
@@ -54,26 +43,16 @@ export const updateFeature = (projectKey, key, updates) => (
 ) => {
   const { uid } = getState().auth.user
   const feature = getState().features.list[key]
+  const featureUpdates = { ...feature, ...updates }
+  const featureUpdatesSyncing = { ...featureUpdates, isSyncing: true }
 
-  dispatch({
-    type: types.UPDATE,
-    key,
-    feature: { ...feature, ...updates, isSyncing: true }
-  })
+  dispatch({ type: types.UPDATE, key, feature: featureUpdatesSyncing })
 
   database
     .ref(`/features/${uid}/${projectKey}/list/${key}`)
     .update(updates)
-    .then(() =>
-      dispatch({
-        type: types.UPDATE,
-        key,
-        feature: { ...feature, ...updates, isSyncing: false }
-      })
-    )
-    .catch(error => {
-      dispatch({ type: types.UPDATE, key, feature })
-    })
+    .then(() => dispatch({ type: types.UPDATE, key, feature: featureUpdates }))
+    .catch(error => dispatch({ type: types.UPDATE, key, feature }))
 }
 
 export const deleteFeature = (projectKey, key) => (dispatch, getState) => {
@@ -88,7 +67,5 @@ export const deleteFeature = (projectKey, key) => (dispatch, getState) => {
       [`/list/${key}`]: null,
       [`/order`]: getState().features.order
     })
-    .catch(error => {
-      dispatch({ type: types.CREATE, key, feature })
-    })
+    .catch(error => dispatch({ type: types.CREATE, key, feature }))
 }

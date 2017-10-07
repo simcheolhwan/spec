@@ -5,11 +5,10 @@ export const types = {
   FETCH: '~/user/fetch'
 }
 
-export const fetchUser = slug => dispatch => {
+export const fetchUser = slug => dispatch =>
   database.ref('/users').once('value', snap => {
     const users = snap.val()
     const uid = findKey(['slug', slug])(users)
     const user = uid ? users[uid] : {}
     dispatch({ type: types.FETCH, user })
   })
-}
