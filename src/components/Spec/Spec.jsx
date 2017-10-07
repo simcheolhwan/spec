@@ -1,10 +1,11 @@
+import compact from 'lodash/fp/compact'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { updateSpec, deleteSpec } from '../../actions/specActions'
+import * as specActions from '../../actions/specActions'
 import { colors } from '../../styles'
-import { File, Delete } from '../Icons'
+import { Sub, File, Delete } from '../Icons'
 import Checkbox from './Checkbox'
 import Name from './Name'
 import Meta from './Meta'
@@ -25,8 +26,22 @@ const propTypes = {
 class Spec extends Component {
   state = { name: this.props.spec.name, hover: false }
 
+  toggleCompleted = () => {
+    const { spec: { completed } } = this.props
+    this.update({ completed: !completed })
+  }
+
+  setName = e => {
+    this.setState({ name: e.target.value })
+  }
+
   handleKeyPress = e => {
     e.key === 'Enter' && this.updateName()
+  }
+
+  updateName = () => {
+    const { name } = this.state
+    this.update({ name: name.trim() })
   }
 
   showMenu = () => {
@@ -37,43 +52,45 @@ class Spec extends Component {
     this.setState({ hover: false })
   }
 
-  toggleCompleted = () => {
-    const { spec: { completed } } = this.props
-    this.update({ completed: !completed })
-  }
-
-  setName = e => {
-    this.setState({ name: e.target.value })
-  }
-
-  updateName = () => {
-    const { name } = this.state
-    this.update({ name: name.trim() })
+  createSubspec = () => {
+    const { projectKey, specKey } = this.props
+    const { createSubspec } = this.props
+    const _name =
+      (!this.isSyncing() && window.prompt('Type a name of subspec')) || ''
+    const name = _name.trim()
+    name && createSubspec(projectKey, specKey, { name })
   }
 
   updateFilename = () => {
-    const { spec: { isSyncing } } = this.props
-    const _filename = (!isSyncing && window.prompt('Type a filename')) || ''
+    const _filename =
+      (!this.isSyncing() && window.prompt('Type a filename')) || ''
     const filename = _filename.trim()
     filename && this.update({ filename })
   }
 
+  isSyncing = () => {
+    return this.props.spec.isSyncing
+  }
+
   update = updates => {
     const { projectKey, featureKey, specKey } = this.props
-    const { spec: { isSyncing }, updateSpec } = this.props
-    !isSyncing && updateSpec(projectKey, featureKey, specKey, updates)
+    const { updateSpec } = this.props
+    !this.isSyncing() && updateSpec(projectKey, featureKey, specKey, updates)
   }
 
   delete = () => {
     const { projectKey, featureKey, specKey } = this.props
-    const { spec: { name, isSyncing }, deleteSpec } = this.props
-    !isSyncing &&
+    const { spec: { name }, deleteSpec } = this.props
+    const { isSubspec, parentKey, deleteSubspec } = this.props
+    !this.isSyncing() &&
       window.confirm(`Delete '${name}'?`) &&
-      deleteSpec(projectKey, featureKey, specKey)
+      (isSubspec
+        ? deleteSubspec(projectKey, parentKey, specKey)
+        : deleteSpec(projectKey, featureKey, specKey))
   }
 
   render() {
-    const { spec, specs, isOwner } = this.props
+    const { spec, variant, isOwner, isSubspec } = this.props
     const { name, hover } = this.state
     const { completed = false, subspecs = [] } = spec
     const hasSubspecs = !!subspecs.length
@@ -108,7 +125,12 @@ class Spec extends Component {
       },
 
       Menu: {
-        menu: [
+        menu: compact([
+          !isSubspec && {
+            label: 'subspec',
+            icon: <Sub color={colors.gray} />,
+            action: this.createSubspec
+          },
           {
             label: 'filename',
             icon: <File color={colors.gray} />,
@@ -119,13 +141,13 @@ class Spec extends Component {
             icon: <Delete color={colors.gray} />,
             action: this.delete
           }
-        ],
+        ]),
         variant: { visibility: hover ? 'visible' : 'hidden' }
       }
     }
 
     return (
-      <article>
+      <article style={variant}>
         <section {...props.Line}>
           <Checkbox {...props.Checkbox} />
           <Name {...props.Name} />
@@ -133,7 +155,7 @@ class Spec extends Component {
           {isOwner && <Menu {...props.Menu} />}
         </section>
 
-        {hasSubspecs && <Subspecs subspecs={subspecs} specs={specs} />}
+        {hasSubspecs && <Subspecs {...this.props} subspecs={subspecs} />}
       </article>
     )
   }
@@ -141,7 +163,6 @@ class Spec extends Component {
 
 Spec.propTypes = propTypes
 
-const mapDispatchToProps = dispatch =>
-  bindActionCreators({ updateSpec, deleteSpec }, dispatch)
+const mapDispatchToProps = dispatch => bindActionCreators(specActions, dispatch)
 
 export default connect(null, mapDispatchToProps)(Spec)

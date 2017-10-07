@@ -1,3 +1,4 @@
+import without from 'lodash/fp/without'
 import uuidv4 from 'uuid/v4'
 import { database } from '../firebase'
 
@@ -95,5 +96,65 @@ export const deleteSpec = (projectKey, featureKey, key) => (
     })
     .catch(error => {
       dispatch({ type: types.CREATE, featureKey, key, spec })
+    })
+}
+
+export const createSubspec = (projectKey, parentKey, spec) => (
+  dispatch,
+  getState
+) => {
+  const key = uuidv4()
+  const { uid } = getState().auth.user
+  const parent = getState().specs.list[parentKey]
+  const parentUpdates = {
+    ...parent,
+    subspecs: parent.subspecs ? [...parent.subspecs, key] : [key]
+  }
+  const parentUpdatesSyncing = { ...parentUpdates, isSyncing: true }
+
+  dispatch({ type: types.CREATE, key, spec: { ...spec, isSyncing: true } })
+  dispatch({ type: types.UPDATE, key: parentKey, spec: parentUpdatesSyncing })
+
+  database
+    .ref(`/specs/${uid}/${projectKey}`)
+    .update({
+      [`/list/${key}`]: spec,
+      [`/list/${parentKey}`]: parentUpdates
+    })
+    .then(() => {
+      dispatch({ type: types.UPDATE, key, spec: spec })
+      dispatch({ type: types.UPDATE, key: parentKey, spec: parentUpdates })
+    })
+    .catch(error => {
+      dispatch({ type: types.DELETE, key })
+      dispatch({ type: types.UPDATE, key: parentKey, spec: parent })
+    })
+}
+
+export const deleteSubspec = (projectKey, parentKey, key) => (
+  dispatch,
+  getState
+) => {
+  const { uid } = getState().auth.user
+  const spec = getState().specs.list[key]
+  const parent = getState().specs.list[parentKey]
+  const parentUpdates = { ...parent, subspecs: without([key])(parent.subspecs) }
+  const parentUpdatesSyncing = { ...parentUpdates, isSyncing: true }
+
+  dispatch({ type: types.DELETE, key })
+  dispatch({ type: types.UPDATE, key: parentKey, spec: parentUpdatesSyncing })
+
+  database
+    .ref(`/specs/${uid}/${projectKey}`)
+    .update({
+      [`/list/${key}`]: null,
+      [`/list/${parentKey}`]: parentUpdates
+    })
+    .then(() =>
+      dispatch({ type: types.UPDATE, key: parentKey, spec: parentUpdates })
+    )
+    .catch(error => {
+      dispatch({ type: types.CREATE, key, spec })
+      dispatch({ type: types.UPDATE, key: parentKey, spec: parent })
     })
 }
