@@ -13,7 +13,7 @@ const propTypes = {
   checkAuth: PropTypes.func.isRequired
 }
 
-class App extends Component {
+export class App extends Component {
   componentWillMount() {
     this.props.checkAuth()
   }
