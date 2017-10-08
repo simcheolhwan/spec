@@ -7,6 +7,7 @@
     "firebase": "^4.5.0",
     "history": "^4.7.2",
     "keymirror": "^0.1.1",
+    "raven-js": "^3.18.1",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "react-redux": "^5.0.6",
