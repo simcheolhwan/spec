@@ -1,0 +1,6 @@
+{
+  "projects": {
+    "default": "spec-production",
+    "dev": "specification-dev"
+  }
+}

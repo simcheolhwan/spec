@@ -1,0 +1,28 @@
+{
+  "rules": {
+    "users": {
+      "$uid": {
+        ".read": "true",
+        ".write": "auth.uid == $uid"
+      }
+    },
+    "projects": {
+      "$uid": {
+        ".read": "true",
+        ".write": "auth.uid == $uid"
+      }
+    },
+    "features": {
+      "$uid": {
+        ".read": "true",
+        ".write": "auth.uid == $uid"
+      }
+    },
+    "specs": {
+      "$uid": {
+        ".read": "true",
+        ".write": "auth.uid == $uid"
+      }
+    }
+  }
+}
