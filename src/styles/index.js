@@ -29,7 +29,8 @@ export const colors = {
 export default {
   input: {
     border: 0,
-    padding: 0
+    padding: 0,
+    width: '100%'
   },
 
   button: {
