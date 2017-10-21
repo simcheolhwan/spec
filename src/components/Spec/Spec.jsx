@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as specActions from '../../actions/specActions'
 import { colors } from '../../styles'
-import { Sub, File, Delete } from '../Icons'
+import { Sub, File, Delete, Label } from '../Icons'
 import Checkbox from './Checkbox'
 import Name from './Name'
 import Meta from './Meta'
@@ -59,6 +59,14 @@ class Spec extends Component {
       (!this.isSyncing() && window.prompt('Type a name of subspec')) || ''
     const name = _name.trim()
     name && createSubspec(projectKey, specKey, { name })
+  }
+
+  createLabel = () => {
+    const { labels: _labels = [] } = this.props.spec
+    const _label = (!this.isSyncing() && window.prompt('Type a label')) || ''
+    const label = _label.trim()
+    const labels = [..._labels, label].sort()
+    label && this.update({ labels })
   }
 
   updateFilename = () => {
@@ -130,6 +138,11 @@ class Spec extends Component {
             label: 'subspec',
             icon: <Sub color={colors.gray} />,
             action: this.createSubspec
+          },
+          {
+            label: 'label',
+            icon: <Label color={colors.gray} />,
+            action: this.createLabel
           },
           {
             label: 'filename',
