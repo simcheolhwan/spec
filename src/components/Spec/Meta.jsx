@@ -3,18 +3,20 @@ import PropTypes from 'prop-types'
 import { colors } from '../../styles'
 
 const propTypes = {
-  labels: PropTypes.array,
+  labels: PropTypes.shape({
+    list: PropTypes.array,
+    onDelete: PropTypes.func
+  }).isRequired,
   filename: PropTypes.string
 }
 
 const defaultProps = {
-  labels: [],
   filename: ''
 }
 
-const Labels = ({ labels }) =>
-  labels.map(label => (
-    <small style={style.label} key={label}>
+const Labels = ({ list, onDelete }) =>
+  list.map((label, index) => (
+    <small style={style.label} onClick={() => onDelete(index)} key={label}>
       {label}
     </small>
   ))
@@ -24,7 +26,7 @@ const Filename = ({ filename }) => (
 )
 
 const Meta = ({ labels, filename }) => [
-  !!labels.length && <Labels labels={labels} key="Labels" />,
+  !!labels.list.length && <Labels {...labels} key="Labels" />,
   filename && <Filename filename={filename} key="Filename" />
 ]
 

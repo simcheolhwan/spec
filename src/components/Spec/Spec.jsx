@@ -1,4 +1,5 @@
 import compact from 'lodash/fp/compact'
+import dotProp from 'dot-prop-immutable'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { bindActionCreators } from 'redux'
@@ -69,6 +70,14 @@ class Spec extends Component {
     label && this.update({ labels })
   }
 
+  deleteLabel = index => {
+    const { labels: _labels } = this.props.spec
+    const labels = dotProp.delete(_labels, index)
+    !this.isSyncing() &&
+      window.confirm(`Delete ${_labels[index]}?`) &&
+      this.update({ labels })
+  }
+
   updateFilename = () => {
     const _filename =
       (!this.isSyncing() && window.prompt('Type a filename')) || ''
@@ -128,7 +137,7 @@ class Spec extends Component {
       },
 
       Meta: {
-        labels: spec.labels,
+        labels: { list: spec.labels || [], onDelete: this.deleteLabel },
         filename: spec.filename
       },
 
