@@ -15,7 +15,6 @@ const Subspecs = ({ subspecs, ...props }) =>
       parentKey={props.specKey}
       specKey={key}
       spec={props.specs.list[key]}
-      variant={{ paddingLeft: '1.5rem' }}
       key={key}
     />
   ))
