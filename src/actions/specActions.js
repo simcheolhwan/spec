@@ -19,12 +19,14 @@ export const fetchSpecs = (uid, projectKey) => dispatch =>
       dispatch({ type: types.FETCH, specs: snap.val() || {} })
     )
 
-export const createSpec = (projectKey, featureKey, spec) => (
+export const createSpec = (projectKey, featureKey, _spec) => (
   dispatch,
   getState
 ) => {
   const key = uuidv4()
+  const timestamp = new Date()
   const { uid } = getState().auth.user
+  const spec = { ..._spec, createAt: timestamp }
   const specSyncing = { ...spec, isSyncing: true }
 
   dispatch({ type: types.CREATE, featureKey, key, spec: specSyncing })

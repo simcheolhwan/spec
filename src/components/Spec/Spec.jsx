@@ -30,7 +30,10 @@ class Spec extends Component {
 
   toggleCompleted = () => {
     const { spec: { completed } } = this.props
-    this.update({ completed: !completed })
+    this.update({
+      completed: !completed,
+      completedAt: completed ? null : new Date()
+    })
   }
 
   setPriorityHigh = () => {
