@@ -95,11 +95,15 @@ class Spec extends Component {
       this.update({ labels })
   }
 
+  prompt = string => {
+    const _input =
+      (!this.isSyncing() && window.prompt(`Type a ${string}`)) || ''
+    const input = _input.trim()
+    input && this.update({ [string]: input })
+  }
+
   updateFilename = () => {
-    const _filename =
-      (!this.isSyncing() && window.prompt('Type a filename')) || ''
-    const filename = _filename.trim()
-    filename && this.update({ filename })
+    this.prompt('filename')
   }
 
   isSyncing = () => {
