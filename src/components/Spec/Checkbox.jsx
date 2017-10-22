@@ -6,15 +6,17 @@ import Button from '../Button'
 
 const propTypes = {
   checked: PropTypes.bool.isRequired,
+  variant: PropTypes.object,
   onClick: PropTypes.func
 }
 
 const defaultProps = {
+  variant: {},
   onClick: () => undefined
 }
 
-const Checkbox = ({ checked, onClick }) => (
-  <Button variant={style} onClick={onClick}>
+const Checkbox = ({ checked, variant, onClick }) => (
+  <Button variant={{ ...style, ...variant }} onClick={onClick}>
     {checked ? <Done color={colors.olive} /> : <Blank color={colors.gray} />}
   </Button>
 )

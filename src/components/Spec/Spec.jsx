@@ -1,11 +1,13 @@
 import compact from 'lodash/fp/compact'
+import dotProp from 'dot-prop-immutable'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as specActions from '../../actions/specActions'
 import { colors } from '../../styles'
-import { Sub, File, Delete } from '../Icons'
+import { Sub, File, Delete, Label, Shipping } from '../Icons'
+import Priority from './Priority'
 import Checkbox from './Checkbox'
 import Name from './Name'
 import Meta from './Meta'
@@ -23,12 +25,34 @@ const propTypes = {
   deleteSpec: PropTypes.func.isRequired
 }
 
+const OPACITY = 0.5
+const OUTLINE = `hsla(208, 100%, 43%, ${OPACITY})`
+
 class Spec extends Component {
   state = { name: this.props.spec.name, hover: false }
 
   toggleCompleted = () => {
     const { spec: { completed } } = this.props
-    this.update({ completed: !completed })
+    this.update({
+      completed: !completed,
+      completedAt: completed ? null : new Date()
+    })
+  }
+
+  setPriorityHigh = () => {
+    this.setPriority(1)
+  }
+
+  setPriorityLow = () => {
+    this.setPriority(-1)
+  }
+
+  unsetPriority = () => {
+    this.setPriority(null)
+  }
+
+  setPriority = priority => {
+    this.update({ priority })
   }
 
   setName = e => {
@@ -61,11 +85,35 @@ class Spec extends Component {
     name && createSubspec(projectKey, specKey, { name })
   }
 
+  createLabel = () => {
+    const { labels: _labels = [] } = this.props.spec
+    const _label = (!this.isSyncing() && window.prompt('Type a label')) || ''
+    const label = _label.trim()
+    const labels = [..._labels, label].sort()
+    label && this.update({ labels })
+  }
+
+  deleteLabel = index => {
+    const { labels: _labels } = this.props.spec
+    const labels = dotProp.delete(_labels, index)
+    !this.isSyncing() &&
+      window.confirm(`Delete ${_labels[index]}?`) &&
+      this.update({ labels })
+  }
+
+  prompt = string => {
+    const _input =
+      (!this.isSyncing() && window.prompt(`Type a ${string}`)) || ''
+    const input = _input.trim()
+    input && this.update({ [string]: input })
+  }
+
   updateFilename = () => {
-    const _filename =
-      (!this.isSyncing() && window.prompt('Type a filename')) || ''
-    const filename = _filename.trim()
-    filename && this.update({ filename })
+    this.prompt('filename')
+  }
+
+  updateVersion = () => {
+    this.prompt('version')
   }
 
   isSyncing = () => {
@@ -92,8 +140,13 @@ class Spec extends Component {
   render() {
     const { spec, variant, isOwner, isSubspec } = this.props
     const { name, hover } = this.state
-    const { completed = false, subspecs = [] } = spec
+    const { completed = false, priority, subspecs = [] } = spec
     const hasSubspecs = !!subspecs.length
+
+    const style = {
+      ...variant,
+      outline: isOwner && hover && `2px solid ${OUTLINE}`
+    }
 
     const props = {
       Line: {
@@ -106,8 +159,20 @@ class Spec extends Component {
         onMouseLeave: this.hideMenu
       },
 
+      Priority: {
+        priority,
+        variant: { downward: { marginRight: '.5rem' } },
+        onClickUpward: isOwner
+          ? priority === 1 ? this.unsetPriority : this.setPriorityHigh
+          : undefined,
+        onClickDownward: isOwner
+          ? priority === -1 ? this.unsetPriority : this.setPriorityLow
+          : undefined
+      },
+
       Checkbox: {
         checked: completed,
+        variant: isSubspec && { marginLeft: '1.5rem' },
         onClick: isOwner ? this.toggleCompleted : undefined
       },
 
@@ -120,8 +185,9 @@ class Spec extends Component {
       },
 
       Meta: {
-        labels: spec.labels,
-        filename: spec.filename
+        labels: { list: spec.labels || [], onDelete: this.deleteLabel },
+        filename: spec.filename,
+        version: spec.version
       },
 
       Menu: {
@@ -132,9 +198,19 @@ class Spec extends Component {
             action: this.createSubspec
           },
           {
+            label: 'label',
+            icon: <Label color={colors.gray} />,
+            action: this.createLabel
+          },
+          {
             label: 'filename',
             icon: <File color={colors.gray} />,
             action: this.updateFilename
+          },
+          {
+            label: 'version',
+            icon: <Shipping color={colors.gray} />,
+            action: this.updateVersion
           },
           {
             label: 'delete',
@@ -147,8 +223,9 @@ class Spec extends Component {
     }
 
     return (
-      <article style={variant}>
+      <article style={style}>
         <section {...props.Line}>
+          <Priority {...props.Priority} />
           <Checkbox {...props.Checkbox} />
           <Name {...props.Name} />
           <Meta {...props.Meta} />
