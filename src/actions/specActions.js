@@ -26,7 +26,7 @@ export const createSpec = (projectKey, featureKey, _spec) => (
   const key = uuidv4()
   const timestamp = new Date()
   const { uid } = getState().auth.user
-  const spec = { ..._spec, createAt: timestamp }
+  const spec = { ..._spec, createdAt: timestamp }
   const specSyncing = { ...spec, isSyncing: true }
 
   dispatch({ type: types.CREATE, featureKey, key, spec: specSyncing })
