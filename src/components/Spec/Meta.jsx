@@ -25,9 +25,12 @@ const Filename = ({ filename }) => (
   <code style={style.filename}>{filename}</code>
 )
 
-const Meta = ({ labels, filename }) => [
+const Version = ({ version }) => <code style={style.version}>{version}</code>
+
+const Meta = ({ labels, filename, version }) => [
   !!labels.list.length && <Labels {...labels} key="Labels" />,
-  filename && <Filename filename={filename} key="Filename" />
+  filename && <Filename filename={filename} key="Filename" />,
+  version && <Version version={version} key="Version" />
 ]
 
 Meta.propTypes = propTypes
@@ -46,6 +49,14 @@ const style = {
     backgroundColor: colors.silver,
     borderRadius: 2,
     color: colors.black,
+    fontSize: '80%',
+    marginLeft: '.5rem',
+    padding: '0 .5rem'
+  },
+
+  version: {
+    border: `1px solid ${colors.silver}`,
+    borderRadius: 2,
     fontSize: '80%',
     marginLeft: '.5rem',
     padding: '0 .5rem'

@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as specActions from '../../actions/specActions'
 import { colors } from '../../styles'
-import { Sub, File, Delete, Label } from '../Icons'
+import { Sub, File, Delete, Label, Shipping } from '../Icons'
 import Priority from './Priority'
 import Checkbox from './Checkbox'
 import Name from './Name'
@@ -106,6 +106,10 @@ class Spec extends Component {
     this.prompt('filename')
   }
 
+  updateVersion = () => {
+    this.prompt('version')
+  }
+
   isSyncing = () => {
     return this.props.spec.isSyncing
   }
@@ -171,7 +175,8 @@ class Spec extends Component {
 
       Meta: {
         labels: { list: spec.labels || [], onDelete: this.deleteLabel },
-        filename: spec.filename
+        filename: spec.filename,
+        version: spec.version
       },
 
       Menu: {
@@ -190,6 +195,11 @@ class Spec extends Component {
             label: 'filename',
             icon: <File color={colors.gray} />,
             action: this.updateFilename
+          },
+          {
+            label: 'version',
+            icon: <Shipping color={colors.gray} />,
+            action: this.updateVersion
           },
           {
             label: 'delete',
