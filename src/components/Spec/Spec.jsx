@@ -25,6 +25,9 @@ const propTypes = {
   deleteSpec: PropTypes.func.isRequired
 }
 
+const OPACITY = 0.5
+const OUTLINE = `hsla(208, 100%, 43%, ${OPACITY})`
+
 class Spec extends Component {
   state = { name: this.props.spec.name, hover: false }
 
@@ -140,6 +143,11 @@ class Spec extends Component {
     const { completed = false, priority, subspecs = [] } = spec
     const hasSubspecs = !!subspecs.length
 
+    const style = {
+      ...variant,
+      outline: isOwner && hover && `2px solid ${OUTLINE}`
+    }
+
     const props = {
       Line: {
         style: {
@@ -215,7 +223,7 @@ class Spec extends Component {
     }
 
     return (
-      <article style={variant}>
+      <article style={style}>
         <section {...props.Line}>
           <Priority {...props.Priority} />
           <Checkbox {...props.Checkbox} />
