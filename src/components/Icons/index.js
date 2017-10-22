@@ -1,3 +1,5 @@
+export { default as ArrowDownward } from './ArrowDownward'
+export { default as ArrowUpward } from './ArrowUpward'
 export { default as Blank } from './Blank'
 export { default as Delete } from './Delete'
 export { default as Done } from './Done'

@@ -7,6 +7,7 @@ import { connect } from 'react-redux'
 import * as specActions from '../../actions/specActions'
 import { colors } from '../../styles'
 import { Sub, File, Delete, Label } from '../Icons'
+import Priority from './Priority'
 import Checkbox from './Checkbox'
 import Name from './Name'
 import Meta from './Meta'
@@ -30,6 +31,22 @@ class Spec extends Component {
   toggleCompleted = () => {
     const { spec: { completed } } = this.props
     this.update({ completed: !completed })
+  }
+
+  setPriorityHigh = () => {
+    this.setPriority(1)
+  }
+
+  setPriorityLow = () => {
+    this.setPriority(-1)
+  }
+
+  unsetPriority = () => {
+    this.setPriority(null)
+  }
+
+  setPriority = priority => {
+    this.update({ priority })
   }
 
   setName = e => {
@@ -109,7 +126,7 @@ class Spec extends Component {
   render() {
     const { spec, variant, isOwner, isSubspec } = this.props
     const { name, hover } = this.state
-    const { completed = false, subspecs = [] } = spec
+    const { completed = false, priority, subspecs = [] } = spec
     const hasSubspecs = !!subspecs.length
 
     const props = {
@@ -123,8 +140,20 @@ class Spec extends Component {
         onMouseLeave: this.hideMenu
       },
 
+      Priority: {
+        priority,
+        variant: { downward: { marginRight: '.5rem' } },
+        onClickUpward: isOwner
+          ? priority === 1 ? this.unsetPriority : this.setPriorityHigh
+          : undefined,
+        onClickDownward: isOwner
+          ? priority === -1 ? this.unsetPriority : this.setPriorityLow
+          : undefined
+      },
+
       Checkbox: {
         checked: completed,
+        variant: isSubspec && { marginLeft: '1.5rem' },
         onClick: isOwner ? this.toggleCompleted : undefined
       },
 
@@ -171,6 +200,7 @@ class Spec extends Component {
     return (
       <article style={variant}>
         <section {...props.Line}>
+          <Priority {...props.Priority} />
           <Checkbox {...props.Checkbox} />
           <Name {...props.Name} />
           <Meta {...props.Meta} />
