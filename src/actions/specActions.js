@@ -77,12 +77,15 @@ export const deleteSpec = (projectKey, featureKey, key) => (
     .catch(error => dispatch({ type: types.CREATE, featureKey, key, spec }))
 }
 
-export const createSubspec = (projectKey, parentKey, spec) => (
+export const createSubspec = (projectKey, parentKey, _spec) => (
   dispatch,
   getState
 ) => {
   const key = uuidv4()
+  const timestamp = new Date()
   const { uid } = getState().auth.user
+  const spec = { ..._spec, createdAt: timestamp }
+  const specSyncing = { ...spec, isSyncing: true }
   const parent = getState().specs.list[parentKey]
   const parentUpdates = {
     ...parent,
@@ -90,7 +93,7 @@ export const createSubspec = (projectKey, parentKey, spec) => (
   }
   const parentUpdatesSyncing = { ...parentUpdates, isSyncing: true }
 
-  dispatch({ type: types.CREATE, key, spec: { ...spec, isSyncing: true } })
+  dispatch({ type: types.CREATE, key, spec: specSyncing })
   dispatch({ type: types.UPDATE, key: parentKey, spec: parentUpdatesSyncing })
 
   database
