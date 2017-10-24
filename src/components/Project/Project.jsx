@@ -71,9 +71,9 @@ class Project extends Component {
     const grid = {
       aside: (
         <nav>
-          <h1>
+          <h3>
             {breadcrumb.user}/{breadcrumb.project}
-          </h1>
+          </h3>
           {isOwner && menu.setting}
         </nav>
       ),

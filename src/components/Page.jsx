@@ -29,7 +29,7 @@ Page.propTypes = propTypes
 Page.defaultProps = defaultProps
 
 const style = {
-  padding: '2rem',
+  padding: '1rem 2rem',
 
   header: {
     display: 'flex',
