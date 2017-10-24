@@ -11,13 +11,16 @@ const Grid = ({ aside, main }) => [
   <aside style={style.aside} key="aside">
     {aside}
   </aside>,
-  <main key="main">{main}</main>
+  <main style={style.main} key="main">
+    {main}
+  </main>
 ]
 
 Grid.propTypes = propTypes
 
 const style = {
-  aside: { backgroundColor: colors.silver, padding: '1rem 2rem' }
+  aside: { backgroundColor: colors.silver, padding: '1rem 2rem' },
+  main: { overflow: 'hidden', display: 'flex' }
 }
 
 export default Grid

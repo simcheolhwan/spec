@@ -21,7 +21,7 @@ const Page = ({ title, actions, children }) => (
       {!!actions.length && <section>{actions}</section>}
     </header>
 
-    {children}
+    <main style={style.main}>{children}</main>
   </article>
 )
 
@@ -29,15 +29,22 @@ Page.propTypes = propTypes
 Page.defaultProps = defaultProps
 
 const style = {
-  padding: '1rem 2rem',
+  display: 'flex',
+  flexDirection: 'column',
+  flex: 1,
 
   header: {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
+    flex: 'none',
     borderBottom: `1px solid ${colors.line}`,
-    marginBottom: '1rem',
-    paddingBottom: '.5rem'
+    padding: '1rem 2rem'
+  },
+
+  main: {
+    padding: '1rem 2rem',
+    overflow: 'scroll'
   }
 }
 
