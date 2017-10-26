@@ -48,21 +48,18 @@ const ProjectUpdate = ({ state, projectKey, project, ...rest }) => {
 
   const ui = {
     guest: <Redirect to="/signin" />,
-    user: (
-      <div>
-        <Page title="Settings">
-          <Form
-            initialValues={project}
-            onSubmit={submit}
-            submitButton="Update project"
-          />
-        </Page>
-
-        <Page title="Danger Zone">
-          <Actions list={destructiveActions} />
-        </Page>
-      </div>
-    )
+    user: [
+      <Page title="Settings" key="Settings">
+        <Form
+          initialValues={project}
+          onSubmit={submit}
+          submitButton="Update project"
+        />
+      </Page>,
+      <Page title="Danger Zone" key="Danger Zone">
+        <Actions list={destructiveActions} />
+      </Page>
+    ]
   }
 
   return ui[state]
