@@ -21,11 +21,11 @@ export class App extends Component {
   render() {
     return (
       <Router history={history}>
-        <div>
-          <Nav />
-          <main style={{ maxWidth: 960 }}>
-            {this.props.state !== 'idle' && routes}
-          </main>
+        <div style={style}>
+          <header>
+            <Nav />
+          </header>
+          {this.props.state !== 'idle' && routes}
         </div>
       </Router>
     )
@@ -33,6 +33,13 @@ export class App extends Component {
 }
 
 App.propTypes = propTypes
+
+const style = {
+  display: 'flex',
+  flexDirection: 'column',
+  height: '100vh',
+  overflow: 'hidden'
+}
 
 const mapStateToProps = ({ auth: { state } }) => ({ state })
 const mapDispatchToProps = dispatch =>

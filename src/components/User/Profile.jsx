@@ -14,7 +14,7 @@ const Profile = ({ name, slug }) => (
   <article>
     {name ? (
       <header>
-        <h1>{name}</h1>
+        <h3>{name}</h3>
         <p>
           <code>{slug}</code>
         </p>

@@ -1,24 +1,26 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { colors } from '../styles'
 
 const propTypes = {
   aside: PropTypes.node.isRequired,
   main: PropTypes.node.isRequired
 }
 
-const Grid = ({ aside, main }) => (
-  <div style={style}>
-    <aside style={style.aside}>{aside}</aside>
-    <main>{main}</main>
-  </div>
-)
+const Grid = ({ aside, main }) => [
+  <aside style={style.aside} key="aside">
+    {aside}
+  </aside>,
+  <main style={style.main} key="main">
+    {main}
+  </main>
+]
 
 Grid.propTypes = propTypes
 
 const style = {
-  display: 'grid',
-  gridTemplateColumns: '15rem 1fr',
-  aside: { padding: '2rem', paddingRight: 0 }
+  aside: { backgroundColor: colors.silver, padding: '1rem 2rem' },
+  main: { overflow: 'hidden', display: 'flex' }
 }
 
 export default Grid

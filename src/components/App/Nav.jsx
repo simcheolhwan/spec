@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import { colors } from '../../styles'
+import { isProduction } from '../../config/env'
 import Progress from '../Progress/Progress'
 
 const propTypes = {
@@ -43,7 +44,7 @@ Nav.propTypes = propTypes
 const OPACITY = 0.75
 
 const style = {
-  backgroundColor: colors.black,
+  backgroundColor: isProduction ? colors.black : colors.navy,
   display: 'flex',
   justifyContent: 'space-between',
   padding: '0 1rem',
