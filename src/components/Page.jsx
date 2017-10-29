@@ -44,7 +44,8 @@ const style = {
 
   main: {
     padding: '1rem 2rem',
-    overflow: 'scroll'
+    overflow: 'scroll',
+    WebkitOverflowScrolling: 'touch'
   }
 }
 
