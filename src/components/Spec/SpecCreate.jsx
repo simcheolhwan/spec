@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { createSpec } from '../../actions/specActions'
 import Name from './Name'
+import Checkbox from './Checkbox'
 
 const propTypes = {
   projectKey: PropTypes.string.isRequired,
@@ -34,12 +35,14 @@ class SpecCreate extends Component {
     const { name } = this.state
 
     return (
-      <Name
-        name={name}
-        variant={{ paddingLeft: '1.5rem', display: 'block', width: '100%' }}
-        onChange={this.setName}
-        onKeyPress={this.handleKeyPress}
-      />
+      <section style={{ display: 'flex', paddingLeft: '2.5rem' }}>
+        <Checkbox variant={{ opacity: !name && 0 }} />
+        <Name
+          name={name}
+          onChange={this.setName}
+          onKeyPress={this.handleKeyPress}
+        />
+      </section>
     )
   }
 }
