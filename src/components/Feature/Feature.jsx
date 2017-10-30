@@ -95,13 +95,16 @@ class Feature extends Component {
   }
 
   render() {
-    const { projectKey, featureKey } = this.props
+    const { projectKey, featureKey, isOwner } = this.props
+    const style = { lineHeight: 1.75, marginBottom: isOwner ? '1rem' : '2rem' }
 
     return (
-      <article style={{ lineHeight: 1.75, marginBottom: '1rem' }}>
+      <article style={style}>
         {this.title()}
         {this.specs()}
-        <SpecCreate projectKey={projectKey} featureKey={featureKey} />
+        {isOwner && (
+          <SpecCreate projectKey={projectKey} featureKey={featureKey} />
+        )}
       </article>
     )
   }

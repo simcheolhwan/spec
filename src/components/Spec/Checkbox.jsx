@@ -5,12 +5,13 @@ import { Done, Blank } from '../Icons'
 import Button from '../Button'
 
 const propTypes = {
-  checked: PropTypes.bool.isRequired,
+  checked: PropTypes.bool,
   variant: PropTypes.object,
   onClick: PropTypes.func
 }
 
 const defaultProps = {
+  checked: false,
   variant: {},
   onClick: () => undefined
 }
