@@ -22,7 +22,7 @@ const FeatureCreate = ({ isIssue, projectKey, createFeature }) => {
     name && createFeature(projectKey, feature)
   }
 
-  return <button onClick={create}>New feature</button>
+  return <button onClick={create}>New {isIssue ? 'issue' : 'feature'}</button>
 }
 
 FeatureCreate.propTypes = propTypes

@@ -13,27 +13,26 @@ const propTypes = {
   isOwner: PropTypes.bool.isRequired
 }
 
+const data = { order: 'Features', issues: 'Issues' }
+
 const Features = ({ features, specs, projectKey, isOwner }) =>
-  [
-    { label: 'Features', data: 'order' },
-    { label: 'Issues', data: 'issues' }
-  ].map(item => (
+  Object.keys(data).map(key => (
     <Page
-      title={item.label}
+      title={data[key]}
       actions={
         isOwner
           ? [
               <FeatureCreate
-                isIssue={item.data === 'issues'}
+                isIssue={key === 'issues'}
                 projectKey={projectKey}
                 key="FeatureCreate"
               />
             ]
           : []
       }
-      key={item.label}
+      key={key}
     >
-      {features[item.data].map(key => (
+      {features[key].map(key => (
         <Feature
           projectKey={projectKey}
           featureKey={key}
