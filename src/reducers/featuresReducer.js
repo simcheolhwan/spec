@@ -32,7 +32,26 @@ const order = (state = [], action) => {
       return action.features.order || []
 
     case types.CREATE:
-      return [...state, action.key]
+      return action.feature.issue ? state : [...state, action.key]
+
+    case types.DELETE:
+      return without([action.key])(state)
+
+    default:
+      return state
+  }
+}
+
+const issues = (state = [], action) => {
+  switch (action.type) {
+    case types.INIT:
+      return []
+
+    case types.FETCH:
+      return action.features.issues || []
+
+    case types.CREATE:
+      return action.feature.issue ? [...state, action.key] : state
 
     case types.DELETE:
       return without([action.key])(state)
@@ -52,4 +71,4 @@ const project = (state = '', action) => {
   }
 }
 
-export default combineReducers({ list, order, project })
+export default combineReducers({ list, order, issues, project })
