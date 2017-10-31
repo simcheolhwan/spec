@@ -13,27 +13,37 @@ const propTypes = {
   isOwner: PropTypes.bool.isRequired
 }
 
-const Features = ({ features, specs, projectKey, isOwner }) => (
-  <Page
-    title="Features"
-    actions={
-      isOwner
-        ? [<FeatureCreate projectKey={projectKey} key="Featurecreate" />]
-        : []
-    }
-  >
-    {features.order.map(key => (
-      <Feature
-        projectKey={projectKey}
-        featureKey={key}
-        feature={features.list[key]}
-        specs={{ list: specs.list, order: specs.orders[key] || [] }}
-        isOwner={isOwner}
-        key={key}
-      />
-    ))}
-  </Page>
-)
+const data = { order: 'Features', issues: 'Issues' }
+
+const Features = ({ features, specs, projectKey, isOwner }) =>
+  Object.keys(data).map(key => (
+    <Page
+      title={data[key]}
+      actions={
+        isOwner
+          ? [
+              <FeatureCreate
+                isIssue={key === 'issues'}
+                projectKey={projectKey}
+                key="FeatureCreate"
+              />
+            ]
+          : []
+      }
+      key={key}
+    >
+      {features[key].map(key => (
+        <Feature
+          projectKey={projectKey}
+          featureKey={key}
+          feature={features.list[key]}
+          specs={{ list: specs.list, order: specs.orders[key] || [] }}
+          isOwner={isOwner}
+          key={key}
+        />
+      ))}
+    </Page>
+  ))
 
 Features.propTypes = propTypes
 

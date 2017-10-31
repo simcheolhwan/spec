@@ -31,7 +31,8 @@ export const createFeature = (projectKey, feature) => (dispatch, getState) => {
     .ref(`/features/${uid}/${projectKey}`)
     .update({
       [`/list/${key}`]: feature,
-      [`/order`]: getState().features.order
+      [`/order`]: getState().features.order,
+      [`/issues`]: getState().features.issues
     })
     .then(() => dispatch({ type: types.UPDATE, key, feature }))
     .catch(error => dispatch({ type: types.DELETE, key }))
@@ -65,7 +66,8 @@ export const deleteFeature = (projectKey, key) => (dispatch, getState) => {
     .ref(`/features/${uid}/${projectKey}`)
     .update({
       [`/list/${key}`]: null,
-      [`/order`]: getState().features.order
+      [`/order`]: getState().features.order,
+      [`/issues`]: getState().features.issues
     })
     .catch(error => dispatch({ type: types.CREATE, key, feature }))
 }
