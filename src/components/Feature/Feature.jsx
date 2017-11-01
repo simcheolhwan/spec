@@ -4,10 +4,10 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { updateFeature, deleteFeature } from '../../actions/featureActions'
 import styles, { colors } from '../../styles'
-import Button from '../Button'
-import { Delete } from '../Icons'
+import { Delete, File } from '../Icons'
 import Spec from '../Spec/Spec'
 import SpecCreate from '../Spec/SpecCreate'
+import Menu from '../Spec/Menu'
 
 const propTypes = {
   projectKey: PropTypes.string.isRequired,
@@ -54,54 +54,67 @@ class Feature extends Component {
     const { name } = this.state
 
     return (
-      <h2 style={{ display: 'flex' }}>
-        <input
-          style={{ flex: 1, ...styles.input }}
-          value={name}
-          readOnly={!isOwner}
-          onChange={this.setName}
-          onKeyPress={this.handleKeyPress}
-        />
-
-        {isOwner && (
-          <Button variant={{ flex: 'none' }} onClick={this.delete}>
-            <Delete color={colors.silver} />
-          </Button>
-        )}
-      </h2>
+      <input
+        style={{ flex: 1, ...styles.input }}
+        value={name}
+        readOnly={!isOwner}
+        onChange={this.setName}
+        onKeyPress={this.handleKeyPress}
+      />
     )
   }
 
-  specs = () => {
+  menu = () => {
+    const props = {
+      menu: [
+        {
+          label: 'filename',
+          icon: <File color={colors.gray} />,
+          action: () => undefined
+        },
+        {
+          label: 'delete',
+          icon: <Delete color={colors.gray} />,
+          action: this.delete
+        }
+      ],
+      variant: { visibility: true ? 'visible' : 'hidden' }
+    }
+
+    return <Menu {...props} />
+  }
+
+  specs = key => {
     const { projectKey, featureKey, specs, isOwner } = this.props
 
     return (
-      !!specs.order.length && (
-        <section>
-          {specs.order.map(key => (
-            <Spec
-              projectKey={projectKey}
-              featureKey={featureKey}
-              specKey={key}
-              specs={specs}
-              spec={specs.list[key]}
-              isOwner={isOwner}
-              key={key}
-            />
-          ))}
-        </section>
-      )
+      <Spec
+        projectKey={projectKey}
+        featureKey={featureKey}
+        specKey={key}
+        specs={specs}
+        spec={specs.list[key]}
+        isOwner={isOwner}
+        key={key}
+      />
     )
   }
 
   render() {
-    const { projectKey, featureKey, isOwner } = this.props
+    const { projectKey, featureKey, specs, isOwner } = this.props
     const style = { lineHeight: 1.75, marginBottom: isOwner ? '1rem' : '2rem' }
 
     return (
       <article style={style}>
-        {this.title()}
-        {this.specs()}
+        <h2 style={{ display: 'flex' }}>
+          {this.title()}
+          {isOwner && this.menu()}
+        </h2>
+
+        {!!specs.order.length && (
+          <section>{specs.order.map(this.specs)}</section>
+        )}
+
         {isOwner && (
           <SpecCreate projectKey={projectKey} featureKey={featureKey} />
         )}
