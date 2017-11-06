@@ -8,6 +8,7 @@ import { Delete, File } from '../Icons'
 import Spec from '../Spec/Spec'
 import SpecCreate from '../Spec/SpecCreate'
 import Menu from '../Spec/Menu'
+import { style } from '../Spec/Meta'
 
 const propTypes = {
   projectKey: PropTypes.string.isRequired,
@@ -74,6 +75,14 @@ class Feature extends Component {
     )
   }
 
+  filename = () => {
+    return (
+      this.props.feature.filename && (
+        <code style={style.filename}>{this.props.feature.filename}</code>
+      )
+    )
+  }
+
   menu = () => {
     const props = {
       menu: [
@@ -116,8 +125,9 @@ class Feature extends Component {
 
     return (
       <article style={style}>
-        <h2 style={{ display: 'flex' }}>
+        <h2 style={{ display: 'flex', alignItems: 'center' }}>
           {this.title()}
+          {this.filename()}
           {isOwner && this.menu()}
         </h2>
 
