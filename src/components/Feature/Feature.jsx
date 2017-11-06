@@ -38,6 +38,16 @@ class Feature extends Component {
     name && this.update({ name })
   }
 
+  updateFilename = () => {
+    const _input = (!this.isSyncing() && window.prompt('Type a filename')) || ''
+    const input = _input.trim()
+    input && this.update({ filename: input })
+  }
+
+  isSyncing = () => {
+    return this.props.feature.isSyncing
+  }
+
   update = updates => {
     const { projectKey, featureKey, updateFeature } = this.props
     updateFeature(projectKey, featureKey, updates)
@@ -70,7 +80,7 @@ class Feature extends Component {
         {
           label: 'filename',
           icon: <File color={colors.gray} />,
-          action: () => undefined
+          action: this.updateFilename
         },
         {
           label: 'delete',
