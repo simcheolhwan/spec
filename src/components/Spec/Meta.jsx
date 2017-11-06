@@ -36,7 +36,7 @@ const Meta = ({ labels, filename, version }) => [
 Meta.propTypes = propTypes
 Meta.defaultProps = defaultProps
 
-const style = {
+export const style = {
   label: {
     color: colors.white,
     borderRadius: 2,
