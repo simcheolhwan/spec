@@ -15,13 +15,8 @@ const propTypes = {
 class SpecCreate extends Component {
   state = { name: '' }
 
-  handleKeyPress = e => {
-    e.key === 'Enter' && this.create()
-  }
-
-  setName = e => {
-    this.setState({ name: e.target.value })
-  }
+  handleKeyPress = e => e.key === 'Enter' && this.create()
+  setName = e => this.setState({ name: e.target.value })
 
   create = () => {
     const { projectKey, featureKey, createSpec } = this.props

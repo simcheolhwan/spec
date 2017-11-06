@@ -25,17 +25,10 @@ const propTypes = {
 class Feature extends Component {
   state = { name: this.props.feature.name }
 
-  handleKeyPress = e => {
-    e.key === 'Enter' && this.updateName()
-  }
-
-  setName = e => {
-    this.setState({ name: e.target.value })
-  }
-
+  handleKeyPress = e => e.key === 'Enter' && this.updateName()
+  setName = e => this.setState({ name: e.target.value })
   updateName = () => {
-    const { name: _name } = this.state
-    const name = _name.trim()
+    const name = this.state.name.trim()
     name && this.update({ name })
   }
 
@@ -45,9 +38,7 @@ class Feature extends Component {
     input && this.update({ filename: input })
   }
 
-  isSyncing = () => {
-    return this.props.feature.isSyncing
-  }
+  isSyncing = () => this.props.feature.isSyncing
 
   update = updates => {
     const { projectKey, featureKey, updateFeature } = this.props
@@ -60,28 +51,20 @@ class Feature extends Component {
     window.confirm(`Delete '${name}'?`) && deleteFeature(projectKey, featureKey)
   }
 
-  title = () => {
-    const { isOwner } = this.props
-    const { name } = this.state
+  title = () => (
+    <input
+      style={{ flex: 1, ...styles.input }}
+      value={this.state.name}
+      readOnly={!this.props.isOwner}
+      onChange={this.setName}
+      onKeyPress={this.handleKeyPress}
+    />
+  )
 
-    return (
-      <input
-        style={{ flex: 1, ...styles.input }}
-        value={name}
-        readOnly={!isOwner}
-        onChange={this.setName}
-        onKeyPress={this.handleKeyPress}
-      />
+  filename = () =>
+    this.props.feature.filename && (
+      <code style={style.filename}>{this.props.feature.filename}</code>
     )
-  }
-
-  filename = () => {
-    return (
-      this.props.feature.filename && (
-        <code style={style.filename}>{this.props.feature.filename}</code>
-      )
-    )
-  }
 
   menu = () => {
     const props = {

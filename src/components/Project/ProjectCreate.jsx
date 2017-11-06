@@ -19,9 +19,7 @@ class ProjectCreate extends Component {
     action.fetchProjects && fetchProjects(user.uid)
   }
 
-  submit = project => {
-    this.props.createProject(sanitize(project))
-  }
+  submit = project => this.props.createProject(sanitize(project))
 
   render() {
     const { state } = this.props

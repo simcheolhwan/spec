@@ -39,42 +39,17 @@ class Spec extends Component {
     })
   }
 
-  setPriorityHigh = () => {
-    this.setPriority(1)
-  }
+  setPriority = priority => this.update({ priority })
+  setPriorityHigh = () => this.setPriority(1)
+  setPriorityLow = () => this.setPriority(-1)
+  unsetPriority = () => this.setPriority(null)
 
-  setPriorityLow = () => {
-    this.setPriority(-1)
-  }
+  setName = e => this.setState({ name: e.target.value })
+  handleKeyPress = e => e.key === 'Enter' && this.updateName()
+  updateName = () => this.update({ name: this.state.name.trim() })
 
-  unsetPriority = () => {
-    this.setPriority(null)
-  }
-
-  setPriority = priority => {
-    this.update({ priority })
-  }
-
-  setName = e => {
-    this.setState({ name: e.target.value })
-  }
-
-  handleKeyPress = e => {
-    e.key === 'Enter' && this.updateName()
-  }
-
-  updateName = () => {
-    const { name } = this.state
-    this.update({ name: name.trim() })
-  }
-
-  showMenu = () => {
-    this.setState({ hover: true })
-  }
-
-  hideMenu = () => {
-    this.setState({ hover: false })
-  }
+  showMenu = () => this.setState({ hover: true })
+  hideMenu = () => this.setState({ hover: false })
 
   createSubspec = () => {
     const { projectKey, specKey } = this.props
@@ -108,17 +83,10 @@ class Spec extends Component {
     input && this.update({ [string]: input })
   }
 
-  updateFilename = () => {
-    this.prompt('filename')
-  }
+  updateFilename = () => this.prompt('filename')
+  updateVersion = () => this.prompt('version')
 
-  updateVersion = () => {
-    this.prompt('version')
-  }
-
-  isSyncing = () => {
-    return this.props.spec.isSyncing
-  }
+  isSyncing = () => this.props.spec.isSyncing
 
   update = updates => {
     const { projectKey, featureKey, specKey } = this.props
