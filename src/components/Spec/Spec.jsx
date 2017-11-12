@@ -37,75 +37,7 @@ class Spec extends Component {
     showDescription: false
   }
 
-  toggleCompleted = () => {
-    const { spec: { completed } } = this.props
-    this.update({
-      completed: !completed,
-      completedAt: completed ? null : new Date()
-    })
-  }
-
-  setPriority = priority => this.update({ priority })
-  setPriorityHigh = () => this.setPriority(1)
-  setPriorityLow = () => this.setPriority(-1)
-  unsetPriority = () => this.setPriority(null)
-
-  setName = e => this.setState({ name: e.target.value })
-  handleKeyPress = e => e.key === 'Enter' && this.updateName()
-  updateName = () => this.update({ name: this.state.name.trim() })
-
-  showMenu = () => this.setState({ hover: true })
-  hideMenu = () => this.setState({ hover: false })
-
-  createSubspec = () => {
-    const { projectKey, specKey } = this.props
-    const { createSubspec } = this.props
-    const _name =
-      (!this.isSyncing() && window.prompt('Type a name of subspec')) || ''
-    const name = _name.trim()
-    name && createSubspec(projectKey, specKey, { name })
-  }
-
-  createLabel = () => {
-    const { labels: _labels = [] } = this.props.spec
-    const _label = (!this.isSyncing() && window.prompt('Type a label')) || ''
-    const label = _label.trim()
-    const labels = [..._labels, label].sort()
-    label && this.update({ labels })
-  }
-
-  deleteLabel = index => {
-    const { labels: _labels } = this.props.spec
-    const labels = dotProp.delete(_labels, index)
-    !this.isSyncing() &&
-      window.confirm(`Delete ${_labels[index]}?`) &&
-      this.update({ labels })
-  }
-
-  prompt = string => {
-    const _input =
-      (!this.isSyncing() && window.prompt(`Type a ${string}`)) || ''
-    const input = _input.trim()
-    input && this.update({ [string]: input })
-  }
-
-  updateFilename = () => this.prompt('filename')
-  updateVersion = () => this.prompt('version')
-
-  toggleDescription = showDescription =>
-    this.setState(prevState => ({
-      showDescription:
-        typeof showDescription === 'boolean'
-          ? showDescription
-          : !prevState.showDescription
-    }))
-
-  setDescription = e => this.setState({ description: e.target.value })
-  handleKeyPressDescription = e =>
-    e.metaKey && e.key === 'Enter' && this.updateDescription()
-
-  updateDescription = () => this.update({ description: this.state.description })
-
+  /* Spec */
   isSyncing = () => this.props.spec.isSyncing
 
   update = updates => {
@@ -125,6 +57,83 @@ class Spec extends Component {
         : deleteSpec(projectKey, featureKey, specKey))
   }
 
+  /* Spec: Completed */
+  toggleCompleted = () => {
+    const { spec: { completed } } = this.props
+    this.update({
+      completed: !completed,
+      completedAt: completed ? null : new Date()
+    })
+  }
+
+  /* Spec: Priority */
+  setPriority = priority => this.update({ priority })
+  setPriorityHigh = () => this.setPriority(1)
+  setPriorityLow = () => this.setPriority(-1)
+  unsetPriority = () => this.setPriority(null)
+
+  /* Spec: Name */
+  setName = e => this.setState({ name: e.target.value })
+  handleKeyPress = e => e.key === 'Enter' && this.updateName()
+  updateName = () => this.update({ name: this.state.name.trim() })
+
+  /* Spec: Subspec */
+  createSubspec = () => {
+    const { projectKey, specKey } = this.props
+    const { createSubspec } = this.props
+    const _name =
+      (!this.isSyncing() && window.prompt('Type a name of subspec')) || ''
+    const name = _name.trim()
+    name && createSubspec(projectKey, specKey, { name })
+  }
+
+  /* Spec: Label */
+  createLabel = () => {
+    const { labels: _labels = [] } = this.props.spec
+    const _label = (!this.isSyncing() && window.prompt('Type a label')) || ''
+    const label = _label.trim()
+    const labels = [..._labels, label].sort()
+    label && this.update({ labels })
+  }
+
+  deleteLabel = index => {
+    const { labels: _labels } = this.props.spec
+    const labels = dotProp.delete(_labels, index)
+    !this.isSyncing() &&
+      window.confirm(`Delete ${_labels[index]}?`) &&
+      this.update({ labels })
+  }
+
+  /* Spec: Filename */
+  updateFilename = () => this.prompt('filename')
+  updateVersion = () => this.prompt('version')
+
+  /* Spec: Description */
+  toggleDescription = showDescription =>
+    this.setState(prevState => ({
+      showDescription:
+        typeof showDescription === 'boolean'
+          ? showDescription
+          : !prevState.showDescription
+    }))
+
+  setDescription = e => this.setState({ description: e.target.value })
+  handleKeyPressDescription = e =>
+    e.metaKey && e.key === 'Enter' && this.updateDescription()
+
+  updateDescription = () => this.update({ description: this.state.description })
+
+  /* Utility Functions */
+  prompt = string => {
+    const _input =
+      (!this.isSyncing() && window.prompt(`Type a ${string}`)) || ''
+    const input = _input.trim()
+    input && this.update({ [string]: input })
+  }
+
+  /* Layout: Toggle Menu */
+  showMenu = () => this.setState({ hover: true })
+  hideMenu = () => this.setState({ hover: false })
   handleMouseLeave = () => {
     this.toggleDescription(false)
     this.hideMenu()
@@ -136,6 +145,7 @@ class Spec extends Component {
     const { completed = false, priority, subspecs = [] } = spec
     const hasSubspecs = !!subspecs.length
 
+    /* Style */
     const opacity = completed && 0.25
     const _style = Object.assign(
       { ...style },
