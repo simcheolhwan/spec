@@ -28,8 +28,9 @@ Status.propTypes = propTypes
 
 const position = {
   position: 'absolute',
-  top: '100%',
-  right: 0
+  top: '1.75rem',
+  right: 0,
+  zIndex: 1
 }
 
 const style = {
