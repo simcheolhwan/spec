@@ -6,7 +6,11 @@ const propTypes = {
   onSelect: PropTypes.func.isRequired
 }
 
-export const StatusList = { IN_PROGRESS: 'In Progress' }
+export const StatusList = {
+  BACKLOG: 'Backlog',
+  TO_DO: 'To Do',
+  IN_PROGRESS: 'In Progress'
+}
 
 const Status = ({ status: current, onSelect }) => (
   <ul style={style}>
@@ -28,8 +32,9 @@ Status.propTypes = propTypes
 
 const position = {
   position: 'absolute',
-  top: '100%',
-  right: 0
+  top: '1.75rem',
+  right: 0,
+  zIndex: 1
 }
 
 const style = {
