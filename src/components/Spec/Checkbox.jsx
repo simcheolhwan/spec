@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { StatusList } from './Status'
 import { colors } from '../../styles'
-import { Done, Blank } from '../Icons'
+import { Hourglass, Blank, Play, Done, DoneAll } from '../Icons'
 import Button from '../Button'
 
 const propTypes = {
@@ -21,10 +21,14 @@ const defaultProps = {
 
 const Checkbox = ({ checked, status, variant, onClick }) => (
   <Button variant={{ ...style, ...variant }} onClick={onClick}>
-    {status === StatusList.IN_PROGRESS ? (
-      <Done color={colors.orange} />
+    {status ? (
+      {
+        [StatusList.BACKLOG]: <Hourglass color={colors.gray} />,
+        [StatusList.TO_DO]: <Play color={colors.blue} />,
+        [StatusList.IN_PROGRESS]: <Done color={colors.orange} />
+      }[status]
     ) : checked ? (
-      <Done color={colors.olive} />
+      <DoneAll color={colors.olive} variant={{ opacity: 0.5 }} />
     ) : (
       <Blank color={colors.gray} />
     )}
