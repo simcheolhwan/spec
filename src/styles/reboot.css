@@ -45,6 +45,11 @@ ol {
   margin: 0;
 }
 
+ul {
+  list-style: none;
+  padding-left: 0;
+}
+
 small {
   font-size: 80%;
 }

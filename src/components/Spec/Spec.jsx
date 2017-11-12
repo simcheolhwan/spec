@@ -6,13 +6,14 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as specActions from '../../actions/specActions'
 import { colors } from '../../styles'
-import { Sub, File, Delete, Label, Shipping, Comment } from '../Icons'
+import { Sub, File, Delete, Label, Shipping, Comment, Flag } from '../Icons'
 import Priority from './Priority'
 import Checkbox from './Checkbox'
 import Name from './Name'
 import Meta from './Meta'
 import Menu from './Menu'
 import Description from './Description'
+import Status from './Status'
 import Subspecs from './Subspecs'
 
 const propTypes = {
@@ -34,7 +35,8 @@ class Spec extends Component {
     name: this.props.spec.name,
     hover: false,
     description: this.props.spec.description,
-    showDescription: false
+    showDescription: false,
+    showStatus: false
   }
 
   /* Spec */
@@ -123,6 +125,16 @@ class Spec extends Component {
 
   updateDescription = () => this.update({ description: this.state.description })
 
+  /* Spec: Status */
+  toggleStatus = showStatus =>
+    this.setState(prevState => ({
+      showStatus:
+        typeof showStatus === 'boolean' ? showStatus : !prevState.showStatus
+    }))
+
+  updateStatus = status =>
+    this.update({ status: status === this.props.spec.status ? null : status })
+
   /* Utility Functions */
   prompt = string => {
     const _input =
@@ -136,12 +148,13 @@ class Spec extends Component {
   hideMenu = () => this.setState({ hover: false })
   handleMouseLeave = () => {
     this.toggleDescription(false)
+    this.toggleStatus(false)
     this.hideMenu()
   }
 
   render() {
     const { spec, isOwner, isSubspec } = this.props
-    const { name, hover, description, showDescription } = this.state
+    const { name, hover, description, showDescription, showStatus } = this.state
     const { completed = false, priority, subspecs = [] } = spec
     const hasSubspecs = !!subspecs.length
 
@@ -175,6 +188,7 @@ class Spec extends Component {
 
       Checkbox: {
         checked: completed,
+        status: spec.status,
         variant: isSubspec && { marginLeft: '1.5rem' },
         onClick: isOwner ? this.toggleCompleted : undefined
       },
@@ -221,6 +235,11 @@ class Spec extends Component {
             action: this.toggleDescription
           },
           {
+            label: 'status',
+            icon: <Flag color={colors.gray} />,
+            action: this.toggleStatus
+          },
+          {
             label: 'delete',
             icon: <Delete color={colors.gray} />,
             action: this.delete
@@ -234,6 +253,11 @@ class Spec extends Component {
         onChange: this.setDescription,
         onKeyPress: this.handleKeyPressDescription,
         readOnly: !isOwner
+      },
+
+      Status: {
+        status: spec.status,
+        onSelect: this.updateStatus
       }
     }
 
@@ -244,8 +268,9 @@ class Spec extends Component {
           <Checkbox {...props.Checkbox} />
           <Name {...props.Name} />
           <Meta {...props.Meta} />
-          {showDescription && <Description {...props.Description} />}
           {isOwner && <Menu {...props.Menu} />}
+          {showDescription && <Description {...props.Description} />}
+          {showStatus && <Status {...props.Status} />}
           {spec.description && <div style={style.descriptionIndicator} />}
         </section>
 
