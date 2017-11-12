@@ -6,12 +6,13 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as specActions from '../../actions/specActions'
 import { colors } from '../../styles'
-import { Sub, File, Delete, Label, Shipping } from '../Icons'
+import { Sub, File, Delete, Label, Shipping, Comment } from '../Icons'
 import Priority from './Priority'
 import Checkbox from './Checkbox'
 import Name from './Name'
 import Meta from './Meta'
 import Menu from './Menu'
+import Description from './Description'
 import Subspecs from './Subspecs'
 
 const propTypes = {
@@ -29,7 +30,12 @@ const OPACITY = 0.5
 const OUTLINE = `hsla(208, 100%, 43%, ${OPACITY})`
 
 class Spec extends Component {
-  state = { name: this.props.spec.name, hover: false }
+  state = {
+    name: this.props.spec.name,
+    hover: false,
+    description: this.props.spec.description,
+    showDescription: false
+  }
 
   toggleCompleted = () => {
     const { spec: { completed } } = this.props
@@ -86,6 +92,20 @@ class Spec extends Component {
   updateFilename = () => this.prompt('filename')
   updateVersion = () => this.prompt('version')
 
+  toggleDescription = showDescription =>
+    this.setState(prevState => ({
+      showDescription:
+        typeof showDescription === 'boolean'
+          ? showDescription
+          : !prevState.showDescription
+    }))
+
+  setDescription = e => this.setState({ description: e.target.value })
+  handleKeyPressDescription = e =>
+    e.metaKey && e.key === 'Enter' && this.updateDescription()
+
+  updateDescription = () => this.update({ description: this.state.description })
+
   isSyncing = () => this.props.spec.isSyncing
 
   update = updates => {
@@ -105,26 +125,31 @@ class Spec extends Component {
         : deleteSpec(projectKey, featureKey, specKey))
   }
 
+  handleMouseLeave = () => {
+    this.toggleDescription(false)
+    this.hideMenu()
+  }
+
   render() {
-    const { spec, variant, isOwner, isSubspec } = this.props
-    const { name, hover } = this.state
+    const { spec, isOwner, isSubspec } = this.props
+    const { name, hover, description, showDescription } = this.state
     const { completed = false, priority, subspecs = [] } = spec
     const hasSubspecs = !!subspecs.length
 
-    const style = {
-      ...variant,
-      outline: isOwner && hover && `2px solid ${OUTLINE}`
-    }
+    const opacity = completed && 0.25
+    const _style = Object.assign(
+      { ...style },
+      isOwner && hover && { outline: `2px solid ${OUTLINE}`, zIndex: 1 }
+    )
 
     const props = {
       Line: {
         style: {
           display: 'flex',
-          alignItems: 'center',
-          opacity: completed && 0.25
+          alignItems: 'center'
         },
         onMouseEnter: this.showMenu,
-        onMouseLeave: this.hideMenu
+        onMouseLeave: this.handleMouseLeave
       },
 
       Priority: {
@@ -149,13 +174,13 @@ class Spec extends Component {
         onChange: this.setName,
         onKeyPress: this.handleKeyPress,
         readOnly: !isOwner,
-        variant: { flex: 1 }
+        variant: { flex: 1, opacity }
       },
 
       Meta: {
         labels: { list: spec.labels || [], onDelete: this.deleteLabel },
         filename: spec.filename,
-        version: spec.version
+        version: { v: spec.version, variant: { opacity } }
       },
 
       Menu: {
@@ -181,23 +206,37 @@ class Spec extends Component {
             action: this.updateVersion
           },
           {
+            label: 'description',
+            icon: <Comment color={colors.gray} />,
+            action: this.toggleDescription
+          },
+          {
             label: 'delete',
             icon: <Delete color={colors.gray} />,
             action: this.delete
           }
         ]),
         variant: { visibility: hover ? 'visible' : 'hidden' }
+      },
+
+      Description: {
+        description,
+        onChange: this.setDescription,
+        onKeyPress: this.handleKeyPressDescription,
+        readOnly: !isOwner
       }
     }
 
     return (
-      <article style={style}>
+      <article style={_style}>
         <section {...props.Line}>
           <Priority {...props.Priority} />
           <Checkbox {...props.Checkbox} />
           <Name {...props.Name} />
           <Meta {...props.Meta} />
+          {showDescription && <Description {...props.Description} />}
           {isOwner && <Menu {...props.Menu} />}
+          {spec.description && <div style={style.descriptionIndicator} />}
         </section>
 
         {hasSubspecs && <Subspecs {...this.props} subspecs={subspecs} />}
@@ -207,6 +246,27 @@ class Spec extends Component {
 }
 
 Spec.propTypes = propTypes
+
+const INDICATOR = 3
+
+const position = {
+  position: 'absolute',
+  top: 0,
+  right: 0
+}
+
+const style = {
+  position: 'relative',
+
+  descriptionIndicator: {
+    ...position,
+    width: 2 * INDICATOR,
+    height: 2 * INDICATOR,
+    border: `${INDICATOR}px solid transparent`,
+    borderTopColor: 'black',
+    borderRightColor: 'black'
+  }
+}
 
 const mapDispatchToProps = dispatch => bindActionCreators(specActions, dispatch)
 

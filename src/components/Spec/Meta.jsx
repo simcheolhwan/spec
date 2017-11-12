@@ -25,12 +25,14 @@ const Filename = ({ filename }) => (
   <code style={style.filename}>{filename}</code>
 )
 
-const Version = ({ version }) => <code style={style.version}>{version}</code>
+const Version = ({ v, variant }) => (
+  <code style={{ ...style.version, ...variant }}>{v}</code>
+)
 
 const Meta = ({ labels, filename, version }) => [
   !!labels.list.length && <Labels {...labels} key="Labels" />,
   filename && <Filename filename={filename} key="Filename" />,
-  version && <Version version={version} key="Version" />
+  version.v && <Version {...version} key="Version" />
 ]
 
 Meta.propTypes = propTypes
