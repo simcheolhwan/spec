@@ -67,6 +67,8 @@ code {
 button,
 input,
 textarea {
+  border: 1px solid silver;
+  background-color: transparent;
   font-family: inherit;
   font-size: inherit;
   line-height: inherit;
