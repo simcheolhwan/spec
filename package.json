@@ -7,9 +7,9 @@
     "firebase": "^4.6.2",
     "history": "^4.7.2",
     "lodash": "^4.17.4",
-    "raven-js": "^3.19.1",
-    "react": "^16.1.0",
-    "react-dom": "^16.1.0",
+    "raven-js": "^3.20.1",
+    "react": "^16.1.1",
+    "react-dom": "^16.1.1",
     "react-redux": "^5.0.6",
     "react-router-dom": "^4.2.2",
     "react-router-redux": "^5.0.0-alpha.8",
@@ -19,15 +19,15 @@
     "uuid": "^3.1.0"
   },
   "devDependencies": {
-    "enzyme": "^3.1.1",
-    "enzyme-adapter-react-16": "^1.0.4",
+    "enzyme": "^3.2.0",
+    "enzyme-adapter-react-16": "^1.1.0",
     "husky": "^0.14.3",
     "jest-enzyme": "^4.0.1",
     "lint-staged": "^5.0.0",
     "prettier": "^1.8.2",
     "prop-types": "^15.6.0",
     "react-scripts": "^1.0.17",
-    "react-test-renderer": "^16.1.0",
+    "react-test-renderer": "^16.1.1",
     "source-map-explorer": "^1.5.0"
   },
   "scripts": {
