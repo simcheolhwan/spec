@@ -68,6 +68,7 @@ button,
 input,
 textarea {
   border: 1px solid silver;
+  border-radius: 0;
   background-color: transparent;
   font-family: inherit;
   font-size: inherit;
