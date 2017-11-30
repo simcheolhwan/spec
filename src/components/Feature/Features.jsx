@@ -15,35 +15,33 @@ const propTypes = {
 
 const data = { order: 'Features', issues: 'Issues' }
 
-const Features = ({ features, specs, projectKey, isOwner }) =>
-  Object.keys(data).map(key => (
-    <Page
-      title={data[key]}
-      actions={
-        isOwner
-          ? [
-              <FeatureCreate
-                isIssue={key === 'issues'}
-                projectKey={projectKey}
-                key="FeatureCreate"
-              />
-            ]
-          : []
-      }
-      key={key}
-    >
-      {features[key].map(key => (
-        <Feature
-          projectKey={projectKey}
-          featureKey={key}
-          feature={features.list[key]}
-          specs={{ list: specs.list, order: specs.orders[key] || [] }}
-          isOwner={isOwner}
-          key={key}
-        />
-      ))}
-    </Page>
-  ))
+const Features = ({ features, specs, projectKey, isOwner }) => {
+  const renderColumn = key => {
+    const create = { projectKey, isIssue: key === 'issues', key: 'Create' }
+    const actions = isOwner ? [<FeatureCreate {...create} />] : []
+
+    return (
+      <Page title={data[key]} actions={actions} key={key}>
+        {features[key].map(renderFeature)}
+      </Page>
+    )
+  }
+
+  const renderFeature = key => {
+    const feature = {
+      projectKey,
+      featureKey: key,
+      feature: features.list[key],
+      specs: { list: specs.list, order: specs.orders[key] || [] },
+      isOwner,
+      key
+    }
+
+    return <Feature {...feature} />
+  }
+
+  return Object.keys(data).map(renderColumn)
+}
 
 Features.propTypes = propTypes
 
