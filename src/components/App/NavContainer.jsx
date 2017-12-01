@@ -1,5 +1,7 @@
 import findKey from 'lodash/fp/findKey'
+import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import * as actions from '../../actions/appActions'
 import Nav from './Nav'
 
 const findSyncing = findKey('isSyncing')
@@ -29,4 +31,6 @@ const mapStateToProps = ({ auth, projects, features, specs }) => {
   }
 }
 
-export default connect(mapStateToProps)(Nav)
+const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch)
+
+export default connect(mapStateToProps, mapDispatchToProps)(Nav)

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import { colors } from '../../styles'
 import { isProduction } from '../../config/env'
+import { Fullscreen } from '../Icons'
 import Progress from '../Progress/Progress'
 
 const propTypes = {
@@ -12,10 +13,11 @@ const propTypes = {
       to: PropTypes.string.isRequired,
       label: PropTypes.string.isRequired
     })
-  ).isRequired
+  ).isRequired,
+  hideNav: PropTypes.func.isRequired
 }
 
-const Nav = ({ title, indicator, links }) => (
+const Nav = ({ title, indicator, links, hideNav }) => (
   <nav style={style}>
     <header>
       <h1 style={style.title}>
@@ -35,6 +37,10 @@ const Nav = ({ title, indicator, links }) => (
           {label}
         </Link>
       ))}
+
+      <button style={style.button} onClick={hideNav}>
+        <Fullscreen size="1.5rem" color={COLOR} />
+      </button>
     </section>
   </nav>
 )
@@ -42,6 +48,7 @@ const Nav = ({ title, indicator, links }) => (
 Nav.propTypes = propTypes
 
 const OPACITY = 0.75
+const COLOR = `hsla(0, 0%, 100%, ${OPACITY})`
 
 const style = {
   backgroundColor: isProduction ? colors.black : colors.navy,
@@ -55,13 +62,20 @@ const style = {
 
   list: {
     display: 'flex',
-    alignItems: 'center'
+    alignItems: 'stretch'
   },
 
   link: {
-    color: `hsla(0, 0%, 100%, ${OPACITY})`,
+    color: COLOR,
     display: 'block',
     padding: '1rem'
+  },
+
+  button: {
+    display: 'flex',
+    alignItems: 'center',
+    border: 0,
+    cursor: 'pointer'
   }
 }
 
