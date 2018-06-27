@@ -1,5 +1,5 @@
 import React from 'react'
-import PropTypes from 'prop-types'
+import { bool, object } from 'prop-types'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { colors } from '../../styles'
@@ -7,8 +7,9 @@ import Page from '../Page'
 import Grid from '../Grid'
 
 const propTypes = {
-  user: PropTypes.object.isRequired,
-  projects: PropTypes.object.isRequired
+  showTitle: bool.isRequired,
+  user: object.isRequired,
+  projects: object.isRequired
 }
 
 const Project = ({ title, slug, url }) => (
@@ -22,7 +23,7 @@ const Project = ({ title, slug, url }) => (
   </article>
 )
 
-const Projects = ({ user, projects: { order, list } }) => {
+const Projects = ({ showTitle, user, projects: { order, list } }) => {
   const renderGroup = type => (
     <ul style={style.list} key={type}>
       {group[type].map(renderList)}
@@ -46,7 +47,7 @@ const Projects = ({ user, projects: { order, list } }) => {
   const group = order.reduce(reduceGroup, { isPublic: [], isPrivate: [] })
 
   return (
-    <Page title="Projects">
+    <Page title={showTitle && 'Projects'}>
       {order ? (
         <Grid main={['isPublic', 'isPrivate'].map(renderGroup)} />
       ) : (
@@ -63,6 +64,9 @@ const style = {
   Project: { borderBottom: `1px solid ${colors.line}`, padding: '1rem 0' }
 }
 
-const mapStateToProps = ({ projects }) => ({ projects })
+const mapStateToProps = ({ app, projects }) => ({
+  showTitle: !app.fullscreen,
+  projects
+})
 
 export default connect(mapStateToProps)(Projects)
