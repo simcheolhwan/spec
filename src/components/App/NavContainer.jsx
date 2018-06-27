@@ -6,7 +6,7 @@ import Nav from './Nav'
 
 const findSyncing = findKey('isSyncing')
 
-const mapStateToProps = ({ auth, projects, features, specs }) => {
+const mapStateToProps = ({ app, auth, projects, features, specs }) => {
   const syncing = !!(
     findSyncing(projects.list) ||
     findSyncing(features.list) ||
@@ -25,6 +25,7 @@ const mapStateToProps = ({ auth, projects, features, specs }) => {
   }
 
   return {
+    showNav: !app.fullscreen,
     title: 'Spec',
     indicator: syncing,
     links: links[auth.state].filter(link => link.to)

@@ -43,7 +43,7 @@ class Project extends Component {
   }
 
   render() {
-    const { state, action, project, isOwner, user, match } = this.props
+    const { showNav, state, action, project, isOwner, user, match } = this.props
     const { name, slug } = user
 
     const breadcrumb = {
@@ -69,7 +69,7 @@ class Project extends Component {
     }
 
     const grid = {
-      aside: (
+      aside: showNav && (
         <nav>
           <h3>
             {breadcrumb.user}/{breadcrumb.project}
@@ -106,7 +106,8 @@ const style = {
 }
 
 const mapStateToProps = (_state, ownProps) => {
-  const { auth, user: _user, projects, features } = _state
+  const { app, auth, user: _user, projects, features } = _state
+  const showNav = !app.fullscreen
   const isOwner = match(ownProps)(auth)
   const { user } = isOwner ? auth : _user
   const { projectKey, project } = getProject(ownProps)(projects)
@@ -115,7 +116,7 @@ const mapStateToProps = (_state, ownProps) => {
     projects.state === 'idle' ? 'idle' : projectKey ? 'project' : 404
   const action = { fetchFeatures: !matchProject && !!user.uid && !!projectKey }
 
-  return { state, action, user, projectKey, project, isOwner }
+  return { showNav, state, action, user, projectKey, project, isOwner }
 }
 
 const mapDispatchToProps = dispatch =>
