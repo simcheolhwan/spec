@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { colors } from '../../styles'
 import Page from '../Page'
+import Grid from '../Grid'
 
 const propTypes = {
   user: PropTypes.object.isRequired,
@@ -21,29 +22,44 @@ const Project = ({ title, slug, url }) => (
   </article>
 )
 
-const Projects = ({ user, projects }) => (
-  <Page title="Projects">
-    {projects.order ? (
-      <ul style={style.list}>
-        {projects.order.map(key => (
-          <li key={key}>
-            <Project
-              {...projects.list[key]}
-              url={`/${user.slug}/${projects.list[key].slug}`}
-            />
-          </li>
-        ))}
-      </ul>
-    ) : (
-      <p>No Projects</p>
-    )}
-  </Page>
-)
+const Projects = ({ user, projects: { order, list } }) => {
+  const renderGroup = type => (
+    <ul style={style.list} key={type}>
+      {group[type].map(renderList)}
+    </ul>
+  )
+
+  const renderList = key => (
+    <li key={key}>
+      <Project {...list[key]} url={`/${user.slug}/${list[key].slug}`} />
+    </li>
+  )
+
+  const reduceGroup = (acc, cur) =>
+    Object.assign(
+      acc,
+      list[cur].isPrivate
+        ? { isPrivate: [...acc.isPrivate, cur] }
+        : { isPublic: [...acc.isPublic, cur] }
+    )
+
+  const group = order.reduce(reduceGroup, { isPublic: [], isPrivate: [] })
+
+  return (
+    <Page title="Projects">
+      {order ? (
+        <Grid main={['isPublic', 'isPrivate'].map(renderGroup)} />
+      ) : (
+        <p>No Projects</p>
+      )}
+    </Page>
+  )
+}
 
 Projects.propTypes = propTypes
 
 const style = {
-  list: { listStyle: 'none', padding: 0 },
+  list: { flex: 1 },
   Project: { borderBottom: `1px solid ${colors.line}`, padding: '1rem 0' }
 }
 

@@ -1,11 +1,9 @@
 import React from 'react'
-import PropTypes from 'prop-types'
+import { node } from 'prop-types'
 import { colors } from '../styles'
 
-const propTypes = {
-  aside: PropTypes.node.isRequired,
-  main: PropTypes.node.isRequired
-}
+const propTypes = { aside: node, main: node.isRequired }
+const defaultProps = { aside: null }
 
 const Grid = ({ aside, main }) => [
   aside && (
@@ -19,6 +17,7 @@ const Grid = ({ aside, main }) => [
 ]
 
 Grid.propTypes = propTypes
+Grid.defaultProps = defaultProps
 
 const style = {
   aside: { backgroundColor: colors.silver, padding: '1rem 2rem' },
