@@ -1,10 +1,12 @@
 import findKey from 'lodash/fp/findKey'
+import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import * as actions from '../../actions/appActions'
 import Nav from './Nav'
 
 const findSyncing = findKey('isSyncing')
 
-const mapStateToProps = ({ auth, projects, features, specs }) => {
+const mapStateToProps = ({ app, auth, projects, features, specs }) => {
   const syncing = !!(
     findSyncing(projects.list) ||
     findSyncing(features.list) ||
@@ -23,10 +25,13 @@ const mapStateToProps = ({ auth, projects, features, specs }) => {
   }
 
   return {
+    showNav: !app.fullscreen,
     title: 'Spec',
     indicator: syncing,
     links: links[auth.state].filter(link => link.to)
   }
 }
 
-export default connect(mapStateToProps)(Nav)
+const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch)
+
+export default connect(mapStateToProps, mapDispatchToProps)(Nav)

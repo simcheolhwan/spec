@@ -15,13 +15,13 @@ const propTypes = {
 
 const data = { order: 'Features', issues: 'Issues' }
 
-const Features = ({ features, specs, projectKey, isOwner }) => {
+const Features = ({ showTitle, features, specs, projectKey, isOwner }) => {
   const renderColumn = key => {
     const create = { projectKey, isIssue: key === 'issues', key: 'Create' }
     const actions = isOwner ? [<FeatureCreate {...create} />] : []
 
     return (
-      <Page title={data[key]} actions={actions} key={key}>
+      <Page title={showTitle && data[key]} actions={actions} key={key}>
         {features[key].map(renderFeature)}
       </Page>
     )
@@ -45,7 +45,11 @@ const Features = ({ features, specs, projectKey, isOwner }) => {
 
 Features.propTypes = propTypes
 
-const mapStateToProps = ({ auth, projects, features, specs }, ownProps) => ({
+const mapStateToProps = (
+  { app, auth, projects, features, specs },
+  ownProps
+) => ({
+  showTitle: !app.fullscreen,
   ...getProject(ownProps)(projects),
   features,
   specs,

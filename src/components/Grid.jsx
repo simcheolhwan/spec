@@ -8,9 +8,11 @@ const propTypes = {
 }
 
 const Grid = ({ aside, main }) => [
-  <aside style={style.aside} key="aside">
-    {aside}
-  </aside>,
+  aside && (
+    <aside style={style.aside} key="aside">
+      {aside}
+    </aside>
+  ),
   <main style={style.main} key="main">
     {main}
   </main>

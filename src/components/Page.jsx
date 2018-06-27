@@ -16,10 +16,12 @@ const defaultProps = {
 
 const Page = ({ title, actions, children }) => (
   <article style={style}>
-    <header style={style.header}>
-      <h1>{title}</h1>
-      {!!actions.length && <section>{actions}</section>}
-    </header>
+    {title && (
+      <header style={style.header}>
+        <h1>{title}</h1>
+        {!!actions.length && <section>{actions}</section>}
+      </header>
+    )}
 
     <main style={style.main}>{children}</main>
   </article>
