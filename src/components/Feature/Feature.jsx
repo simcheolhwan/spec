@@ -38,6 +38,12 @@ class Feature extends Component {
     input && this.update({ filename: input })
   }
 
+  deleteFilename = () => {
+    !this.isSyncing() &&
+      window.confirm(`Delete ${this.props.feature.filename}?`) &&
+      this.update({ filename: null })
+  }
+
   isSyncing = () => this.props.feature.isSyncing
 
   update = updates => {
@@ -47,8 +53,9 @@ class Feature extends Component {
 
   delete = () => {
     const { projectKey, featureKey, deleteFeature } = this.props
-    const { feature: { name } } = this.props
-    window.confirm(`Delete '${name}'?`) && deleteFeature(projectKey, featureKey)
+    const { feature } = this.props
+    window.confirm(`Delete '${feature.name}'?`) &&
+      deleteFeature(projectKey, featureKey)
   }
 
   title = () => (
@@ -63,7 +70,9 @@ class Feature extends Component {
 
   filename = () =>
     this.props.feature.filename && (
-      <code style={style.filename}>{this.props.feature.filename}</code>
+      <code style={style.filename} onClick={this.deleteFilename}>
+        {this.props.feature.filename}
+      </code>
     )
 
   menu = () => {
@@ -131,4 +140,7 @@ Feature.propTypes = propTypes
 const mapDispatchToProps = dispatch =>
   bindActionCreators({ updateFeature, deleteFeature }, dispatch)
 
-export default connect(null, mapDispatchToProps)(Feature)
+export default connect(
+  null,
+  mapDispatchToProps
+)(Feature)

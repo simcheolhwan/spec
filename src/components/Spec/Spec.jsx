@@ -50,21 +50,27 @@ class Spec extends Component {
 
   delete = () => {
     const { projectKey, featureKey, specKey } = this.props
-    const { spec: { name }, deleteSpec } = this.props
+    const { spec, deleteSpec } = this.props
     const { isSubspec, parentKey, deleteSubspec } = this.props
     !this.isSyncing() &&
-      window.confirm(`Delete '${name}'?`) &&
+      window.confirm(`Delete '${spec.name}'?`) &&
       (isSubspec
         ? deleteSubspec(projectKey, parentKey, specKey)
         : deleteSpec(projectKey, featureKey, specKey))
   }
 
+  confirmDeleteMeta = (message, updates) => {
+    !this.isSyncing() &&
+      window.confirm(`Delete ${message}?`) &&
+      this.update(updates)
+  }
+
   /* Spec: Completed */
   toggleCompleted = () => {
-    const { spec: { completed } } = this.props
+    const { spec } = this.props
     this.update({
-      completed: !completed,
-      completedAt: completed ? null : new Date()
+      completed: !spec.completed,
+      completedAt: spec.completed ? null : new Date()
     })
   }
 
@@ -101,14 +107,15 @@ class Spec extends Component {
   deleteLabel = index => {
     const { labels: _labels } = this.props.spec
     const labels = dotProp.delete(_labels, index)
-    !this.isSyncing() &&
-      window.confirm(`Delete ${_labels[index]}?`) &&
-      this.update({ labels })
+    this.confirmDeleteMeta(_labels[index], { labels })
   }
 
-  /* Spec: Filename */
+  /* Spec: Filename and Version */
   updateFilename = () => this.prompt('filename')
+  deleteFilename = filename =>
+    this.confirmDeleteMeta(filename, { filename: null })
   updateVersion = () => this.prompt('version')
+  deleteVersion = version => this.confirmDeleteMeta(version, { version: null })
 
   /* Spec: Description */
   toggleDescription = showDescription =>
@@ -179,10 +186,14 @@ class Spec extends Component {
         priority,
         variant: { downward: { marginRight: '.5rem' } },
         onClickUpward: isOwner
-          ? priority === 1 ? this.unsetPriority : this.setPriorityHigh
+          ? priority === 1
+            ? this.unsetPriority
+            : this.setPriorityHigh
           : undefined,
         onClickDownward: isOwner
-          ? priority === -1 ? this.unsetPriority : this.setPriorityLow
+          ? priority === -1
+            ? this.unsetPriority
+            : this.setPriorityLow
           : undefined
       },
 
@@ -202,9 +213,19 @@ class Spec extends Component {
       },
 
       Meta: {
-        labels: { list: spec.labels || [], onDelete: this.deleteLabel },
-        filename: spec.filename,
-        version: { v: spec.version, variant: { opacity } }
+        labels: {
+          list: spec.labels || [],
+          onDelete: this.deleteLabel
+        },
+        filename: {
+          filename: spec.filename,
+          onDelete: this.deleteFilename
+        },
+        version: {
+          v: spec.version,
+          variant: { opacity },
+          onDelete: this.deleteVersion
+        }
       },
 
       Menu: {
@@ -305,4 +326,7 @@ const style = {
 
 const mapDispatchToProps = dispatch => bindActionCreators(specActions, dispatch)
 
-export default connect(null, mapDispatchToProps)(Spec)
+export default connect(
+  null,
+  mapDispatchToProps
+)(Spec)

@@ -1,17 +1,17 @@
 import React from 'react'
-import PropTypes from 'prop-types'
+import { string, array, object, shape, func } from 'prop-types'
 import { colors } from '../../styles'
 
+const onDelete = func
 const propTypes = {
-  labels: PropTypes.shape({
-    list: PropTypes.array,
-    onDelete: PropTypes.func
-  }).isRequired,
-  filename: PropTypes.string
+  labels: shape({ list: array, onDelete }).isRequired,
+  filename: shape({ filename: string, onDelete }),
+  version: shape({ v: string, variant: object, onDelete })
 }
 
 const defaultProps = {
-  filename: ''
+  filename: {},
+  version: {}
 }
 
 const Labels = ({ list, onDelete }) =>
@@ -21,17 +21,21 @@ const Labels = ({ list, onDelete }) =>
     </small>
   ))
 
-const Filename = ({ filename }) => (
-  <code style={style.filename}>{filename}</code>
+const Filename = ({ filename, onDelete }) => (
+  <code style={style.filename} onClick={() => onDelete(filename)}>
+    {filename}
+  </code>
 )
 
-const Version = ({ v, variant }) => (
-  <code style={{ ...style.version, ...variant }}>{v}</code>
+const Version = ({ v, variant, onDelete }) => (
+  <code style={{ ...style.version, ...variant }} onClick={() => onDelete(v)}>
+    {v}
+  </code>
 )
 
 const Meta = ({ labels, filename, version }) => [
   !!labels.list.length && <Labels {...labels} key="Labels" />,
-  filename && <Filename filename={filename} key="Filename" />,
+  filename && <Filename {...filename} key="Filename" />,
   version.v && <Version {...version} key="Version" />
 ]
 
