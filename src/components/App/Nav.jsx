@@ -64,7 +64,7 @@ const style = {
 
   list: {
     display: 'flex',
-    alignItems: 'stretch'
+    alignItems: 'center'
   },
 
   link: {
