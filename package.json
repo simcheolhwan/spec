@@ -3,39 +3,34 @@
   "homepage": "https://spec.nomad.works",
   "private": true,
   "dependencies": {
-    "dot-prop-immutable": "^1.4.0",
-    "firebase": "^5.1.0",
-    "history": "^4.7.2",
-    "lodash": "^4.17.10",
-    "raven-js": "^3.26.3",
-    "react": "^16.4.1",
-    "react-dom": "^16.4.1",
+    "dot-prop-immutable": "^1.5.0",
+    "firebase": "^7.2.1",
+    "history": "^4.10.1",
+    "lodash": "^4.17.15",
+    "raven-js": "^3.27.2",
+    "react": "^16.11.0",
+    "react-dom": "^16.11.0",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.3.1",
     "react-router-redux": "^5.0.0-alpha.9",
-    "redux": "^4.0.0",
+    "redux": "^4.0.4",
     "redux-form": "^7.4.2",
     "redux-thunk": "^2.3.0",
-    "uuid": "^3.3.0"
+    "uuid": "^3.3.3"
   },
   "devDependencies": {
-    "enzyme": "^3.3.0",
-    "enzyme-adapter-react-16": "^1.1.1",
-    "husky": "^0.14.3",
-    "jest-enzyme": "^6.0.2",
-    "lint-staged": "^7.2.0",
-    "prettier": "^1.13.6",
-    "prop-types": "^15.6.2",
-    "react-scripts": "^1.1.4",
-    "react-test-renderer": "^16.4.1",
-    "source-map-explorer": "^1.5.0"
+    "husky": "^3.0.9",
+    "lint-staged": "^9.4.2",
+    "prettier": "^1.18.2",
+    "prop-types": "^15.7.2",
+    "react-scripts": "^3.2.0",
+    "source-map-explorer": "^2.1.0"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "precommit": "lint-staged",
     "analyze": "source-map-explorer build/static/js/main.*"
   },
   "lint-staged": {
@@ -43,5 +38,22 @@
       "prettier --single-quote --no-semi --write",
       "git add"
     ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   }
 }
