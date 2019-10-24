@@ -12,7 +12,7 @@ export const types = {
 export const initFeatures = () => dispatch => dispatch({ type: types.INIT })
 
 export const fetchFeatures = (uid, projectKey) => dispatch =>
-  database.ref(`/features/${uid}/${projectKey}`).once('value', snap =>
+  database.ref(`/features/${uid}/${projectKey}`).on('value', snap =>
     dispatch({
       type: types.FETCH,
       features: snap.val() || {},

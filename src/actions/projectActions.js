@@ -15,7 +15,7 @@ export const initProjects = () => dispatch => dispatch({ type: types.INIT })
 export const fetchProjects = uid => dispatch =>
   database
     .ref(`/projects/${uid}`)
-    .once('value', snap =>
+    .on('value', snap =>
       dispatch({ type: types.FETCH, projects: snap.val() || {}, user: uid })
     )
 

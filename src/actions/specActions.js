@@ -15,7 +15,7 @@ export const initSpecs = () => dispatch => dispatch({ type: types.INIT })
 export const fetchSpecs = (uid, projectKey) => dispatch =>
   database
     .ref(`/specs/${uid}/${projectKey}`)
-    .once('value', snap =>
+    .on('value', snap =>
       dispatch({ type: types.FETCH, specs: snap.val() || {} })
     )
 
